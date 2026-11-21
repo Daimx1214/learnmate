@@ -672,3 +672,224 @@ td:last-child {
     font-size: 15px;
   }
 }
+
+/* ===== Beautify pass (owner: "UI pyara banao, extra gaps khatam", 22 Nov) =====
+   One spacing rhythm: gaps and padding own the vertical space, so stray
+   browser margins on p/h/ol are removed; components re-add what they need. */
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+}
+
+.card h2 {
+  margin-bottom: 8px;
+}
+
+.card p + p {
+  margin-top: 8px;
+}
+
+.card table {
+  margin-top: 10px;
+}
+
+.card ol,
+.card ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.card ol {
+  padding-left: 22px;
+}
+
+body {
+  background-image: radial-gradient(120% 55% at 50% 0%, rgba(232, 163, 23, 0.07), rgba(232, 163, 23, 0) 60%);
+  background-attachment: fixed;
+}
+
+.app-header {
+  box-shadow: 0 1px 10px rgba(31, 58, 95, 0.06);
+}
+
+.app-header-avatar {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: rgba(31, 58, 95, 0.08);
+  border-radius: 50%;
+  font-size: 22px;
+}
+
+.app-header-name {
+  color: var(--blue);
+}
+
+#top-nav {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(31, 58, 95, 0.07);
+  padding: 2px;
+  top: calc(56px + var(--sat) + 6px);
+}
+
+#top-nav .active {
+  background: var(--blue);
+  color: #fff;
+}
+
+.screen-title::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--yellow);
+  margin-top: 6px;
+}
+
+.card {
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(31, 58, 95, 0.07);
+}
+
+.btn {
+  background: linear-gradient(180deg, #2A4E7C, var(--blue));
+  box-shadow: 0 2px 8px rgba(31, 58, 95, 0.28);
+}
+
+.btn-yellow {
+  box-shadow: 0 2px 8px rgba(232, 163, 23, 0.35);
+}
+
+.list,
+.card {
+  counter-reset: chapter;
+}
+
+.chapter-heading {
+  counter-increment: chapter;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 0;
+  font-size: 19px;
+}
+
+.chapter-heading::before {
+  content: counter(chapter);
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 15px;
+  display: grid;
+  place-items: center;
+}
+
+.card .chapter-heading {
+  margin-top: 14px;
+}
+
+.list .card {
+  border-left: 4px solid var(--green);
+  padding: 14px 16px;
+}
+
+.list .card > button.btn-secondary {
+  border: none;
+  padding: 2px 0;
+  text-align: left;
+}
+
+.list .card .chip,
+.concept-head .chip {
+  background: rgba(47, 125, 91, 0.09);
+  border: none;
+  font-size: 14px;
+  padding: 4px 10px;
+}
+
+.progress-bar {
+  background: #EAE3D3;
+}
+
+.progress-bar > i {
+  background: linear-gradient(90deg, #3D9B71, var(--green));
+  border-radius: 6px;
+}
+
+.stat-value {
+  color: var(--blue);
+}
+
+.stat-label {
+  font-size: 13px;
+}
+
+input,
+textarea,
+select {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: #FFFDF8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.13);
+}
+
+.avatar-option {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+.family-code {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  background: #FFF6DD;
+  border-radius: 12px;
+}
+
+.notice {
+  border-radius: 10px;
+}
+
+.toast {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(31, 58, 95, 0.3);
+}
+
+.brand-title {
+  font-size: 34px;
+}
+
+.brand-subtitle {
+  color: var(--muted);
+}
+
+.app-footer {
+  padding-top: 14px;
+}
+
+.app-footer p {
+  margin: 4px 0;
+}
