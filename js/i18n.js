@@ -8,6 +8,7 @@ export const STRINGS = {
   lang_switch_label: { en: 'हिंदी', hi: 'English' },
   nav_home: { en: 'Home', hi: 'होम' },
   nav_learn: { en: 'Learn', hi: 'सीखें' },
+  nav_practice: { en: 'Practice', hi: 'अभ्यास' },
   nav_ask: { en: 'Ask', hi: 'पूछें' },
   nav_progress: { en: 'Progress', hi: 'प्रगति' },
   app_error: { en: 'Something went wrong. Please try again.', hi: 'कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।' },

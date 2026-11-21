@@ -21,6 +21,7 @@ const STUDY_ROUTES = new Set(['learn', 'practice', 'ask']);
 const NAV_ITEMS = [
   { key: 'home', hash: '#/home', icon: '🏠', labelKey: 'nav_home' },
   { key: 'learn', hash: '#/learn', icon: '📖', labelKey: 'nav_learn' },
+  { key: 'practice', hash: '#/practice', icon: '✍️', labelKey: 'nav_practice' },
   { key: 'ask', hash: '#/ask', icon: '❓', labelKey: 'nav_ask' },
   { key: 'progress', hash: '#/progress', icon: '📊', labelKey: 'nav_progress' },
 ];
@@ -97,7 +98,7 @@ function buildNav() {
 }
 
 function updateNav(name) {
-  const visible = NAV_ROUTES.has(name);
+  const visible = NAV_ROUTES.has(name) || (name !== 'profiles' && !!getActiveProfileId());
   navEl.hidden = !visible;
   for (const link of navEl.querySelectorAll('a')) {
     const isActive = link.dataset.key === name;
@@ -244,7 +245,7 @@ function animateIn() {
     }, { threshold: 0.08 });
   }
   appEl.querySelectorAll('.card, .concept-row, .list > *').forEach((b, i) => {
-    b.style.setProperty('--d', `${Math.min(i, 10) * 45}ms`);
+    b.style.setProperty('--d', `${Math.min(i, 5) * 30}ms`);
     b.classList.add('reveal');
     revealObserver.observe(b);
   });
