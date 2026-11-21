@@ -73,6 +73,7 @@ export function render(root, ctx) {
 
   const showFeedback = (concept, question, option) => {
     const box = el('div', 'card');
+    box.style.marginTop = '16px';
     box.style.marginTop = '12px';
 
     if (option.correct) {
@@ -139,7 +140,7 @@ export function render(root, ctx) {
       btn.type = 'button';
       btn.style.minHeight = '56px';
       btn.style.width = '100%';
-      btn.style.marginBottom = '8px';
+      btn.style.marginBottom = '12px';
       btn.addEventListener('click', () => onAnswer(concept, question, option));
       options.push({ option, btn });
       view.appendChild(btn);

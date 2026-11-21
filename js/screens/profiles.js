@@ -118,6 +118,7 @@ export function render(root, ctx) {
 
   // Entry point to the family view.
   const family = touchButton('btn-secondary', t('family_entry'));
+  family.style.width = '100%';
   family.addEventListener('click', () => ctx.navigate('#/family'));
   root.appendChild(family);
 }

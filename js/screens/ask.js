@@ -85,7 +85,7 @@ export function render(root, ctx) {
   const textarea = el('textarea');
   textarea.placeholder = t('ask_placeholder');
   textarea.maxLength = TEXT_MAX;
-  textarea.style.minHeight = '48px';
+  textarea.style.minHeight = '96px';
   textarea.style.width = '100%';
   textarea.style.fontSize = '18px';
 

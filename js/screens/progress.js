@@ -157,6 +157,8 @@ export function render(root, ctx) {
   root.appendChild(masteryCard(progress));
   root.appendChild(weakCard(progress));
   root.appendChild(familyCard(ctx, profile, progress));
-  root.appendChild(dataSaverRow(ctx));
+  const saverCard = el('div', 'card');
+  saverCard.appendChild(dataSaverRow(ctx));
+  root.appendChild(saverCard);
   root.appendChild(usageLine());
 }
