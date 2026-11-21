@@ -76,7 +76,10 @@ export async function syncFamilySummary(profile, progress, manual = false) {
     // No API server (static hosting) or no connectivity: the summary is
     // already saved on this phone and the family view reads it locally,
     // so this counts as saved, not as a failure.
-    if (!res || res.status === 404) {
+    // A real API answers JSON; a static host answers an HTML error page
+    // (404/405) or the request fails outright - all of those mean 'local'.
+    const ctype = res && res.headers ? (res.headers.get('content-type') || '') : '';
+    if (!res || !ctype.includes('application/json')) {
       setSettings({ lastSyncAt: new Date().toISOString() });
       return 'local';
     }
