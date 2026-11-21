@@ -37,12 +37,17 @@ function progressBar(fraction) {
   return bar;
 }
 
+function weekLine(days, today) {
+  const n = weekMinutes(days, today);
+  return n === 1 ? t('progress_week_one') : t('progress_week', { n });
+}
+
 function streakCard(progress, today) {
   const days = progress.studyDays || {};
   const card = el('div', 'card');
   card.append(
     el('p', null, t('progress_streak', { n: computeStreak(days, today) })),
-    el('p', null, t('progress_week', { n: weekMinutes(days, today) }))
+    el('p', null, weekLine(days, today))
   );
   return card;
 }
@@ -85,6 +90,27 @@ function weakCard(progress) {
   }
   const list = el('ul', 'weak-list');
   for (const c of weak) list.appendChild(el('li', null, c.title));
+  card.appendChild(list);
+  return card;
+}
+
+function strongCard(progress) {
+  const card = el('div', 'card');
+  card.appendChild(el('h2', null, t('strong_heading')));
+  const mastery = progress.mastery || {};
+  const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
+  const strong = localizedPack().concepts.filter((c) => {
+    const raw = Number.isFinite(Number(mastery[c.id])) ? Number(mastery[c.id]) : 0.3;
+    const m = Math.min(1, Math.max(0, raw));
+    const attempted = attempts.some((a) => a.conceptId === c.id);
+    return conceptStatus(m, attempted, progress.attemptCounts?.[c.id] ?? 0) === 'mastered';
+  });
+  if (strong.length === 0) {
+    card.appendChild(el('p', 'muted', t('strong_none')));
+    return card;
+  }
+  const list = el('ul', 'weak-list');
+  for (const c of strong) list.appendChild(el('li', null, c.title));
   card.appendChild(list);
   return card;
 }
@@ -159,6 +185,7 @@ export function render(root, ctx) {
   root.appendChild(streakCard(progress, today));
   root.appendChild(masteryCard(progress));
   root.appendChild(weakCard(progress));
+  root.appendChild(strongCard(progress));
   root.appendChild(familyCard(ctx, profile, progress));
   const saverCard = el('div', 'card');
   saverCard.appendChild(dataSaverRow(ctx));

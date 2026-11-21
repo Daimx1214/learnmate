@@ -40,7 +40,7 @@
   --green: #2F7D5B;
   --yellow: #E8A317;
   --ink: #2B2B2B;
-  --muted: #6B6B6B;
+  --muted: #595959;
   --border: #E2D9C6;
   --card: #FFFFFF;
   --sat: env(safe-area-inset-top, 0px);
@@ -1028,11 +1028,11 @@ html {
 }
 
 @keyframes riseIn {
-  from { opacity: 0.25; transform: translateY(8px); }
+  from { opacity: 0.6; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .reveal {
-  opacity: 0.25;
+  opacity: 0.6;
 }
 .reveal.in {
   animation: riseIn 0.3s cubic-bezier(0.22, 0.8, 0.32, 1) both;
@@ -1124,4 +1124,11 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; }
+}
+
+.app-header-status-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #C0392B;
+  margin-left: 6px;
 }

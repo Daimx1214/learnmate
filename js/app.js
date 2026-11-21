@@ -132,7 +132,9 @@ function buildHeader() {
   const status = document.createElement('div');
   status.className = 'app-header-status';
   const dot = document.createElement('span');
-  status.append(dot);
+  const statusText = document.createElement('span');
+  statusText.className = 'app-header-status-text';
+  status.append(dot, statusText);
 
   headerEl.append(profileLink, status);
 
@@ -145,12 +147,13 @@ function buildHeader() {
     window.location.reload();
   });
   headerEl.appendChild(langBtn);
-  headerParts = { avatar, name, dot };
+  headerParts = { avatar, name, dot, statusText };
 }
 
 function updateStatusDot() {
   if (!headerParts) return;
   headerParts.dot.className = `status-dot ${navigator.onLine ? 'online' : 'offline'}`;
+  headerParts.statusText.textContent = navigator.onLine ? '' : t('status_offline');
 }
 
 // Switches the header between the profile link and the bare brand name.
