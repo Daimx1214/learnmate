@@ -169,6 +169,40 @@ export function createProfile({ nickname, avatar, photo } = {}) {
   return profile;
 }
 
+export function updateProfile(id, { nickname, avatar, photo } = {}) {
+  const profiles = getProfiles();
+  const p = profiles.find((x) => x.id === id);
+  if (!p) {
+    throw new Error(getLang() === 'hi' ? 'प्रोफ़ाइल नहीं मिली' : 'Profile not found');
+  }
+  if (nickname !== undefined) {
+    const nick = String(nickname ?? '').trim();
+    const len = [...nick].length;
+    if (len < 1 || len > NICK_MAX) {
+      throw new Error(getLang() === 'hi' ? 'नाम 1 से 20 अक्षरों का होना चाहिए' : 'The name must be 1 to 20 characters');
+    }
+    p.nickname = nick;
+  }
+  if (avatar !== undefined) {
+    if (!AVATARS.some((a) => a.id === avatar)) {
+      throw new Error(getLang() === 'hi' ? 'कृपया एक अवतार चुनें' : 'Please choose an avatar');
+    }
+    p.avatar = avatar;
+  }
+  if (photo !== undefined) {
+    if (photo === null) {
+      p.photo = null;
+    } else {
+      if (typeof photo !== 'string' || !photo.startsWith('data:image/') || photo.length > 160000) {
+        throw new Error(getLang() === 'hi' ? 'फ़ोटो सही नहीं है' : 'The photo is not valid');
+      }
+      p.photo = photo;
+    }
+  }
+  writeJSON(KEYS.profiles, profiles);
+  return p;
+}
+
 export function getProfile(id) {
   return getProfiles().find((p) => p.id === id) || null;
 }

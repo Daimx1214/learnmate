@@ -4,7 +4,7 @@ import { getLang } from './lang.js';
 
 export const STRINGS = {
   // ----- app shell: nav, errors, header -----
-  app_title: { en: 'LearnMate — Class 8 Science Tutor', hi: 'LearnMate — कक्षा 8 विज्ञान ट्यूटर' },
+  app_title: { en: 'LearnMate — Class 8 Tutor', hi: 'LearnMate — कक्षा 8 ट्यूटर' },
   lang_switch_label: { en: 'हिंदी', hi: 'English' },
   nav_home: { en: 'Home', hi: 'होम' },
   nav_learn: { en: 'Learn', hi: 'सीखें' },
@@ -65,8 +65,12 @@ export const STRINGS = {
   sync_done: { en: 'Synced', hi: 'सिंक हो गया' },
   sync_later: { en: 'Could not sync now. It will happen on its own when the internet connects.', hi: 'अभी सिंक नहीं हो पाया, इंटरनेट जुड़ने पर अपने-आप होगा' },
   sync_saved_local: { en: 'Saved on this phone. Family can view it on this phone with the code.', hi: 'इस फ़ोन पर सहेजा गया — परिवार इसी फ़ोन पर कोड से देख सकता है' },
-  profiles_intro: { en: 'Class 8 Science — no tutor needed, works on low internet.', hi: 'कक्षा 8 विज्ञान — हिंदी में, बिना ट्यूटर के, कम इंटरनेट पर।' },
+  profiles_intro: { en: 'Class 8, all seven subjects — no tutor needed, works on low internet.', hi: 'कक्षा 8, सातों विषय — बिना ट्यूटर के, कम इंटरनेट पर।' },
   ask_scope: { en: 'LearnMate answers from all chapters of {subject}.', hi: 'LearnMate {subject} के सभी अध्यायों से जवाब देता है।' },
+  profiles_edit: { en: 'Edit', hi: 'बदलें' },
+  profiles_save: { en: 'Save changes', hi: 'बदलाव सहेजें' },
+  profiles_cancel: { en: 'Cancel', hi: 'रद्द करें' },
+  progress_lessons_done: { en: 'Lessons completed: {done} of {total}', hi: 'पूरे किए गए पाठ: {total} में से {done}' },
   subj_label: { en: 'Subject', hi: 'विषय' },
   subj_science: { en: 'General Science', hi: 'सामान्य विज्ञान' },
   subj_math: { en: 'Mathematics', hi: 'गणित' },
@@ -89,10 +93,10 @@ export const STRINGS = {
   home_btn_practice: { en: 'Practice', hi: 'अभ्यास करें' },
   home_btn_ask: { en: 'Ask a question', hi: 'सवाल पूछें' },
   home_chapter: { en: 'Subject: {title} (all 15 chapters)', hi: 'विषय: {title} (सभी 15 अध्याय)' },
-  home_base: { en: 'Based on: NCERT Class 8 Science', hi: 'आधार: NCERT कक्षा 8 विज्ञान' },
+  home_base: { en: 'Based on the Class 8 curriculum', hi: 'आधार: कक्षा 8 पाठ्यक्रम' },
 
   // ----- learn -----
-  learn_title: { en: 'Learn: Class 8 Science', hi: 'सीखें: कक्षा 8 विज्ञान' },
+  learn_title: { en: 'Learn', hi: 'सीखें' },
   learn_cards: { en: 'Lesson cards: {n}', hi: 'पाठ कार्ड: {n}' },
   learn_offline_ready: { en: ' · ready for offline', hi: ' · ऑफ़लाइन के लिए तैयार' },
   learn_example: { en: 'Example: {example}', hi: 'उदाहरण: {example}' },
@@ -193,7 +197,7 @@ export const STRINGS = {
     hi: '{price} प्रति छात्र प्रति वर्ष मानकर, {learners} छात्रों के लिए लगभग {total} प्रति वर्ष (अनुमान)।',
   },
   about_data_title: { en: 'Data', hi: 'डेटा' },
-  footer_line: { en: 'LearnMate · Class 8 Science · Based on NCERT · Free', hi: 'LearnMate · कक्षा 8 विज्ञान · NCERT पर आधारित · मुफ़्त' },
+  footer_line: { en: 'LearnMate · Class 8 · All seven subjects · Free', hi: 'LearnMate · कक्षा 8 · सातों विषय · मुफ़्त' },
   about_data_body: {
     en: 'Profiles and progress stay only on this phone; sync sends only the week\'s minutes, the number of mastered topics and weak topics.',
     hi: 'प्रोफ़ाइल और प्रगति केवल इसी फ़ोन पर रहती है; सिंक में केवल सप्ताह के मिनट, महारत की संख्या और कमज़ोर विषय भेजे जाते हैं।',

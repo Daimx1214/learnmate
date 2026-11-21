@@ -2,12 +2,15 @@ import {
   AVATARS,
   getProfiles,
   createProfile,
+  updateProfile,
   deleteProfile,
   setActiveProfile,
 } from '../store.js';
 import { t } from '../i18n.js';
 
 const MAX_PROFILES = 4;
+
+let editingProfileId = null;
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -59,7 +62,9 @@ async function downscaleProfilePhoto(file) {
 
 export function render(root, ctx) {
   const profiles = getProfiles();
-  let selectedAvatar = AVATARS[0].id;
+  const editing = editingProfileId ? profiles.find((p) => p.id === editingProfileId) || null : null;
+  if (editingProfileId && !editing) editingProfileId = null;
+  let selectedAvatar = editing ? editing.avatar : AVATARS[0].id;
 
   root.appendChild(el('h1', 'screen-title', t('profiles_title')));
   root.appendChild(el('p', 'muted', t('profiles_intro')));
@@ -96,14 +101,20 @@ export function render(root, ctx) {
       }
     });
 
-    card.append(pick);
+    const editBtn = touchButton('btn-ghost', '✏️ ' + t('profiles_edit'));
+    editBtn.addEventListener('click', () => {
+      editingProfileId = p.id;
+      ctx.refresh();
+    });
+
+    card.append(pick, editBtn);
     if (profiles.length > 1) card.append(remove);
     grid.appendChild(card);
   }
   if (profiles.length) root.appendChild(grid);
 
   // New-profile form, only while there is room.
-  if (profiles.length < MAX_PROFILES) {
+  if (profiles.length < MAX_PROFILES || editing) {
     const form = el('div', 'card');
 
     const avatarGrid = el('div', 'grid-avatars');
@@ -129,7 +140,7 @@ export function render(root, ctx) {
     // Optional own photo (owner request, 22 Nov). Stored only on this
     // phone inside the profile; when set, it replaces the emoji avatar
     // in the header and the profile list.
-    let selectedPhoto = null;
+    let selectedPhoto = editing ? (editing.photo || null) : null;
     const photoRow = el('div', 'photo-row');
     const preview = el('span', 'photo-preview', '📷');
     const photoBtn = touchButton('btn-secondary', t('profiles_photo_add'));
@@ -155,10 +166,19 @@ export function render(root, ctx) {
       }
       fileInput.value = '';
     });
+    if (selectedPhoto) {
+      preview.textContent = '';
+      const current = el('img', 'photo-preview-img');
+      current.src = selectedPhoto;
+      current.alt = '';
+      preview.appendChild(current);
+      photoBtn.textContent = t('profiles_photo_change');
+    }
     photoRow.append(preview, photoBtn, fileInput);
     const photoNote = el('p', 'muted', t('profiles_photo_note'));
 
     const input = el('input', 'nickname-input');
+    if (editing) input.value = editing.nickname;
     input.type = 'text';
     input.maxLength = 20;
     input.placeholder = t('profiles_name');
@@ -166,22 +186,40 @@ export function render(root, ctx) {
     input.style.minHeight = '48px';
     input.style.width = '100%';
 
-    const start = touchButton('btn', t('profiles_start'));
+    const start = touchButton('btn', editing ? t('profiles_save') : t('profiles_start'));
     start.addEventListener('click', () => {
       try {
-        const created = createProfile({
-          nickname: input.value,
-          avatar: selectedAvatar,
-          photo: selectedPhoto,
-        });
-        setActiveProfile(created.id);
-        ctx.navigate('#/home');
+        if (editing) {
+          updateProfile(editing.id, {
+            nickname: input.value,
+            avatar: selectedAvatar,
+            photo: selectedPhoto,
+          });
+          editingProfileId = null;
+          ctx.refresh();
+        } else {
+          const created = createProfile({
+            nickname: input.value,
+            avatar: selectedAvatar,
+            photo: selectedPhoto,
+          });
+          setActiveProfile(created.id);
+          ctx.navigate('#/home');
+        }
       } catch (err) {
         ctx.toast(err && err.message ? err.message : t('profiles_create_failed'));
       }
     });
 
     form.append(avatarGrid, photoRow, photoNote, input, start);
+    if (editing) {
+      const cancel = touchButton('btn-ghost', t('profiles_cancel'));
+      cancel.addEventListener('click', () => {
+        editingProfileId = null;
+        ctx.refresh();
+      });
+      form.appendChild(cancel);
+    }
     root.appendChild(form);
   }
 

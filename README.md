@@ -4,7 +4,7 @@ A study tutor for a Class 8 government-school student who learns Science in Hind
 
 Built for **ACE Builders Hackathon 2026** (GigPoint × Codebenders), Problem Statement 3: *The Last-Mile Tutor*.
 
-Content: original, written for **NCERT Class 8 Science** in our own words, not copied from the textbook — Hindi first, with a complete English version of every card and question. All 15 chapters have full packs: Chapter 8: Force and Pressure (बल और दाब) has 5 concepts, every other chapter has 3 concepts (each a lesson card + 3 misconception-tagged questions) — 47 concepts and 141 questions in total, expanded to full packs on the owner's instruction late on 21 Nov.
+Content: original, written in our own words, not copied from any textbook, with a complete English and Hindi version of every card and question. The app now covers **all seven Class 8 subjects** (expanded on the owner's instruction on 22 Nov, after the PS3 Science build): General Science (NCERT-based, 15 chapters, 47 concepts, 141 questions), Mathematics (6 chapters), and Computer Science, English, Urdu, Social Studies and Islamic Studies (5 chapters each, 15 concepts each) — **140 concepts and 420 questions in total**. Every concept is a lesson card plus 3 misconception-tagged questions. A subject selector on Home and Learn switches the whole app (lessons, practice, tutor, progress, family summary) between subjects; progress is kept per concept on the device.
 
 ## The problem
 
@@ -13,7 +13,7 @@ A Hindi-medium student in a small town often has no tutor, no personal device, a
 ## What Saathi (साथी) does
 
 - **Profiles without accounts** — up to 4 learners on one phone, each entering with a nickname and an emoji avatar, or their own photo, which is stored only on the phone and never sent anywhere. No phone number, no email, no real name is ever collected.
-- **Learn** — short concept cards for all 15 chapters of Class 8 Science, grouped by chapter, each with an everyday example and a read-aloud button (speech synthesis in the chosen language).
+- **Learn** — short concept cards for the selected subject, grouped by chapter, each with an everyday example and a read-aloud button (speech synthesis in the chosen language). Seven subjects: General Science, Mathematics, Computer Science, English, Urdu, Social Studies, Islamic Studies.
 - **Practice that understands mistakes** — every wrong MCQ option is tagged with the misunderstanding behind it, and feedback explains that exact mistake in the chosen language. A per-concept mastery score (starting at 0.3, updated as `m ← m + 0.3 × (correct − m)`) drives the next question: mostly the weakest concept, and after two wrong answers in a row the lesson card is shown again before continuing.
 - **Ask a doubt** — type or speak in the chosen language (browser speech recognition). The tutor is on-device keyword matching over the chapter content, not an LLM call: answers are short and step-by-step, ending with a small check question, and they work immediately even offline. Only the family sync waits for connectivity. This keeps the tutor free, private and fully offline.
 - **Offline-first PWA** — installable; the chapter works fully offline after one download. Progress is stored on the device and syncs when a connection returns. A data meter shows today's approximate usage, with a data-saver mode.

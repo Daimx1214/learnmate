@@ -135,7 +135,10 @@ function buildHeader() {
   statusText.className = 'app-header-status-text';
   status.append(dot, statusText);
 
-  headerEl.append(profileLink, status);
+  const row = document.createElement('div');
+  row.className = 'app-header-row';
+  row.append(profileLink, status);
+  headerEl.appendChild(row);
 
   const langBtn = document.createElement('button');
   langBtn.type = 'button';
@@ -145,7 +148,7 @@ function buildHeader() {
     setLang(getLang() === 'hi' ? 'en' : 'hi');
     window.location.reload();
   });
-  headerEl.appendChild(langBtn);
+  row.appendChild(langBtn);
   headerParts = { avatar, name, dot, statusText };
 }
 
@@ -164,7 +167,7 @@ function setBrandMode(on) {
     brand = document.createElement('span');
     brand.className = 'brand-header';
     brand.textContent = 'LearnMate';
-    headerEl.prepend(brand);
+    headerEl.querySelector('.app-header-row').prepend(brand);
   }
   brand.hidden = !on;
 }
@@ -292,7 +295,7 @@ async function route() {
     refreshHeader(profile);
     if (headerEl) appEl.prepend(headerEl);
     // The navigation lives at the top, directly under the header.
-    if (headerEl) headerEl.after(navEl);
+    if (headerEl) headerEl.appendChild(navEl);
     await mod.render(appEl, ctx);
     appEl.appendChild(buildFooter());
     document.body.dataset.route = name;
