@@ -210,7 +210,11 @@ function buildFooter() {
   family.textContent = t('family_title');
   links.append(about, family);
 
-  footerEl.append(links);
+  const copy = document.createElement('p');
+  copy.className = 'footer-copy';
+  copy.textContent = t('footer_copy');
+
+  footerEl.append(links, copy);
   return footerEl;
 }
 

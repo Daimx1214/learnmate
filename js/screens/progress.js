@@ -60,7 +60,7 @@ function masteryCard(progress) {
   for (const chapter of localizedChapters()) {
     card.appendChild(el('h3', 'chapter-heading', chapter.title));
     for (const concept of chapter.concepts || []) {
-    const raw = Number.isFinite(Number(mastery[concept.id])) ? Number(mastery[concept.id]) : 0.3;
+    const raw = Number.isFinite(Number(mastery[concept.id])) ? Number(mastery[concept.id]) : 0;
     const m = Math.min(1, Math.max(0, raw));
     const attempted = attempts.some((a) => a.conceptId === concept.id);
     const status = conceptStatus(m, attempted, progress.attemptCounts?.[concept.id] ?? 0);
@@ -100,7 +100,7 @@ function strongCard(progress) {
   const mastery = progress.mastery || {};
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
   const strong = localizedPack().concepts.filter((c) => {
-    const raw = Number.isFinite(Number(mastery[c.id])) ? Number(mastery[c.id]) : 0.3;
+    const raw = Number.isFinite(Number(mastery[c.id])) ? Number(mastery[c.id]) : 0;
     const m = Math.min(1, Math.max(0, raw));
     const attempted = attempts.some((a) => a.conceptId === c.id);
     return conceptStatus(m, attempted, progress.attemptCounts?.[c.id] ?? 0) === 'mastered';

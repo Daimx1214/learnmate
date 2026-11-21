@@ -1103,8 +1103,9 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
 .app-footer .footer-links a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 8px 18px;
+  min-height: 40px;
+  padding: 6px 14px;
+  font-size: 14px;
   border: 1.5px solid var(--border);
   border-radius: 999px;
   background: #fff;
@@ -1139,4 +1140,11 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   text-overflow: ellipsis;
   max-width: 58%;
   text-align: right;
+}
+
+.footer-copy {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 8px 0 0;
 }

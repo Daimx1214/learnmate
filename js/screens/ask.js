@@ -1,5 +1,5 @@
 import { localizedPack } from '../data/chapter.js';
-import { addDoubt, updateDoubt, getDoubts, getProgress } from '../store.js';
+import { addDoubt, updateDoubt, getDoubts, getProgress, getSettings } from '../store.js';
 import { answerDoubt, findClosestConcept } from '../tutor.js';
 import { isOnline } from '../sync.js';
 import { weakConcepts } from '../mastery.js';
@@ -134,7 +134,8 @@ export function render(root, ctx) {
   photoInput.addEventListener('change', () => onPhotoChosen(photoInput.files && photoInput.files[0]));
 
   const actions = el('div', 'actions');
-  actions.append(photoBtn, speakBtn, sendBtn);
+  if (getSettings().dataSaver) actions.append(speakBtn, sendBtn);
+  else actions.append(photoBtn, speakBtn, sendBtn);
 
   card.append(textarea, listeningNote, speechNote, photoInput, photoNote, actions);
   root.appendChild(card);

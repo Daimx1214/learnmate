@@ -13,7 +13,7 @@ function el(tag, className, text) {
 function percentOf(progress, concept) {
   const map = (progress && progress.mastery) || {};
   const rawM = Number(map[concept.id]);
-  const m = Math.min(1, Math.max(0, Number.isFinite(rawM) ? rawM : 0.3));
+  const m = Math.min(1, Math.max(0, Number.isFinite(rawM) ? rawM : 0));
   return { m, pct: Math.round(m * 100) };
 }
 
