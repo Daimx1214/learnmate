@@ -1,4 +1,4 @@
-# LearnMate
+# Saathi (साथी)
 
 A Hindi-first study tutor for a Class 8 government-school student who learns Science in Hindi (Devanagari), on a shared family phone with weak, intermittent internet.
 
@@ -6,9 +6,9 @@ Built for **ACE Builders Hackathon 2026** (GigPoint × Codebenders), Problem Sta
 
 ## The problem
 
-A Hindi-medium student in a small town often has no tutor, no personal device, and no reliable internet. Generic learning apps assume English, a personal phone, and always-on data. LearnMate assumes the opposite: one shared phone, a few minutes of connectivity a day, and a learner who thinks in Hindi.
+A Hindi-medium student in a small town often has no tutor, no personal device, and no reliable internet. Generic learning apps assume English, a personal phone, and always-on data. Saathi (साथी) assumes the opposite: one shared phone, a few minutes of connectivity a day, and a learner who thinks in Hindi.
 
-## What LearnMate does
+## What Saathi (साथी) does
 
 - **Profiles without accounts** — up to 4 learners on one phone, each entering with an avatar and a nickname. No phone number, no email, no real name is ever collected.
 - **Learn** — short concept cards in simple Hindi for Class 8 Science, *Force and Pressure* (बल और दाब), each with an everyday example and a read-aloud button (speech synthesis, hi-IN).
@@ -46,7 +46,7 @@ To try it: pick the sample profile or create one → open **सीखें** (L
 
 ## How it was built
 
-LearnMate was designed and built inside the **Codebenders IDE** with its Nexen agent, as the hackathon requires. The process, in brief:
+Saathi (साथी) was designed and built inside the **Codebenders IDE** with its Nexen agent, as the hackathon requires. The process, in brief:
 
 1. A detailed written brief was given to Nexen: the learner, the constraints (shared phone, weak internet, Hindi end-to-end), the feature list, the design tokens, and a build order.
 2. Nexen planned 9 tasks (scaffold → data model → screens → PWA → verify) and generated the app in stages; file-writing was delegated to its editor agent after the main agent's tool limits were diagnosed.

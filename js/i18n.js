@@ -5,7 +5,7 @@
 import { getSettings, setSettings } from './store.js';
 
 export const LANGS = ['hi', 'en', 'ur'];
-export const LANG_CHANGE_EVENT = 'learnmate:langchange';
+export const LANG_CHANGE_EVENT = 'saathi:langchange';
 
 const DEFAULT_LANG = 'hi';
 // Each language is shown in its own script; these names are never translated.
@@ -254,12 +254,12 @@ export const STRINGS = {
   sum_updated: { hi: 'आख़िरी अपडेट: {date}', en: 'Last update: {date}', ur: 'آخری اپڈیٹ: {date}' },
 
   // ----- about -----
-  about_title: { hi: 'LearnMate के बारे में', en: 'About LearnMate', ur: 'LearnMate کے بارے میں' },
+  about_title: { hi: 'साथी के बारे में', en: 'About Saathi', ur: 'ساتھی کے بارے میں' },
   about_free_title: { hi: 'मुफ़्त पढ़ाई', en: 'Free for students', ur: 'طلبہ کے لیے مفت پڑھائی' },
   about_free_body: {
-    hi: 'LearnMate छात्रों के लिए मुफ़्त है: कोई लॉगिन नहीं, कोई विज्ञापन नहीं, कोई व्यक्तिगत डेटा नहीं बेचा जाता। छात्र कुछ नहीं देते।',
-    en: 'LearnMate is free for students: no login, no ads, and no personal data is sold. Students pay nothing.',
-    ur: 'LearnMate طلبہ کے لیے مفت ہے: کوئی لاگ اِن نہیں، کوئی اشتہار نہیں، اور کوئی ذاتی ڈیٹا فروخت نہیں کیا جاتا۔ طلبہ کو کچھ نہیں دینا پڑتا۔',
+    hi: 'साथी छात्रों के लिए मुफ़्त है: कोई लॉगिन नहीं, कोई विज्ञापन नहीं, कोई व्यक्तिगत डेटा नहीं बेचा जाता। छात्र कुछ नहीं देते।',
+    en: 'Saathi is free for students: no login, no ads, and no personal data is sold. Students pay nothing.',
+    ur: 'ساتھی طلبہ کے لیے مفت ہے: کوئی لاگ اِن نہیں، کوئی اشتہار نہیں، اور کوئی ذاتی ڈیٹا فروخت نہیں کیا جاتا۔ طلبہ کو کچھ نہیں دینا پڑتا۔',
   },
   about_payer_title: { hi: 'कौन पैसे देगा?', en: 'Who will pay?', ur: 'پیسے کون دے گا؟' },
   about_payer_body: {

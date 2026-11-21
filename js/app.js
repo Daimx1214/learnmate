@@ -151,7 +151,7 @@ function setBrandMode(on) {
   if (!brand) {
     brand = document.createElement('span');
     brand.className = 'brand-header';
-    brand.textContent = 'LearnMate';
+    brand.textContent = 'साथी';
     headerEl.prepend(brand);
   }
   brand.hidden = !on;

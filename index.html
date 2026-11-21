@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#1F3A5F">
-<title>LearnMate</title>
+<title>साथी — कक्षा 8 विज्ञान ट्यूटर</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,6 +12,18 @@
 <main id="app"></main>
 <nav id="bottom-nav" class="bottom-nav" hidden></nav>
 <script type="module" src="js/app.js"></script>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}</script>
+<script>
+if('serviceWorker' in navigator){
+  var hadController=!!navigator.serviceWorker.controller;
+  var reloadKey='saathi-sw-reloaded';
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(!hadController)return;
+    if(sessionStorage.getItem(reloadKey)==='1')return;
+    sessionStorage.setItem(reloadKey,'1');
+    location.reload();
+  });
+  navigator.serviceWorker.register('./sw.js').then(function(reg){reg.update();}).catch(function(){});
+}
+</script>
 </body>
 </html>

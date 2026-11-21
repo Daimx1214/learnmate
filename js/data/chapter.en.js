@@ -1,4 +1,4 @@
-// LearnMate content file — English (en). Mirrors chapter.js.
+// Saathi (साथी) content file — English (en). Mirrors chapter.js.
 // CHAPTER holds the chapter id, subject, class, title and an ordered list of concepts.
 // Each concept has a short English card (points + one example) and exactly 3 MCQ questions.
 // Each question has 4 options (a-d); exactly one has correct: true and no other fields.
