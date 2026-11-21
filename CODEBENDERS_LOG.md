@@ -53,3 +53,5 @@ The owner's polish spec was applied: the header safe-area bug is fixed (min-heig
 - Small-screen UI hardening in the same pass: the About cost table no longer overflows at 360px (header cells wrap, tighter padding), long stat values wrap inside the 3-column stat card.
 
 - Same night, after a full browser re-check of the 15-chapter build: three starter concepts whose titles repeated their chapter heading got distinct titles, and starting practice from a lesson now asks the first question from that lesson's own concept (the adaptive picker takes over after that).
+
+- Later still (owner: "sahi kr sara k sara" — complete everything): every starter chapter was expanded to a full pack of 3 concepts (Force and Pressure keeps 5), each concept a Hindi card plus 3 misconception-tagged questions, all written fresh for this app. Totals now: 15 chapters, 47 concepts, 141 questions. Program-validated again (exactly one correct option per question, every misconception tag labelled, no duplicate ids).

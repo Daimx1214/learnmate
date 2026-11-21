@@ -4,7 +4,7 @@ A Hindi-first study tutor for a Class 8 government-school student who learns Sci
 
 Built for **ACE Builders Hackathon 2026** (GigPoint × Codebenders), Problem Statement 3: *The Last-Mile Tutor*.
 
-Content: original Hindi written for **NCERT Class 8 Science**, in our own words, not copied from the textbook. Chapter 8: Force and Pressure (बल और दाब) has the full pack (5 concepts); every other chapter of the subject has one starter concept (card + 3 questions), added on the owner's instruction on 21 Nov.
+Content: original Hindi written for **NCERT Class 8 Science**, in our own words, not copied from the textbook. All 15 chapters have full packs: Chapter 8: Force and Pressure (बल और दाब) has 5 concepts, every other chapter has 3 concepts (each a Hindi card + 3 misconception-tagged questions) — 47 concepts and 141 questions in total, expanded to full packs on the owner's instruction late on 21 Nov.
 
 ## The problem
 
