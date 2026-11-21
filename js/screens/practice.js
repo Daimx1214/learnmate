@@ -1,4 +1,4 @@
-import { getCurrentChapter } from '../data/current.js';
+import { CHAPTER, MISCONCEPTIONS } from '../data/chapter.js';
 import { getProgress, saveProgress } from '../store.js';
 import { applyAnswer, shouldShowLesson, pickNextQuestion } from '../mastery.js';
 import { t } from '../i18n.js';
@@ -31,7 +31,6 @@ export function render(root, ctx) {
   let answered = null; // option object
 
   const pick = () => {
-    const { CHAPTER } = getCurrentChapter();
     picked = pickNextQuestion(CHAPTER, progress) || null;
     answered = null;
   };
@@ -67,7 +66,6 @@ export function render(root, ctx) {
   };
 
   const showFeedback = (concept, question, option) => {
-    const { MISCONCEPTIONS } = getCurrentChapter();
     const box = el('div', 'card');
     box.style.marginTop = '12px';
 

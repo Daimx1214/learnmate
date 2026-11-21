@@ -1,4 +1,4 @@
-import { getCurrentChapter } from '../data/current.js';
+import { CHAPTER } from '../data/chapter.js';
 import { getProgress } from '../store.js';
 import { computeStreak, weakConcepts } from '../mastery.js';
 import { t } from '../i18n.js';
@@ -19,7 +19,6 @@ function todayKey(d = new Date()) {
 }
 
 function overallMastery(progress) {
-  const { CHAPTER } = getCurrentChapter();
   const concepts = CHAPTER.concepts || [];
   if (!concepts.length) return 0;
   const map = (progress && progress.mastery) || {};
@@ -40,7 +39,6 @@ export function render(root, ctx) {
     return;
   }
 
-  const { CHAPTER } = getCurrentChapter();
   const progress = getProgress(profile.id) || {};
   const today = todayKey();
   const studyDays = progress.studyDays || {};

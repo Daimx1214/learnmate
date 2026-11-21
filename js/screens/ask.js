@@ -1,9 +1,9 @@
-import { getCurrentChapter } from '../data/current.js';
+import { CHAPTER } from '../data/chapter.js';
 import { addDoubt, updateDoubt, getDoubts, getProgress } from '../store.js';
 import { answerDoubt, findClosestConcept } from '../tutor.js';
 import { isOnline } from '../sync.js';
 import { weakConcepts } from '../mastery.js';
-import { t, getLang, speechLang } from '../i18n.js';
+import { t, speechLang } from '../i18n.js';
 
 const TEXT_MAX = 300;
 const LIST_CAP = 10;
@@ -151,7 +151,7 @@ export function render(root, ctx) {
 
   if (SR) {
     recognition = new SR();
-    recognition.lang = speechLang(getLang());
+    recognition.lang = speechLang();
     recognition.interimResults = false;
     recognition.onresult = (event) => {
       const alt = event.results && event.results[0] && event.results[0][0];
@@ -226,11 +226,10 @@ export function render(root, ctx) {
   // Offline-style card of the closest concept. Photo-only doubts pass '' for
   // text and PHOTO_NOTE as intro; the photo is never read for the concept pick.
   function showOffline(text, intro = t('ask_offline_note'), forcedConcept = null) {
-    const { CHAPTER } = getCurrentChapter();
     answerBox.replaceChildren();
     answerBox.appendChild(el('div', 'notice', intro));
 
-    const closest = findClosestConcept(text, CHAPTER, getLang());
+    const closest = findClosestConcept(text, CHAPTER);
     const concept = forcedConcept || (closest && closest.concept) || (CHAPTER.concepts || [])[0];
     if (!concept) return;
 
@@ -246,10 +245,9 @@ export function render(root, ctx) {
 
   // Runs the offline tutor, stores the answer on the doubt, returns the result.
   function answerAndSave(id, text) {
-    const { CHAPTER } = getCurrentChapter();
     let result;
     try {
-      result = answerDoubt(text, CHAPTER, getLang());
+      result = answerDoubt(text, CHAPTER);
     } catch {
       ctx.toast(t('ask_failed'));
       return null;
@@ -268,7 +266,6 @@ export function render(root, ctx) {
   // flush never answers them from empty text.
   function showPhotoOnly() {
     // Weakest concept for this learner; if none is returned, showOffline falls back to the first concept.
-    const { CHAPTER } = getCurrentChapter();
     const weak = weakConcepts(CHAPTER, getProgress(profile.id));
     showOffline('', t('ask_photo_note'), (weak && weak[0]) || null);
   }

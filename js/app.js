@@ -1,6 +1,6 @@
 import { AVATARS, getProfile, getActiveProfileId, addStudySeconds, getUsage } from './store.js';
 import { syncAll, isOnline } from './sync.js';
-import { t, applyLang, LANG_CHANGE_EVENT } from './i18n.js';
+import { t } from './i18n.js';
 
 // Route name -> whether it needs an active profile.
 const ROUTES = {
@@ -267,15 +267,8 @@ async function syncOnLoad() {
 }
 
 function init() {
-  applyLang();
   buildNav();
   window.addEventListener('hashchange', route);
-  // setLang() dispatches this event: rebuild the nav labels and re-render the screen.
-  window.addEventListener(LANG_CHANGE_EVENT, () => {
-    applyLang();
-    buildNav();
-    route();
-  });
   window.addEventListener('online', updateStatusDot);
   window.addEventListener('offline', updateStatusDot);
   window.addEventListener('online', () => {

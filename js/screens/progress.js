@@ -1,11 +1,11 @@
 // js/screens/progress.js — progress screen: streak, mastery per concept, weak topics,
 // family code with sync, and the data-saver toggle. Never shows doubt texts.
 
-import { getCurrentChapter } from '../data/current.js';
+import { CHAPTER } from '../data/chapter.js';
 import { getProgress, getSettings, setSettings, getUsage } from '../store.js';
 import { conceptStatus, weakConcepts, computeStreak, weekMinutes } from '../mastery.js';
 import { syncFamilySummary } from '../sync.js';
-import { t, langSelector } from '../i18n.js';
+import { t } from '../i18n.js';
 
 const WEAK_CAP = 3;
 const STATUS_LABEL = {
@@ -48,7 +48,6 @@ function streakCard(progress, today) {
 }
 
 function masteryCard(progress) {
-  const { CHAPTER } = getCurrentChapter();
   const card = el('div', 'card');
   const mastery = progress.mastery || {};
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
@@ -69,7 +68,6 @@ function masteryCard(progress) {
 }
 
 function weakCard(progress) {
-  const { CHAPTER } = getCurrentChapter();
   const card = el('div', 'card');
   card.appendChild(el('h2', null, t('weak_heading')));
 
@@ -133,12 +131,6 @@ function dataSaverRow(ctx) {
   return label;
 }
 
-// Language choice, shown in the same row style as the data-saver toggle.
-function languageRow() {
-  const row = el('div', 'toggle');
-  row.append(el('span', null, t('lang_label')), langSelector());
-  return row;
-}
 
 function usageLine() {
   const kb = Math.round(getUsage().bytes / 1024);
@@ -166,6 +158,5 @@ export function render(root, ctx) {
   root.appendChild(weakCard(progress));
   root.appendChild(familyCard(ctx, profile, progress));
   root.appendChild(dataSaverRow(ctx));
-  root.appendChild(languageRow());
   root.appendChild(usageLine());
 }

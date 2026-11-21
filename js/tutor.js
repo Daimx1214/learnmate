@@ -2,7 +2,7 @@
 
 const ANSWER_WORD_CAP = 90;
 
-// Fixed reply scaffolding per language. The hi entries are the original Hindi phrases.
+// Fixed reply scaffolding (Hindi only).
 const PHRASES = {
   hi: {
     closing: 'अब नीचे दिया छोटा सवाल हल करें।',
@@ -12,25 +12,9 @@ const PHRASES = {
     exampleLabel: 'उदाहरण',
     check: 'छोटा सवाल',
   },
-  en: {
-    closing: 'Now solve the short question below.',
-    teacher: 'Ask your teacher about this question.',
-    notMatched: (title) => 'This question is not directly in this chapter. The closest topic is: ' + title + '.',
-    stepLabel: 'Step',
-    exampleLabel: 'Example',
-    check: 'Short question',
-  },
-  ur: {
-    closing: 'اب نیچے دیا گیا چھوٹا سوال حل کریں۔',
-    teacher: 'یہ سوال اپنے استاد سے پوچھیں۔',
-    notMatched: (title) => 'یہ سوال اس باب میں براہِ راست نہیں ہے۔ سب سے قریب کا موضوع ہے: ' + title + '۔',
-    stepLabel: 'مرحلہ',
-    exampleLabel: 'مثال',
-    check: 'چھوٹا سوال',
-  },
 };
 
-// Common function words per language. They are ignored when matching concept title words,
+// Common function words (Hindi). They are ignored when matching concept title words,
 // so a question like "आसमान नीला क्यों है" does not match a concept just on "है".
 const STOPWORDS = {
   hi: new Set([
@@ -38,18 +22,10 @@ const STOPWORDS = {
     'और', 'या', 'तथा', 'में', 'का', 'की', 'के', 'से', 'पर', 'को', 'ने', 'तो', 'भी', 'एक', 'यह', 'वह', 'ये', 'वे',
     'जो', 'इस', 'उस', 'लिए', 'लिये', 'द्वारा',
   ]),
-  en: new Set([
-    'what', 'is', 'the', 'a', 'an', 'of', 'in', 'on', 'how', 'why', 'does', 'do', 'tell', 'me', 'about',
-  ]),
-  ur: new Set([
-    'کیا', 'کیوں', 'کیسے', 'کب', 'کہاں', 'کون', 'ہے', 'ہیں', 'تھا', 'تھی', 'تھے', 'ہو', 'اور', 'یا', 'میں',
-    'کا', 'کی', 'کے', 'سے', 'پر', 'کو', 'نے', 'تو', 'بھی', 'ایک', 'یہ', 'وہ', 'جو', 'اس', 'لیے', 'بارے', 'بتائیں', 'مجھے',
-  ]),
 };
 
-export function tutorPhrases(lang) {
-  const P = PHRASES[lang] || PHRASES.hi;
-  return { check: P.check };
+export function tutorPhrases() {
+  return { check: PHRASES.hi.check };
 }
 
 export function wordCount(str) {
@@ -79,8 +55,8 @@ function scoreConcept(normText, concept, stopwords) {
   return score;
 }
 
-export function findClosestConcept(text, chapter, lang = 'hi') {
-  const stopwords = STOPWORDS[lang] || STOPWORDS.hi;
+export function findClosestConcept(text, chapter) {
+  const stopwords = STOPWORDS.hi;
   const normText = normalise(text);
   let best = null;
   let bestScore = 0;
@@ -105,9 +81,9 @@ function buildAnswer(concept, matched, points, example, P) {
   return parts.join(' ');
 }
 
-export function answerDoubt(text, chapter, lang = 'hi') {
-  const P = PHRASES[lang] || PHRASES.hi;
-  const { concept: best, score } = findClosestConcept(text, chapter, lang);
+export function answerDoubt(text, chapter) {
+  const P = PHRASES.hi;
+  const { concept: best, score } = findClosestConcept(text, chapter);
   const matched = score > 0;
   const concept = matched ? best : ((chapter && chapter.concepts) || [])[0] || null;
 

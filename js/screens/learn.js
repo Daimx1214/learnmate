@@ -1,7 +1,7 @@
-import { getCurrentChapter } from '../data/current.js';
+import { CHAPTER } from '../data/chapter.js';
 import { getProgress } from '../store.js';
 import { conceptStatus } from '../mastery.js';
-import { t, getLang, speechLang } from '../i18n.js';
+import { t, speechLang } from '../i18n.js';
 
 const STATUS_LABEL = {
   mastered: 'status_mastered',
@@ -34,7 +34,6 @@ function isAttempted(progress, concept) {
 }
 
 function renderList(root, ctx, progress) {
-  const { CHAPTER } = getCurrentChapter();
   root.appendChild(el('h1', 'screen-title', t('learn_title')));
 
   // Pack status line: lesson card count, then offline readiness once the service worker is ready.
@@ -104,7 +103,7 @@ function renderConcept(root, ctx, progress, concept) {
       const text = [...points, example].filter(Boolean).join(' । ');
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = speechLang(getLang());
+      utterance.lang = speechLang();
       window.speechSynthesis.speak(utterance);
     });
     actions.appendChild(listen);
@@ -129,7 +128,6 @@ export function render(root, ctx) {
     return;
   }
 
-  const { CHAPTER } = getCurrentChapter();
   const progress = getProgress(profile.id) || {};
   const conceptId = ctx.params && ctx.params.conceptId;
 

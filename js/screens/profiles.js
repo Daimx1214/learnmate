@@ -5,7 +5,7 @@ import {
   deleteProfile,
   setActiveProfile,
 } from '../store.js';
-import { t, langSelector } from '../i18n.js';
+import { t } from '../i18n.js';
 
 const MAX_PROFILES = 4;
 
@@ -34,7 +34,6 @@ export function render(root, ctx) {
 
   root.appendChild(el('div', 'brand-title', 'साथी'));
   root.appendChild(el('h1', 'brand-subtitle', t('profiles_title')));
-  root.appendChild(langSelector());
 
   // Existing profiles.
   const grid = el('div', 'grid-avatars');

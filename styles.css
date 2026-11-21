@@ -392,35 +392,6 @@ textarea {
   }
 }
 
-/* Language selector */
-.lang-switch {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.lang-switch button {
-  background: #fff;
-  color: var(--ink);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.lang-switch button[aria-pressed="true"],
-.lang-switch button.active {
-  background: var(--blue);
-  color: #fff;
-  border-color: var(--blue);
-  font-weight: 700;
-}
-
-/* RTL support */
-html[dir="rtl"] body {
-  text-align: right;
-}
-
 .ltr {
   direction: ltr;
   unicode-bidi: isolate;
