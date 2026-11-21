@@ -347,6 +347,7 @@ h2,
 
 .top-nav,
 #top-nav {
+  margin-top: -20px;
   position: sticky;
   top: calc(56px + var(--sat));
   width: 100%;
@@ -463,14 +464,9 @@ textarea {
   text-decoration: underline;
 }
 
-/* Stacked-block spacing: nothing touches its neighbour */
-#app > .notice {
-  margin-top: 16px;
-}
-
-.notice + .actions {
-  margin-top: 16px;
-}
+/* Stacked-block spacing: nothing touches its neighbour.
+   App-level blocks are separated by the #app gap alone (20px);
+   extra margins on top of it made 36px, which was too much. */
 
 .list .card > .chip {
   margin-top: 12px;
