@@ -114,6 +114,14 @@ export function pickNextQuestion(chapter, progress, rng = Math.random) {
   return { concept, question: pickQuestionInConcept(concept, progress, rng) };
 }
 
+// A question from one specific concept (used when practice is started from
+// that concept's lesson: the first question comes from the lesson itself,
+// after that the adaptive picker takes over).
+export function pickForConcept(concept, progress) {
+  if (!concept || !Array.isArray(concept.questions) || concept.questions.length === 0) return null;
+  return { concept, question: pickQuestionInConcept(concept, progress, Math.random) };
+}
+
 // Difficulty band for a concept's current mastery m.
 function bandForMastery(m) {
   if (m < 0.4) return 'easy';

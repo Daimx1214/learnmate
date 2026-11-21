@@ -1,6 +1,6 @@
-import { SUBJECT_PACK, MISCONCEPTIONS } from '../data/chapter.js';
+import { SUBJECT_PACK, ALL_CONCEPTS, MISCONCEPTIONS } from '../data/chapter.js';
 import { getProgress, saveProgress } from '../store.js';
-import { applyAnswer, shouldShowLesson, pickNextQuestion } from '../mastery.js';
+import { applyAnswer, shouldShowLesson, pickNextQuestion, pickForConcept } from '../mastery.js';
 import { t } from '../i18n.js';
 
 function el(tag, className, text) {
@@ -36,7 +36,22 @@ export function render(root, ctx) {
   const view = document.createElement('div');
   root.appendChild(view);
 
+  // Started from a lesson (#/practice/<conceptId>): the first question comes
+  // from that lesson's concept, then the adaptive picker takes over.
+  const forcedId = ctx.params && ctx.params.conceptId;
+  let forcedUsed = false;
+
   const pick = () => {
+    if (forcedId && !forcedUsed) {
+      forcedUsed = true;
+      const concept = ALL_CONCEPTS.find((c) => c.id === forcedId);
+      const forced = concept ? pickForConcept(concept, progress) : null;
+      if (forced && forced.question) {
+        picked = forced;
+        answered = null;
+        return;
+      }
+    }
     picked = pickNextQuestion(SUBJECT_PACK, progress) || null;
     answered = null;
   };

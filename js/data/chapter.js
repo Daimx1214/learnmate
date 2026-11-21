@@ -375,7 +375,7 @@ const EXTRA_A = [
   {
     id: 'sci8-sanrakshan', subject: 'विज्ञान', classLevel: 8, title: 'पौधों और जानवरों का संरक्षण',
     concepts: [{
-      id: 'sanrakshan', title: 'पौधों और जानवरों का संरक्षण',
+      id: 'sanrakshan', title: 'जंगल और जानवरों की रक्षा',
       keywords: ['संरक्षण', 'जंगल', 'राष्ट्रीय उद्यान', 'विलुप्त', 'conservation', 'forest'],
       card: { points: [
         'जंगल कटने से जानवरों का घर ख़त्म होता है और मिट्टी बह जाती है।',
@@ -431,7 +431,7 @@ const EXTRA_A = [
   {
     id: 'sci8-prajan', subject: 'विज्ञान', classLevel: 8, title: 'जानवरों में प्रजनन',
     concepts: [{
-      id: 'prajan', title: 'जानवरों में प्रजनन',
+      id: 'prajan', title: 'नए जीव कैसे पैदा होते हैं',
       keywords: ['प्रजनन', 'अंडा', 'अमीबा', 'reproduction', 'amoeba'],
       card: { points: [
         'प्रजनन से जीव अपनी तरह के नए जीव पैदा करते हैं।',
@@ -631,7 +631,7 @@ const EXTRA_B = [
   {
     id: 'sci8-pradushan', subject: 'विज्ञान', classLevel: 8, title: 'वायु और जल प्रदूषण',
     concepts: [{
-      id: 'pradushan', title: 'वायु और जल प्रदूषण',
+      id: 'pradushan', title: 'हवा और पानी क्यों गंदे होते हैं',
       keywords: ['प्रदूषण', 'हवा', 'पानी', 'नदी', 'pollution'],
       card: { points: [
         'गंदी हवा और गंदा पानी सेहत के लिए हानिकारक हैं।',

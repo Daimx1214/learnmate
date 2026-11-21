@@ -51,3 +51,5 @@ The owner's polish spec was applied: the header safe-area bug is fixed (min-heig
 
 - The owner asked for "a little of every chapter" of the one subject: all 15 NCERT Class 8 Science chapters are now in the app. Force and Pressure keeps its full 5-concept pack; the other 14 chapters each gained one starter concept (Hindi card + 3 misconception-tagged questions), written fresh for this app. Screens, tutor, practice, progress, family view and sync now run on the combined subject pack (19 concepts, 57 questions, program-validated: exactly one correct option per question, every misconception tag labelled).
 - Small-screen UI hardening in the same pass: the About cost table no longer overflows at 360px (header cells wrap, tighter padding), long stat values wrap inside the 3-column stat card.
+
+- Same night, after a full browser re-check of the 15-chapter build: three starter concepts whose titles repeated their chapter heading got distinct titles, and starting practice from a lesson now asks the first question from that lesson's own concept (the adaptive picker takes over after that).

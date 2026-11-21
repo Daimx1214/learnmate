@@ -109,7 +109,7 @@ function renderConcept(root, ctx, progress, concept) {
 
   const practice = el('button', 'btn', t('learn_practice'));
   practice.type = 'button';
-  practice.addEventListener('click', () => ctx.navigate('#/practice'));
+  practice.addEventListener('click', () => ctx.navigate('#/practice/' + concept.id));
 
   const back = el('button', 'btn-secondary', t('back_to_list'));
   back.type = 'button';
