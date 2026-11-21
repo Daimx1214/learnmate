@@ -10,6 +10,7 @@ export const STRINGS = {
   app_error: { hi: 'कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।' },
   app_retry: { hi: 'फिर से कोशिश करें' },
   data_today: { hi: 'आज ~{kb} KB डेटा' },
+  data_today_zero: { hi: 'आज 0 KB डेटा' },
 
   // ----- shared -----
   profile_pick_first: { hi: 'पहले प्रोफ़ाइल चुनें' },
@@ -49,6 +50,9 @@ export const STRINGS = {
   family_sync: { hi: 'परिवार के साथ सिंक करें' },
   sync_done: { hi: 'सिंक हो गया' },
   sync_later: { hi: 'अभी सिंक नहीं हो पाया, इंटरनेट जुड़ने पर अपने-आप होगा' },
+  sync_saved_local: { hi: 'इस फ़ोन पर सहेजा गया — परिवार इसी फ़ोन पर कोड से देख सकता है' },
+  profiles_intro: { hi: 'कक्षा 8 विज्ञान — हिंदी में, बिना ट्यूटर के, कम इंटरनेट पर।' },
+  ask_scope: { hi: 'साथी इसी अध्याय (बल और दाब) से जवाब देता है।' },
   data_saver: { hi: 'डेटा बचत' },
 
   // ----- home -----
@@ -63,13 +67,12 @@ export const STRINGS = {
   home_btn_practice: { hi: 'अभ्यास करें' },
   home_btn_ask: { hi: 'सवाल पूछें' },
   home_chapter: { hi: 'अध्याय: {title}' },
-  home_base: { hi: 'आधार: कक्षा 8 विज्ञान पाठ्यक्रम' },
+  home_base: { hi: 'आधार: NCERT कक्षा 8 विज्ञान, अध्याय 8: बल और दाब' },
 
   // ----- learn -----
   learn_title: { hi: 'सीखें: बल और दाब' },
   learn_cards: { hi: 'पाठ कार्ड: {n}' },
   learn_offline_ready: { hi: ' · ऑफ़लाइन के लिए तैयार' },
-  learn_reshow: { hi: 'इस विषय में थोड़ी और मेहनत चाहिए। पहले यह पाठ फिर से देखें।' },
   learn_example: { hi: 'उदाहरण: {example}' },
   learn_listen: { hi: 'सुनें' },
   learn_practice_after: { hi: 'समझ गया, अभ्यास करें' },
@@ -109,7 +112,7 @@ export const STRINGS = {
   ask_right: { hi: 'बिल्कुल सही!' },
   ask_wrong: { hi: 'अभी नहीं। फिर से सोचें।' },
   ask_offline_note: {
-    hi: 'इंटरनेट नहीं है। आपका सवाल सहेज लिया गया है, जुड़ने पर जवाब मिल जाएगा। अभी इस विषय का पाठ देखें:',
+    hi: 'इंटरनेट नहीं है, फिर भी जवाब नीचे है — प्रगति जुड़ने पर सिंक होगी।',
   },
   ask_photo_note: { hi: 'फ़ोटो सहेज लिया गया है। फ़ोटो को अभी पढ़ा या जाँचा नहीं गया है।' },
   ask_open_lesson: { hi: 'यह पाठ खोलें' },
@@ -121,7 +124,6 @@ export const STRINGS = {
   ask_status_photo: { hi: 'फ़ोटो सहेजी गई' },
   ask_status_queued: { hi: 'भेजने की प्रतीक्षा में' },
   ask_see_answer: { hi: 'जवाब देखें' },
-  ask_offline_wait: { hi: 'इंटरनेट नहीं है, जुड़ने पर जवाब मिलेगा' },
   ask_photo_alt: { hi: 'फ़ोटो' },
 
   // ----- family -----

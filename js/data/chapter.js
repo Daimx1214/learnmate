@@ -52,7 +52,7 @@ export const CHAPTER = {
           difficulty: 'hard',
           text: 'नीचे कौन-सा उदाहरण बल का है?',
           options: [
-            { id: 'a', text: 'रुकी हुई मेज़ को धक्का देना, पर उसे बिलकुल न खींचना', correct: false, misconception: 'force-only-when-moving', feedback: 'रुकी हुई मेज़ को धक्का देने से भी बल लगता है। बल के लिए गति ज़रूरी नहीं।' },
+            { id: 'a', text: 'धूप में रखी किताब का गर्म होना', correct: false, misconception: 'heat-is-force', feedback: 'किताब का गर्म होना बल नहीं है, गर्मी का असर है। बल धक्का या खिंचाव होता है।' },
             { id: 'b', text: 'बाल्टी को रस्सी से कुएँ से खींचना', correct: true },
             { id: 'c', text: 'किताब को हाथ से केवल छूकर रखे रहना, उसे न हिलाना', correct: false, misconception: 'contact-only-touch', feedback: 'केवल छूना अपने-आप बल नहीं है। बल तब होता है जब वस्तु पर धक्का या खिंचाव का असर हो।' },
             { id: 'd', text: 'केवल धक्का देना ही बल है, बाल्टी खींचना नहीं', correct: false, misconception: 'push-is-always-force', feedback: 'बाल्टी खींचना भी बल है। धक्का और खिंचाव दोनों बल हैं।' },
@@ -82,7 +82,7 @@ export const CHAPTER = {
             { id: 'a', text: 'संपर्क बल, क्योंकि चुंबक लोहे के पास होता है', correct: false, misconception: 'contact-only-touch', feedback: 'बल तभी संपर्क बल होता है जब वस्तुएँ एक-दूसरे को छुएँ। चुंबक लोहे को बिना छुए खींचता है, इसलिए यह असंपर्क बल है।' },
             { id: 'b', text: 'असंपर्क बल, क्योंकि वस्तुएँ एक-दूसरे को छुए बिना खिंचती हैं', correct: true },
             { id: 'c', text: 'यह बल नहीं होता, क्योंकि लोहा चलता नहीं', correct: false, misconception: 'force-only-when-moving', feedback: 'लोहा बिना चले भी चुंबक से खिंचता है। बल लगने के लिए गति ज़रूरी नहीं।' },
-            { id: 'd', text: 'यह संपर्क बल है, क्योंकि लोहे के अंदर बल होता है', correct: false, misconception: 'contact-only-touch', feedback: 'लोहे के अंदर का बल नहीं, बल्कि चुंबक का खिंचाव बिना छुए काम करता है। यह असंपर्क बल है।' },
+            { id: 'd', text: 'यह संपर्क बल है, क्योंकि लोहे के अंदर बल होता है', correct: false, misconception: 'contact-only-touch', feedback: 'बल लोहे के अंदर नहीं होता — चुंबक का खिंचाव बिना छुए काम करता है, इसलिए यह असंपर्क बल है।' },
           ],
         },
         {
@@ -127,7 +127,7 @@ export const CHAPTER = {
           difficulty: 'easy',
           text: 'दाब किसे कहते हैं?',
           options: [
-            { id: 'a', text: 'सतह पर लगने वाला कुल बल, चाहे क्षेत्रफल कुछ भी हो', correct: false, misconception: 'area-same-pressure', feedback: 'कुल बल वही रहता है, पर दाब बल को क्षेत्रफल से भाग देने पर मिलता है। क्षेत्रफल बदलने से दाब बदलता है।' },
+            { id: 'a', text: 'सतह पर लगने वाला कुल बल, चाहे क्षेत्रफल कुछ भी हो', correct: false, misconception: 'area-same-pressure', feedback: 'कुल बल वही रह सकता है, पर दाब = बल ÷ क्षेत्रफल होता है, इसलिए क्षेत्रफल बदलने से दाब बदलता है।' },
             { id: 'b', text: 'प्रति इकाई क्षेत्रफल पर लगने वाला बल', correct: true },
             { id: 'c', text: 'बल और क्षेत्रफल का गुणा', correct: false, misconception: 'bigger-area-more-pressure', feedback: 'गुणा नहीं, भाग होता है। बड़े क्षेत्रफल पर बल फैलता है, इसलिए दाब घटता है।' },
             { id: 'd', text: 'केवल ठोस वस्तुओं पर लगने वाला बल', correct: false, misconception: 'pressure-only-solids', feedback: 'दाब तरल और गैस में भी होता है, जैसे पानी और हवा में।' },
@@ -186,10 +186,10 @@ export const CHAPTER = {
           difficulty: 'medium',
           text: 'पानी में दाब किन दिशाओं में लगता है?',
           options: [
-            { id: 'a', text: 'केवल नीचे की ओर', correct: false, misconception: 'pressure-only-solids', feedback: 'द्रव का दाब नीचे, ऊपर और बगल, सभी दिशाओं में लगता है। बोतल के बगल के छेद से भी पानी निकलता है।' },
-            { id: 'b', text: 'केवल बगल में', correct: false, misconception: 'pressure-only-solids', feedback: 'द्रव का दाब केवल बगल में नहीं, सभी दिशाओं में लगता है।' },
+            { id: 'a', text: 'केवल नीचे की ओर', correct: false, misconception: 'pressure-direction', feedback: 'द्रव का दाब नीचे, ऊपर और बगल, सभी दिशाओं में लगता है। बोतल के बगल के छेद से भी पानी निकलता है।' },
+            { id: 'b', text: 'केवल बगल में', correct: false, misconception: 'pressure-direction', feedback: 'द्रव का दाब केवल बगल में नहीं, सभी दिशाओं में लगता है।' },
             { id: 'c', text: 'सभी दिशाओं में', correct: true },
-            { id: 'd', text: 'केवल ऊपर की ओर', correct: false, misconception: 'pressure-only-solids', feedback: 'पानी का दाब ऊपर के साथ-साथ नीचे और बगल में भी लगता है।' },
+            { id: 'd', text: 'केवल ऊपर की ओर', correct: false, misconception: 'pressure-direction', feedback: 'पानी का दाब ऊपर के साथ-साथ नीचे और बगल में भी लगता है।' },
           ],
         },
         {
@@ -225,7 +225,7 @@ export const CHAPTER = {
           options: [
             { id: 'a', text: 'हवा का कोई भार नहीं होता', correct: false, misconception: 'air-no-weight', feedback: 'हवा का भार होता है। हवा भरने से गुब्बारा भारी होता है।' },
             { id: 'b', text: 'हवा का भार होता है और वह सभी दिशाओं में दाब डालती है', correct: true },
-            { id: 'c', text: 'हवा केवल ठोस वस्तुओं पर दाब डालती है', correct: false, misconception: 'pressure-only-solids', feedback: 'हवा सभी दिशाओं में दाब डालती है, जैसे गुब्बारे को फुलाने पर।' },
+            { id: 'c', text: 'हवा केवल ठोस वस्तुओं पर दाब डालती है', correct: false, misconception: 'pressure-direction', feedback: 'हवा सभी दिशाओं में दाब डालती है, जैसे गुब्बारे को फुलाने पर।' },
             { id: 'd', text: 'ऊँचाई पर जाने से हवा का दाब बढ़ता है', correct: false, misconception: 'height-more-pressure', feedback: 'ऊँचाई पर जाने से हवा का दाब घटता है, बढ़ता नहीं।' },
           ],
         },
@@ -247,7 +247,7 @@ export const CHAPTER = {
           options: [
             { id: 'a', text: 'हवा का कोई दाब नहीं होता', correct: false, misconception: 'air-no-weight', feedback: 'हवा का दाब होता है। गुब्बारे का फूलना इसी दाब का असर है।' },
             { id: 'b', text: 'भरी हवा सभी दिशाओं में दाब डालती है, जिससे गुब्बारा फैलता है', correct: true },
-            { id: 'c', text: 'हवा केवल नीचे की ओर दाब डालती है', correct: false, misconception: 'pressure-only-solids', feedback: 'हवा सभी दिशाओं में दाब डालती है, केवल नीचे नहीं।' },
+            { id: 'c', text: 'हवा केवल नीचे की ओर दाब डालती है', correct: false, misconception: 'pressure-direction', feedback: 'हवा सभी दिशाओं में दाब डालती है, केवल नीचे नहीं।' },
             { id: 'd', text: 'केवल भारी वस्तु ही दाब डाल सकती है, हल्की हवा नहीं', correct: false, misconception: 'heavier-more-pressure', feedback: 'हल्की चीज़ भी दाब डाल सकती है। हवा हल्की है फिर भी गुब्बारे के अंदर से हर ओर दाब डालती है।' },
           ],
         },
@@ -263,6 +263,8 @@ export const MISCONCEPTIONS = {
   'contact-only-touch': { label: 'बल केवल छूने पर लगता है' },
   'area-same-pressure': { label: 'दाब क्षेत्रफल पर निर्भर नहीं' },
   'pressure-only-solids': { label: 'दाब केवल ठोस में होता है' },
+  'pressure-direction': { label: 'दाब की दिशा गलत समझना' },
+  'heat-is-force': { label: 'गर्मी को बल समझना' },
   'bigger-area-more-pressure': { label: 'बड़ा क्षेत्रफल अधिक दाब देता है' },
   'depth-no-effect': { label: 'गहराई का दाब पर असर नहीं' },
   'deeper-less-pressure': { label: 'गहराई पर दाब कम होता है' },

@@ -12,7 +12,8 @@ function el(tag, className, text) {
 
 function percentOf(progress, concept) {
   const map = (progress && progress.mastery) || {};
-  const m = Math.min(1, Math.max(0, Number(map[concept.id]) || 0));
+  const rawM = Number(map[concept.id]);
+  const m = Math.min(1, Math.max(0, Number.isFinite(rawM) ? rawM : 0.3));
   return { m, pct: Math.round(m * 100) };
 }
 
@@ -30,15 +31,20 @@ export function render(root, ctx) {
   let picked = null; // { concept, question }
   let answered = null; // option object
 
+  // Render into this inner container only: root is #app, which also holds
+  // the header - replacing root's children would delete the header.
+  const view = document.createElement('div');
+  root.appendChild(view);
+
   const pick = () => {
     picked = pickNextQuestion(CHAPTER, progress) || null;
     answered = null;
   };
 
   const showLesson = (concept) => {
-    root.replaceChildren();
-    root.appendChild(el('h1', 'screen-title', concept.title));
-    root.appendChild(el('p', 'muted', t('practice_lesson_note')));
+    view.replaceChildren();
+    view.appendChild(el('h1', 'screen-title', concept.title));
+    view.appendChild(el('p', 'muted', t('practice_lesson_note')));
 
     const card = el('div', 'card');
     const ol = el('ol');
@@ -49,8 +55,8 @@ export function render(root, ctx) {
       ol.appendChild(li);
     }
     card.appendChild(ol);
-    root.appendChild(card);
-    root.appendChild(el('div', 'notice', 'उदाहरण: ' + ((concept.card && concept.card.example) || '')));
+    view.appendChild(card);
+    view.appendChild(el('div', 'notice', t('learn_example', { example: (concept.card && concept.card.example) || '' })));
 
     const btn = el('button', 'btn', t('practice_read_done'));
     btn.type = 'button';
@@ -62,7 +68,7 @@ export function render(root, ctx) {
     });
     const actions = el('div', 'actions');
     actions.appendChild(btn);
-    root.appendChild(actions);
+    view.appendChild(actions);
   };
 
   const showFeedback = (concept, question, option) => {
@@ -82,7 +88,7 @@ export function render(root, ctx) {
         box.appendChild(el('span', 'chip', t('practice_misconception', { label })));
       }
     }
-    root.appendChild(box);
+    view.appendChild(box);
 
     const actions = el('div', 'actions');
     const next = el('button', 'btn', t('practice_next'));
@@ -92,7 +98,7 @@ export function render(root, ctx) {
     ghost.type = 'button';
     ghost.addEventListener('click', () => ctx.navigate('#/learn/' + concept.id));
     actions.append(next, ghost);
-    root.appendChild(actions);
+    view.appendChild(actions);
   };
 
   const onAnswer = (concept, question, option) => {
@@ -111,8 +117,8 @@ export function render(root, ctx) {
   };
 
   const showQuestion = (concept, question) => {
-    root.replaceChildren();
-    root.appendChild(el('h1', 'screen-title', t('practice_title', { title: concept.title })));
+    view.replaceChildren();
+    view.appendChild(el('h1', 'screen-title', t('practice_title', { title: concept.title })));
 
     const { m, pct } = percentOf(progress, concept);
     const chip = el('span', 'chip', t('practice_mastery', { pct }));
@@ -120,12 +126,12 @@ export function render(root, ctx) {
     const fill = document.createElement('i');
     fill.style.setProperty('--p', String(m));
     bar.appendChild(fill);
-    root.append(chip, bar);
+    view.append(chip, bar);
 
     const q = el('p', null, question.text);
     q.style.fontSize = '20px';
     q.style.fontWeight = '600';
-    root.appendChild(q);
+    view.appendChild(q);
 
     const options = [];
     for (const option of question.options || []) {
@@ -136,7 +142,7 @@ export function render(root, ctx) {
       btn.style.marginBottom = '8px';
       btn.addEventListener('click', () => onAnswer(concept, question, option));
       options.push({ option, btn });
-      root.appendChild(btn);
+      view.appendChild(btn);
     }
 
     if (answered) {
@@ -149,12 +155,12 @@ export function render(root, ctx) {
   };
 
   const draw = () => {
-    root.replaceChildren();
+    view.replaceChildren();
     if (!picked) {
       pick();
     }
     if (!picked) {
-      root.appendChild(el('p', null, t('practice_none')));
+      view.appendChild(el('p', null, t('practice_none')));
       return;
     }
     const { concept, question } = picked;

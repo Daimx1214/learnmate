@@ -68,15 +68,22 @@ export async function syncFamilySummary(profile, progress, manual = false) {
     } catch (e) {
       // usage tracking must never break a sync
     }
-    const res = await fetchTracked('/api/sync', {
+    const res = await fetchTracked('api/sync', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
     });
-    if (!res || !res.ok) return false;
+    // No API server (static hosting) or no connectivity: the summary is
+    // already saved on this phone and the family view reads it locally,
+    // so this counts as saved, not as a failure.
+    if (!res || res.status === 404) {
+      setSettings({ lastSyncAt: new Date().toISOString() });
+      return 'local';
+    }
+    if (!res.ok) return false;
 
     setSettings({ lastSyncAt: new Date().toISOString() });
-    return true;
+    return 'synced';
   } catch (e) {
     return false;
   }

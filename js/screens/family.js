@@ -23,11 +23,12 @@ function summaryCard(data) {
   const card = el('div', 'card');
   const help = Array.isArray(data.conceptsNeedingHelp) ? data.conceptsNeedingHelp : [];
 
+  const hasDate = data.updatedAt && !Number.isNaN(new Date(data.updatedAt).getTime());
   const lines = [
-    'इस हफ़्ते के अध्ययन मिनट: ' + String(data.weekMinutes ?? 0),
-    'समझे गए विषय: ' + String(data.conceptsMastered ?? 0),
-    'मदद चाहिए: ' + (help.length ? help.join(', ') : 'कोई नहीं'),
-    'आख़िरी अपडेट: ' + formatUpdated(data.updatedAt),
+    t('sum_minutes', { n: String(data.weekMinutes ?? 0) }),
+    t('sum_mastered', { n: String(data.conceptsMastered ?? 0) }),
+    help.length ? t('sum_help', { list: help.join(', ') }) : t('sum_help_none'),
+    hasDate ? t('sum_updated', { date: formatUpdated(data.updatedAt) }) : 'आख़िरी अपडेट: अभी इसी फ़ोन से',
   ];
   for (const line of lines) {
     const p = el('p', null, line);
@@ -115,7 +116,7 @@ export function render(root, ctx) {
     try {
       let res = null;
       try {
-        res = await fetch('/api/family/' + code);
+        res = await fetch('api/family/' + code);
       } catch {
         res = null; // no server reachable: use the local store below
       }

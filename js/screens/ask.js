@@ -138,6 +138,7 @@ export function render(root, ctx) {
 
   card.append(textarea, listeningNote, speechNote, photoInput, photoNote, actions);
   root.appendChild(card);
+  root.appendChild(el('p', 'muted', t('ask_scope')));
 
   // ----- speech -----
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -293,11 +294,12 @@ export function render(root, ctx) {
     textarea.value = '';
     resetPhoto();
 
-    if (offline) {
-      showOffline(text);
-    } else {
-      const result = answerAndSave(id, text);
-      if (result) showAnswer(result);
+    // The tutor is fully on-device: answer immediately, online or offline.
+    // Only the family sync waits for connectivity.
+    const result = answerAndSave(id, text);
+    if (result) {
+      showAnswer(result);
+      if (offline) answerBox.prepend(el('div', 'notice', t('ask_offline_note')));
     }
     renderList();
   }
@@ -310,10 +312,6 @@ export function render(root, ctx) {
   function answerStored(doubt) {
     if (!doubt.text) {
       showPhotoOnly();
-      return;
-    }
-    if (!isOnline()) {
-      ctx.toast(t('ask_offline_wait'));
       return;
     }
     const result = answerAndSave(doubt.id, doubt.text);

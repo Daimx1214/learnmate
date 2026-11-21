@@ -22,7 +22,7 @@ function overallMastery(progress) {
   const concepts = CHAPTER.concepts || [];
   if (!concepts.length) return 0;
   const map = (progress && progress.mastery) || {};
-  const sum = concepts.reduce((acc, c) => acc + (Number(map[c.id]) || 0), 0);
+  const sum = concepts.reduce((acc, c) => acc + (Number.isFinite(Number(map[c.id])) ? Number(map[c.id]) : 0.3), 0);
   return sum / concepts.length;
 }
 

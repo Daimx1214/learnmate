@@ -93,6 +93,7 @@ localStorage key `saathi.v1.progress.<profileId>`:
   mastery: { [conceptId]: 0..1 },
   wrongStreak: { [conceptId]: int },
   attempts: [{ ts, conceptId, questionId, optionId, tag: string|null, correct: boolean }], // cap 200
+  attemptCounts: { [conceptId]: number }, // per-concept attempt totals, used by the mastered rule
   lastQuestionId: string|null,
   studyDays: { 'YYYY-MM-DD': seconds },
 }
@@ -121,12 +122,11 @@ localStorage key `saathi.v1.progress.<profileId>`:
 ## Mastery API (js/mastery.js) — pure
 
 - `applyAnswer(progress, { conceptId, questionId, optionId, tag, correct })` → new progress.
-  - correct: `m += 0.2 * (1 - m)`; wrongStreak reset to 0.
-  - wrong: `m -= 0.15 * m`; wrongStreak += 1.
+  - Update: `m += 0.3 * (correct - m)` where correct is 1 or 0; mastery starts at 0.3. A correct answer resets wrongStreak to 0; a wrong answer adds 1.
   - Appends to `attempts` (cap 200); sets `lastQuestionId`.
 - `shouldShowLesson(progress, conceptId)` → `wrongStreak >= 2`.
-- `pickNextQuestion(chapter, progress, rng = Math.random)` → `{ concept, question }`. About 70% from the lowest-mastery concept, otherwise weighted among the others. Avoids `lastQuestionId` when possible.
-- `conceptStatus(m, attempted)` → `'mastered'` (m ≥ 0.8) | `'help'` (attempted and m < 0.5) | `'learning'`.
+- `pickNextQuestion(chapter, progress, rng = Math.random)` → `{ concept, question }`. About 70% from the weakest concept, about 20% spaced review (concepts unattempted for 2+ days), about 10% new. Difficulty band follows mastery: easy below 0.4, medium up to 0.7, hard above. Avoids `lastQuestionId` when possible.
+- `conceptStatus(m, attempted, attemptCount)` → `'mastered'` (m ≥ 0.8 AND at least 3 attempts) | `'help'` (attempted and m < 0.5) | `'learning'`. `isMastered(progress, conceptId)` applies the same rule from stored progress.
 - `weakConcepts(chapter, progress)`.
 - `computeStreak(studyDays, todayStr)`.
 - `weekMinutes(studyDays, todayStr)` — last 7 days, rounded minutes.
@@ -136,13 +136,13 @@ localStorage key `saathi.v1.progress.<profileId>`:
 - `findClosestConcept(text, chapter)` → `{ concept, score }`.
 - `answerDoubt(text, chapter)` → `{ matched, conceptId, answer, checkQuestion, card }`.
   - `answer`: Hindi, ≤ 90 words, steps formatted `चरण 1: ...`, includes an example.
-  - `checkQuestion`: `{ text, options }` or `null`. Options exclude the correct option; the correct option id is kept separately as `correctOptionId`.
+  - `checkQuestion`: `{ text, options }` or `null`. Options include ALL options of the source question; the correct option id is kept separately as `correctOptionId`.
 
 ## Study time and data usage
 
 - Study time: `app.js` adds study seconds every 15s while the page is visible.
 - Data usage: every `fetch` in `js/sync.js` calls `addUsage(bytes)`.
-- Data saver: when `getSettings().dataSaver` is true, sync and non-essential fetches are skipped.
+- Data saver: when `getSettings().dataSaver` is true, automatic sync is skipped; a manual sync from the Progress screen still runs.
 
 ## Server API (server.js)
 
@@ -152,7 +152,7 @@ localStorage key `saathi.v1.progress.<profileId>`:
   - Responds `200 { "ok": true }`. Bad JSON → 400.
 - `GET /api/family/:code` — 400 if the code is invalid; 404 `{ "error": "not_found" }` if unknown; otherwise the stored entry.
 - Other methods on `/api/*` → 405.
-- Static: `/` → `index.html`. `data/` and `server.js` → 404. `.html`, `.js`, `.css` send `Cache-Control: no-cache`.
+- Static: `/` → `index.html`. `data/`, `server.js` and the dot-directories `.codebenders`, `.git`, `.vscode` → 404. `.html`, `.js`, `.css` send `Cache-Control: no-cache`.
 - Request bodies are never logged.
 
 ## Design tokens

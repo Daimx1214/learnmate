@@ -34,6 +34,7 @@ export function render(root, ctx) {
 
   root.appendChild(el('div', 'brand-title', 'साथी'));
   root.appendChild(el('h1', 'brand-subtitle', t('profiles_title')));
+  root.appendChild(el('p', 'muted', t('profiles_intro')));
 
   // Existing profiles.
   const grid = el('div', 'grid-avatars');

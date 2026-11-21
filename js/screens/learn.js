@@ -25,7 +25,8 @@ function setBar(bar, fraction) {
 
 function conceptMastery(progress, concept) {
   const map = (progress && progress.mastery) || {};
-  return Math.min(1, Math.max(0, Number(map[concept.id]) || 0));
+  const raw = Number(map[concept.id]);
+  return Math.min(1, Math.max(0, Number.isFinite(raw) ? raw : 0.3));
 }
 
 function isAttempted(progress, concept) {
@@ -71,13 +72,7 @@ function renderList(root, ctx, progress) {
 }
 
 function renderConcept(root, ctx, progress, concept) {
-  const reshow = Boolean(ctx.params && ctx.params.reshow);
-
   root.appendChild(el('h1', 'screen-title', concept.title));
-
-  if (reshow) {
-    root.appendChild(el('div', 'notice', t('learn_reshow')));
-  }
 
   const card = el('div', 'card');
   const ol = el('ol');
@@ -109,7 +104,7 @@ function renderConcept(root, ctx, progress, concept) {
     actions.appendChild(listen);
   }
 
-  const practice = el('button', 'btn', reshow ? t('learn_practice_after') : t('learn_practice'));
+  const practice = el('button', 'btn', t('learn_practice'));
   practice.type = 'button';
   practice.addEventListener('click', () => ctx.navigate('#/practice'));
 

@@ -170,7 +170,37 @@ function refreshHeader(profile) {
   headerParts.name.textContent = profile.nickname;
   updateStatusDot();
   const kb = Math.round(getUsage().bytes / 1024);
-  headerParts.data.textContent = t('data_today', { kb });
+  headerParts.data.textContent = kb === 0 ? t('data_today_zero') : t('data_today', { kb });
+}
+
+// One reusable footer, appended at the end of #app on every render.
+let footerEl = null;
+
+function buildFooter() {
+  if (footerEl) return footerEl;
+  footerEl = document.createElement('footer');
+  footerEl.className = 'app-footer';
+
+  const l1 = document.createElement('p');
+  l1.textContent = 'साथी — कक्षा 8 विज्ञान · हिंदी में · मुफ़्त';
+
+  const l2 = document.createElement('p');
+  const about = document.createElement('a');
+  about.href = '#/about';
+  about.textContent = 'हमारे बारे में';
+  const family = document.createElement('a');
+  family.href = '#/family';
+  family.textContent = 'परिवार के लिए';
+  l2.append(about, document.createTextNode(' · '), family, document.createTextNode(' · NCERT अध्याय 8: बल और दाब'));
+
+  const l3 = document.createElement('p');
+  l3.textContent = 'कोई लॉगिन नहीं · कोई विज्ञापन नहीं · डेटा सिर्फ़ इसी फ़ोन पर रहता है';
+
+  const l4 = document.createElement('p');
+  l4.textContent = 'ACE Builders Hackathon 2026 · Codebenders IDE में बना';
+
+  footerEl.append(l1, l2, l3, l4);
+  return footerEl;
 }
 
 function renderError() {
@@ -226,6 +256,7 @@ async function route() {
     refreshHeader(profile);
     if (headerEl) appEl.prepend(headerEl);
     await mod.render(appEl, ctx);
+    appEl.appendChild(buildFooter());
   } catch (err) {
     if (token !== routeToken) return;
     console.error(err);

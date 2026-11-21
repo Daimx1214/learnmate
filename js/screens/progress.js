@@ -53,7 +53,7 @@ function masteryCard(progress) {
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
 
   for (const concept of CHAPTER.concepts || []) {
-    const raw = Number(mastery[concept.id]) || 0;
+    const raw = Number.isFinite(Number(mastery[concept.id])) ? Number(mastery[concept.id]) : 0.3;
     const m = Math.min(1, Math.max(0, raw));
     const attempted = attempts.some((a) => a.conceptId === concept.id);
     const status = conceptStatus(m, attempted, progress.attemptCounts?.[concept.id] ?? 0);
@@ -112,7 +112,7 @@ function familyCard(ctx, profile, progress) {
       ok = false;
     }
     btn.disabled = false;
-    ctx.toast(ok ? t('sync_done') : t('sync_later'));
+    ctx.toast(ok === 'local' ? t('sync_saved_local') : ok ? t('sync_done') : t('sync_later'));
   });
   card.appendChild(btn);
   return card;
