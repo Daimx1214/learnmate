@@ -79,7 +79,7 @@ function renderConcept(root, ctx, progress, concept) {
   for (const point of (concept.card && concept.card.points) || []) {
     const li = el('li', null, point);
     li.style.fontSize = '18px';
-    li.style.marginBottom = '8px';
+    li.style.marginBottom = '10px';
     ol.appendChild(li);
   }
   card.appendChild(ol);
