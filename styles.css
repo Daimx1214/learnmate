@@ -187,6 +187,10 @@ h2,
   box-sizing: border-box;
 }
 
+.chip + .progress-bar {
+  margin-top: 8px;
+}
+
 .progress-bar {
   height: 12px;
   background: #E9E4D8;
@@ -247,6 +251,22 @@ h2,
   font-weight: 700;
 }
 
+.card:has(> .stat-row) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card:has(> .stat-row) > :not(.stat-row) {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 480px) {
+  .card:has(> .stat-row) {
+    grid-template-columns: 1fr;
+  }
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -257,6 +277,7 @@ h2,
 .actions > button {
   flex: 1 1 auto;
   min-width: 120px;
+  font-size: 18px;
 }
 
 .meta-row {
@@ -291,7 +312,8 @@ h2,
   border-radius: 8px;
 }
 
-.bottom-nav {
+.bottom-nav,
+#bottom-nav {
   position: fixed;
   left: 0;
   right: 0;
@@ -314,7 +336,9 @@ h2,
 }
 
 .bottom-nav a,
-.bottom-nav button {
+.bottom-nav button,
+#bottom-nav a,
+#bottom-nav button {
   min-height: 56px;
   display: flex;
   flex-direction: column;
@@ -332,7 +356,8 @@ h2,
   font-family: inherit;
 }
 
-.bottom-nav .active {
+.bottom-nav .active,
+#bottom-nav .active {
   color: var(--blue);
   font-weight: 700;
 }

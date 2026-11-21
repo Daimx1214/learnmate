@@ -54,7 +54,7 @@ function costTable() {
 
 export function render(root, ctx) {
   void ctx;
-  root.appendChild(el('h1', 'screen-title', 'साथी के बारे में'));
+  root.appendChild(el('h1', 'screen-title', 'LearnMate के बारे में'));
 
   // 1. Free for students
   const free = section('मुफ़्त पढ़ाई');
@@ -62,7 +62,7 @@ export function render(root, ctx) {
     el(
       'p',
       null,
-      'साथी छात्रों के लिए मुफ़्त है: कोई लॉगिन नहीं, कोई विज्ञापन नहीं, कोई व्यक्तिगत डेटा नहीं बेचा जाता। छात्र कुछ नहीं देते।',
+      'LearnMate छात्रों के लिए मुफ़्त है: कोई लॉगिन नहीं, कोई विज्ञापन नहीं, कोई व्यक्तिगत डेटा नहीं बेचा जाता। छात्र कुछ नहीं देते।',
     ),
   );
   root.appendChild(free);
