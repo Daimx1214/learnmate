@@ -736,11 +736,10 @@ body {
 }
 
 #top-nav {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(31, 58, 95, 0.07);
-  padding: 2px;
-  top: calc(56px + var(--sat) + 6px);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
 #top-nav .active {
