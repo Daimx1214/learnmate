@@ -8,6 +8,9 @@ const LOWEST_PICK_PROB = 0.7;
 const START_MASTERY = 0.3;
 const LEARN_RATE = 0.3;
 const MASTERED_MIN_ATTEMPTS = 3;
+const REVIEW_PICK_PROB = 0.2;
+const REVIEW_GAP_DAYS = 2;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 function masteryOf(progress, conceptId) {
   const m = progress && progress.mastery ? progress.mastery[conceptId] : undefined;
@@ -84,29 +87,65 @@ export function pickNextQuestion(chapter, progress, rng = Math.random) {
   let concept;
   if (concepts.length === 1) {
     concept = lowest;
-  } else if (rng() < LOWEST_PICK_PROB) {
-    concept = lowest;
   } else {
-    const others = byMastery.slice(1);
-    const weights = others.map((c) => 1 - masteryOf(progress, c.id) + 0.05);
-    const total = weights.reduce((s, w) => s + w, 0);
-    let r = rng() * total;
-    concept = others[others.length - 1];
-    for (let i = 0; i < others.length; i++) {
-      r -= weights[i];
-      if (r < 0) {
-        concept = others[i];
-        break;
+    // (c) review share: ~20% when an eligible concept (attempted, none in last 2 days) exists.
+    const eligible = reviewEligibleConcepts(concepts, progress, Date.now());
+    if (eligible.length > 0 && rng() < REVIEW_PICK_PROB) {
+      const i = Math.min(eligible.length - 1, Math.floor(rng() * eligible.length));
+      concept = eligible[i];
+    } else if (rng() < LOWEST_PICK_PROB) {
+      concept = lowest;
+    } else {
+      const others = byMastery.slice(1);
+      const weights = others.map((c) => 1 - masteryOf(progress, c.id) + 0.05);
+      const total = weights.reduce((s, w) => s + w, 0);
+      let r = rng() * total;
+      concept = others[others.length - 1];
+      for (let i = 0; i < others.length; i++) {
+        r -= weights[i];
+        if (r < 0) {
+          concept = others[i];
+          break;
+        }
       }
     }
   }
 
+  return { concept, question: pickQuestionInConcept(concept, progress, rng) };
+}
+
+// Difficulty band for a concept's current mastery m.
+function bandForMastery(m) {
+  if (m < 0.4) return 'easy';
+  if (m <= 0.7) return 'medium';
+  return 'hard';
+}
+
+// Within a concept: prefer questions whose difficulty matches the mastery band
+// (all questions if none match), then avoid repeating the last question where possible.
+function pickQuestionInConcept(concept, progress, rng) {
   const qs = concept.questions;
+  const band = bandForMastery(masteryOf(progress, concept.id));
+  const banded = qs.filter((q) => q.difficulty === band);
+  const candidates = banded.length > 0 ? banded : qs;
   const lastId = progress ? progress.lastQuestionId : null;
-  const fresh = qs.filter((q) => q.id !== lastId);
-  const pool = fresh.length > 0 ? fresh : qs;
+  const fresh = candidates.filter((q) => q.id !== lastId);
+  const pool = fresh.length > 0 ? fresh : candidates;
   const idx = Math.min(pool.length - 1, Math.floor(rng() * pool.length));
-  return { concept, question: pool[idx] };
+  return pool[idx];
+}
+
+// Concepts with at least one attempt, none of whose listed attempts (`ts`, ms since epoch,
+// set in applyAnswer) falls within the last REVIEW_GAP_DAYS days.
+function reviewEligibleConcepts(concepts, progress, now) {
+  const cutoff = now - REVIEW_GAP_DAYS * DAY_MS;
+  const attempts = progress && Array.isArray(progress.attempts) ? progress.attempts : [];
+  return concepts.filter((c) => {
+    if (attemptCountOf(progress, c.id) <= 0) return false;
+    return !attempts.some(
+      (a) => a.conceptId === c.id && Number.isFinite(a.ts) && a.ts >= cutoff
+    );
+  });
 }
 
 export function conceptStatus(m, attempted, attemptCount = 0) {

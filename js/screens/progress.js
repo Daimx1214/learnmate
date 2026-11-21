@@ -97,7 +97,6 @@ function familyCard(ctx, profile, progress) {
 
   if (getSettings().dataSaver) {
     card.appendChild(el('p', 'muted', 'डेटा बचत चालू है'));
-    return card;
   }
 
   const btn = el('button', 'btn-secondary', 'परिवार के साथ सिंक करें');
@@ -106,7 +105,7 @@ function familyCard(ctx, profile, progress) {
     btn.disabled = true;
     let ok = false;
     try {
-      ok = await syncFamilySummary(profile, progress);
+      ok = await syncFamilySummary(profile, progress, true);
     } catch (e) {
       ok = false;
     }

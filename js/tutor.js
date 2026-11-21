@@ -2,6 +2,7 @@
 
 const ANSWER_WORD_CAP = 90;
 const CLOSING = 'अब नीचे दिया छोटा सवाल हल करें।';
+const TEACHER_ADVICE = 'यह सवाल अपने शिक्षक से पूछें।';
 
 // Common Hindi function words. They are ignored when matching concept title words,
 // so a question like "आसमान नीला क्यों है" does not match a concept just on "है".
@@ -76,15 +77,21 @@ export function answerDoubt(text, chapter) {
   const allPoints = (card.points || []).slice(0, 3);
   const example = card.example ? String(card.example) : '';
 
-  // Drop points from the end until the answer fits in the word cap.
+  // The unmatched teacher sentence is reserved words outside the capped body,
+  // so truncation of the body can never cut it off. Matched answers keep the full cap.
+  const teacher = matched ? '' : TEACHER_ADVICE;
+  const bodyCap = ANSWER_WORD_CAP - wordCount(teacher);
+
+  // Drop points from the end until the body fits in the remaining word cap.
   let answer = '';
   for (let n = allPoints.length; n >= 0; n--) {
     answer = buildAnswer(concept, matched, allPoints.slice(0, n), example);
-    if (wordCount(answer) <= ANSWER_WORD_CAP) break;
+    if (wordCount(answer) <= bodyCap) break;
   }
-  if (wordCount(answer) > ANSWER_WORD_CAP) {
-    answer = answer.trim().split(/\s+/).slice(0, ANSWER_WORD_CAP).join(' ');
+  if (wordCount(answer) > bodyCap) {
+    answer = answer.trim().split(/\s+/).slice(0, bodyCap).join(' ');
   }
+  if (teacher) answer = `${answer} ${teacher}`;
 
   const q = (concept.questions || [])[0] || null;
   const checkQuestion = q

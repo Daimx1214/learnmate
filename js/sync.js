@@ -37,10 +37,11 @@ export async function fetchTracked(url, options = {}) {
   return res;
 }
 
-export async function syncFamilySummary(profile, progress) {
+export async function syncFamilySummary(profile, progress, manual = false) {
   try {
     if (!profile || !profile.familyCode) return false;
-    if (getSettings().dataSaver) return false;
+    // Data-saver blocks only automatic syncs; a manual sync always goes through.
+    if (getSettings().dataSaver && !manual) return false;
 
     const mastery = (progress && progress.mastery) || {};
     const attempts = (progress && Array.isArray(progress.attempts)) ? progress.attempts : [];

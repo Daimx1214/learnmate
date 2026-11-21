@@ -81,4 +81,5 @@ export function render(root, ctx) {
   root.appendChild(actions);
 
   root.appendChild(el('p', 'muted', `अध्याय: ${CHAPTER.title}`));
+  root.appendChild(el('p', 'muted', 'आधार: कक्षा 8 विज्ञान पाठ्यक्रम'));
 }

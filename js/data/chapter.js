@@ -2,6 +2,7 @@
 // CHAPTER holds the chapter id, subject, class, title and an ordered list of concepts.
 // Each concept has a short Hindi card (points + one example) and exactly 3 MCQ questions.
 // Each question has 4 options (a-d); exactly one has correct: true and no other fields.
+// Each question also has difficulty: 'easy' | 'medium' | 'hard' (used by pickNextQuestion in js/mastery.js).
 // Every wrong option has a misconception tag (a key of MISCONCEPTIONS) and Hindi feedback.
 // MISCONCEPTIONS maps each tag to a short Hindi label naming the mistake.
 
@@ -26,6 +27,7 @@ export const CHAPTER = {
       questions: [
         {
           id: 'bal-kya-hai-q1',
+          difficulty: 'easy',
           text: 'बल क्या है?',
           options: [
             { id: 'a', text: 'केवल धक्का देना ही बल है', correct: false, misconception: 'push-is-always-force', feedback: 'खिंचाव भी बल है। कुएँ से रस्सी खींचकर बाल्टी निकालना भी बल लगाना है।' },
@@ -36,6 +38,7 @@ export const CHAPTER = {
         },
         {
           id: 'bal-kya-hai-q2',
+          difficulty: 'medium',
           text: 'रुकी हुई फुटबॉल को लात मारने पर क्या होता है?',
           options: [
             { id: 'a', text: 'रुकी फुटबॉल केवल तब चलती है जब वह पहले से चल रही हो', correct: false, misconception: 'force-only-when-moving', feedback: 'रुकी हुई फुटबॉल को भी लात से बल मिलता है और वह चल पड़ती है। बल के लिए गति ज़रूरी नहीं।' },
@@ -46,6 +49,7 @@ export const CHAPTER = {
         },
         {
           id: 'bal-kya-hai-q3',
+          difficulty: 'hard',
           text: 'नीचे कौन-सा उदाहरण बल का है?',
           options: [
             { id: 'a', text: 'रुकी हुई मेज़ को धक्का देना, पर उसे बिलकुल न खींचना', correct: false, misconception: 'force-only-when-moving', feedback: 'रुकी हुई मेज़ को धक्का देने से भी बल लगता है। बल के लिए गति ज़रूरी नहीं।' },
@@ -72,6 +76,7 @@ export const CHAPTER = {
       questions: [
         {
           id: 'sampark-bal-q1',
+          difficulty: 'medium',
           text: 'चुंबक का लोहे को बिना छुए खींचना कौन-सा बल है?',
           options: [
             { id: 'a', text: 'संपर्क बल, क्योंकि चुंबक लोहे के पास होता है', correct: false, misconception: 'contact-only-touch', feedback: 'बल तभी संपर्क बल होता है जब वस्तुएँ एक-दूसरे को छुएँ। चुंबक लोहे को बिना छुए खींचता है, इसलिए यह असंपर्क बल है।' },
@@ -82,6 +87,7 @@ export const CHAPTER = {
         },
         {
           id: 'sampark-bal-q2',
+          difficulty: 'easy',
           text: 'नीचे कौन-सा असंपर्क बल है?',
           options: [
             { id: 'a', text: 'रस्सी से किसी वस्तु को खींचना', correct: false, misconception: 'contact-only-touch', feedback: 'रस्सी वस्तु को छूकर खींचती है, इसलिए यह संपर्क बल है।' },
@@ -92,6 +98,7 @@ export const CHAPTER = {
         },
         {
           id: 'sampark-bal-q3',
+          difficulty: 'hard',
           text: 'संपर्क और असंपर्क बल के बारे में कौन-सा कथन सही है?',
           options: [
             { id: 'a', text: 'बल केवल छूने पर लगता है', correct: false, misconception: 'contact-only-touch', feedback: 'बल बिना छुए भी लग सकता है, जैसे चुंबक का लोहे को खींचना।' },
@@ -117,6 +124,7 @@ export const CHAPTER = {
       questions: [
         {
           id: 'dab-q1',
+          difficulty: 'easy',
           text: 'दाब किसे कहते हैं?',
           options: [
             { id: 'a', text: 'सतह पर लगने वाला कुल बल, चाहे क्षेत्रफल कुछ भी हो', correct: false, misconception: 'area-same-pressure', feedback: 'कुल बल वही रहता है, पर दाब बल को क्षेत्रफल से भाग देने पर मिलता है। क्षेत्रफल बदलने से दाब बदलता है।' },
@@ -127,6 +135,7 @@ export const CHAPTER = {
         },
         {
           id: 'dab-q2',
+          difficulty: 'medium',
           text: 'कील की नोक नुकीली क्यों होती है?',
           options: [
             { id: 'a', text: 'नोक का भार अधिक होता है', correct: false, misconception: 'heavier-more-pressure', feedback: 'दाब भार से नहीं, क्षेत्रफल से तय होता है। नोक का क्षेत्रफल कम है, इसलिए दाब अधिक होता है।' },
@@ -137,6 +146,7 @@ export const CHAPTER = {
         },
         {
           id: 'dab-q3',
+          difficulty: 'hard',
           text: 'बल समान हो, तो दाब कब अधिक होगा?',
           options: [
             { id: 'a', text: 'जब क्षेत्रफल अधिक हो', correct: false, misconception: 'bigger-area-more-pressure', feedback: 'बल समान हो तो बड़ा क्षेत्रफल दाब घटाता है। चौड़े पट्टे वाला बैग कंधे पर कम चुभता है।' },
@@ -162,6 +172,7 @@ export const CHAPTER = {
       questions: [
         {
           id: 'taral-dab-q1',
+          difficulty: 'easy',
           text: 'पानी में गहराई बढ़ने पर दाब कैसे बदलता है?',
           options: [
             { id: 'a', text: 'घटता है', correct: false, misconception: 'deeper-less-pressure', feedback: 'गहराई बढ़ने पर ऊपर के पानी का भार बढ़ता है, इसलिए दाब बढ़ता है।' },
@@ -172,6 +183,7 @@ export const CHAPTER = {
         },
         {
           id: 'taral-dab-q2',
+          difficulty: 'medium',
           text: 'पानी में दाब किन दिशाओं में लगता है?',
           options: [
             { id: 'a', text: 'केवल नीचे की ओर', correct: false, misconception: 'pressure-only-solids', feedback: 'द्रव का दाब नीचे, ऊपर और बगल, सभी दिशाओं में लगता है। बोतल के बगल के छेद से भी पानी निकलता है।' },
@@ -182,6 +194,7 @@ export const CHAPTER = {
         },
         {
           id: 'taral-dab-q3',
+          difficulty: 'hard',
           text: 'पानी में 1 मीटर और 3 मीटर गहराई में से किस गहराई पर दाब अधिक है?',
           options: [
             { id: 'a', text: '1 मीटर पर', correct: false, misconception: 'deeper-less-pressure', feedback: 'गहराई बढ़ने पर दाब बढ़ता है, इसलिए 3 मीटर पर दाब अधिक होता है।' },
@@ -207,6 +220,7 @@ export const CHAPTER = {
       questions: [
         {
           id: 'vayu-dab-q1',
+          difficulty: 'easy',
           text: 'हवा में दाब क्यों होता है?',
           options: [
             { id: 'a', text: 'हवा का कोई भार नहीं होता', correct: false, misconception: 'air-no-weight', feedback: 'हवा का भार होता है। हवा भरने से गुब्बारा भारी होता है।' },
@@ -217,6 +231,7 @@ export const CHAPTER = {
         },
         {
           id: 'vayu-dab-q2',
+          difficulty: 'medium',
           text: 'ऊँची पहाड़ी पर चढ़ने पर वायुमंडलीय दाब कैसा होता है?',
           options: [
             { id: 'a', text: 'बढ़ता है', correct: false, misconception: 'height-more-pressure', feedback: 'ऊपर जाने पर ऊपर की हवा का भार कम होता है, इसलिए दाब घटता है।' },
@@ -227,6 +242,7 @@ export const CHAPTER = {
         },
         {
           id: 'vayu-dab-q3',
+          difficulty: 'hard',
           text: 'गुब्बारा हवा से भरने पर क्यों फूलता है?',
           options: [
             { id: 'a', text: 'हवा का कोई दाब नहीं होता', correct: false, misconception: 'air-no-weight', feedback: 'हवा का दाब होता है। गुब्बारे का फूलना इसी दाब का असर है।' },

@@ -1,4 +1,4 @@
-import { getProfile, getActiveProfileId, addStudySeconds } from './store.js';
+import { AVATARS, getProfile, getActiveProfileId, addStudySeconds, getUsage } from './store.js';
 import { syncAll, isOnline } from './sync.js';
 
 // Route name -> whether it needs an active profile.
@@ -108,6 +108,55 @@ function updateNav(name) {
   }
 }
 
+// One reusable header, built on first use and kept in the DOM across renders.
+let headerEl = null;
+let headerParts = null;
+
+function buildHeader() {
+  headerEl = document.createElement('header');
+  headerEl.className = 'app-header';
+
+  const profileLink = document.createElement('a');
+  profileLink.className = 'app-header-profile';
+  profileLink.href = '#/profiles';
+
+  const avatar = document.createElement('span');
+  avatar.className = 'app-header-avatar';
+  const name = document.createElement('span');
+  name.className = 'app-header-name';
+  profileLink.append(avatar, name);
+
+  const status = document.createElement('div');
+  status.className = 'app-header-status';
+  const dot = document.createElement('span');
+  const data = document.createElement('span');
+  data.className = 'app-header-data';
+  status.append(dot, data);
+
+  headerEl.append(profileLink, status);
+  headerParts = { avatar, name, dot, data };
+}
+
+function updateStatusDot() {
+  if (!headerParts) return;
+  headerParts.dot.className = `status-dot ${navigator.onLine ? 'online' : 'offline'}`;
+}
+
+// Shows the header for an active profile; removes it when there is none.
+function refreshHeader(profile) {
+  if (!profile) {
+    if (headerEl) headerEl.remove();
+    return;
+  }
+  if (!headerEl) buildHeader();
+  const avatar = AVATARS.find((a) => a.id === profile.avatar) || AVATARS[0];
+  headerParts.avatar.textContent = avatar.emoji;
+  headerParts.name.textContent = profile.nickname;
+  updateStatusDot();
+  const kb = Math.round(getUsage().bytes / 1024);
+  headerParts.data.textContent = `आज ~${kb} KB डेटा`;
+}
+
 function renderError() {
   appEl.innerHTML = '';
   const box = document.createElement('div');
@@ -158,6 +207,8 @@ async function route() {
     const mod = await import(`./screens/${name}.js`);
     if (token !== routeToken) return;
     appEl.innerHTML = '';
+    refreshHeader(profile);
+    if (headerEl && profile) appEl.prepend(headerEl);
     await mod.render(appEl, ctx);
   } catch (err) {
     if (token !== routeToken) return;
@@ -202,6 +253,8 @@ async function syncOnLoad() {
 function init() {
   buildNav();
   window.addEventListener('hashchange', route);
+  window.addEventListener('online', updateStatusDot);
+  window.addEventListener('offline', updateStatusDot);
   window.addEventListener('online', () => {
     syncActive();
   });

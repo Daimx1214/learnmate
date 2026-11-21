@@ -1,10 +1,57 @@
 import { CHAPTER } from '../data/chapter.js';
-import { addDoubt, updateDoubt, getDoubts } from '../store.js';
+import { addDoubt, updateDoubt, getDoubts, getProgress } from '../store.js';
 import { answerDoubt, findClosestConcept } from '../tutor.js';
 import { isOnline } from '../sync.js';
+import { weakConcepts } from '../mastery.js';
 
 const TEXT_MAX = 300;
 const LIST_CAP = 10;
+const PHOTO_MAX_SIDE = 800;
+const PHOTO_MAX_BYTES = 153600;
+const PHOTO_QUALITIES = [0.8, 0.7, 0.6, 0.5];
+const OFFLINE_NOTE = 'इंटरनेट नहीं है। आपका सवाल सहेज लिया गया है, जुड़ने पर जवाब मिल जाएगा। अभी इस विषय का पाठ देखें:';
+const PHOTO_NOTE = 'फ़ोटो सहेज लिया गया है। फ़ोटो को अभी पढ़ा या जाँचा नहीं गया है।';
+
+// Approximate decoded size of a data URL's payload, in bytes.
+function dataUrlBytes(url) {
+  const comma = url.indexOf(',');
+  return Math.ceil(((url.length - comma - 1) * 3) / 4);
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('decode'));
+    img.src = src;
+  });
+}
+
+// Scales the longest side to at most PHOTO_MAX_SIDE, then steps JPEG quality
+// down until the encoded size fits PHOTO_MAX_BYTES. Rejects if it cannot fit.
+async function downscalePhoto(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await loadImage(url);
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
+    if (!w || !h) throw new Error('decode');
+    const scale = Math.min(1, PHOTO_MAX_SIDE / Math.max(w, h));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(w * scale));
+    canvas.height = Math.max(1, Math.round(h * scale));
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    for (const q of PHOTO_QUALITIES) {
+      const dataUrl = canvas.toDataURL('image/jpeg', q);
+      if (dataUrl.startsWith('data:image/jpeg') && dataUrlBytes(dataUrl) <= PHOTO_MAX_BYTES) {
+        return dataUrl;
+      }
+    }
+    throw new Error('too-large');
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -49,10 +96,48 @@ export function render(root, ctx) {
 
   const speakBtn = button('बोलकर पूछें', 'btn-yellow', () => toggleSpeech());
   const sendBtn = button('भेजें', 'btn', () => submit());
-  const actions = el('div', 'actions');
-  actions.append(speakBtn, sendBtn);
 
-  card.append(textarea, listeningNote, speechNote, actions);
+  // ----- optional photo -----
+  const photoInput = el('input');
+  photoInput.type = 'file';
+  photoInput.accept = 'image/*';
+  photoInput.hidden = true;
+  const photoBtn = button('फ़ोटो जोड़ें', 'btn-secondary', () => photoInput.click());
+  const photoNote = el('p', 'muted');
+  let pendingPhoto = null;
+
+  function resetPhoto() {
+    pendingPhoto = null;
+    photoInput.value = '';
+    photoNote.textContent = '';
+  }
+
+  async function onPhotoChosen(file) {
+    pendingPhoto = null;
+    if (!file) return;
+    if (!String(file.type || '').startsWith('image/')) {
+      photoInput.value = '';
+      photoNote.textContent = 'यह फ़ाइल फ़ोटो नहीं है, कृपया कोई इमेज चुनें';
+      return;
+    }
+    photoNote.textContent = 'फ़ोटो तैयार हो रही है...';
+    try {
+      pendingPhoto = await downscalePhoto(file);
+      photoNote.textContent = 'फ़ोटो जुड़ गई है';
+    } catch (e) {
+      photoInput.value = '';
+      photoNote.textContent =
+        e && e.message === 'too-large'
+          ? 'फ़ोटो बहुत बड़ी है, कोई दूसरी फ़ोटो चुनें'
+          : 'फ़ोटो नहीं खोली जा सकी, कोई दूसरी फ़ोटो चुनें';
+    }
+  }
+  photoInput.addEventListener('change', () => onPhotoChosen(photoInput.files && photoInput.files[0]));
+
+  const actions = el('div', 'actions');
+  actions.append(photoBtn, speakBtn, sendBtn);
+
+  card.append(textarea, listeningNote, speechNote, photoInput, photoNote, actions);
   root.appendChild(card);
 
   // ----- speech -----
@@ -139,18 +224,14 @@ export function render(root, ctx) {
     }
   }
 
-  function showOffline(text) {
+  // Offline-style card of the closest concept. Photo-only doubts pass '' for
+  // text and PHOTO_NOTE as intro; the photo is never read for the concept pick.
+  function showOffline(text, intro = OFFLINE_NOTE, forcedConcept = null) {
     answerBox.replaceChildren();
-    answerBox.appendChild(
-      el(
-        'div',
-        'notice',
-        'इंटरनेट नहीं है। आपका सवाल सहेज लिया गया है, जुड़ने पर जवाब मिल जाएगा। अभी इस विषय का पाठ देखें:',
-      ),
-    );
+    answerBox.appendChild(el('div', 'notice', intro));
 
     const closest = findClosestConcept(text, CHAPTER);
-    const concept = (closest && closest.concept) || (CHAPTER.concepts || [])[0];
+    const concept = forcedConcept || (closest && closest.concept) || (CHAPTER.concepts || [])[0];
     if (!concept) return;
 
     const conceptCard = el('div', 'card');
@@ -182,16 +263,36 @@ export function render(root, ctx) {
     return result;
   }
 
+  // Photo-only doubts get status 'photo_only' (not 'queued'), so the local
+  // flush never answers them from empty text.
+  function showPhotoOnly() {
+    // Weakest concept for this learner; if none is returned, showOffline falls back to the first concept.
+    const weak = weakConcepts(CHAPTER, getProgress(profile.id));
+    showOffline('', PHOTO_NOTE, (weak && weak[0]) || null);
+  }
+
   function submit() {
     const text = textarea.value.trim();
+    const photo = pendingPhoto;
+    if (!text && !photo) {
+      ctx.toast('कृपया सवाल लिखें या फ़ोटो जोड़ें');
+      return;
+    }
+
     if (!text) {
-      ctx.toast('कृपया सवाल लिखें');
+      addDoubt(profile.id, { text: '', status: 'photo_only', photo });
+      resetPhoto();
+      showPhotoOnly();
+      renderList();
       return;
     }
 
     const offline = !isOnline();
-    const id = addDoubt(profile.id, { text, status: 'queued' });
+    const fields = { text, status: 'queued' };
+    if (photo) fields.photo = photo;
+    const id = addDoubt(profile.id, fields);
     textarea.value = '';
+    resetPhoto();
 
     if (offline) {
       showOffline(text);
@@ -208,6 +309,10 @@ export function render(root, ctx) {
   root.appendChild(list);
 
   function answerStored(doubt) {
+    if (!doubt.text) {
+      showPhotoOnly();
+      return;
+    }
     if (!isOnline()) {
       ctx.toast('इंटरनेट नहीं है, जुड़ने पर जवाब मिलेगा');
       return;
@@ -230,10 +335,24 @@ export function render(root, ctx) {
     for (const d of doubts) {
       const answered = d.status === 'answered';
       const item = el('div', 'card');
-      const q = el('p', null, d.text);
+      const q = el('p', null, d.text || 'केवल फ़ोटो');
       q.style.fontSize = '18px';
-      const status = el('span', 'chip', answered ? 'जवाब मिला' : 'भेजने की प्रतीक्षा में');
-      item.append(q, status);
+      const status = el('span', 'chip', answered ? 'जवाब मिला' : d.status === 'photo_only' ? 'फ़ोटो सहेजी गई' : 'भेजने की प्रतीक्षा में');
+      const row = el('div');
+      row.style.display = 'flex';
+      row.style.alignItems = 'center';
+      row.style.gap = '8px';
+      if (d.photo) {
+        const thumb = el('img');
+        thumb.src = d.photo;
+        thumb.alt = 'फ़ोटो';
+        thumb.style.maxWidth = '48px';
+        thumb.style.maxHeight = '48px';
+        thumb.style.objectFit = 'contain';
+        row.appendChild(thumb);
+      }
+      row.appendChild(q);
+      item.append(row, status);
       if (!answered) {
         item.appendChild(button('जवाब देखें', 'btn-ghost', () => answerStored(d)));
       }

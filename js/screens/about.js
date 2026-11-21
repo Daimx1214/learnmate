@@ -107,4 +107,9 @@ export function render(root, ctx) {
     ),
   );
   root.appendChild(data);
+
+  // Entry point to the family view.
+  const family = el('a', 'btn-secondary', 'परिवार के लिए: कोड से प्रगति देखें');
+  family.setAttribute('href', '#/family');
+  root.appendChild(family);
 }

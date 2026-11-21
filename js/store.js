@@ -212,8 +212,10 @@ export function getDoubts(profileId) {
   return Array.isArray(list) ? list.slice() : [];
 }
 
+// photo: optional JPEG data URL (already downscaled by the caller). Records
+// without a photo stay valid. Photos are never sent by sync.
 export function addDoubt(profileId, fields = {}) {
-  const { text, status, ...rest } = fields;
+  const { text, status, photo, ...rest } = fields;
   const id = newId();
   const doubt = {
     ...rest,
@@ -222,6 +224,7 @@ export function addDoubt(profileId, fields = {}) {
     status: status || 'queued',
     createdAt: new Date().toISOString(),
   };
+  if (typeof photo === 'string' && photo.startsWith('data:image/')) doubt.photo = photo;
   let list = getDoubts(profileId);
   list.push(doubt);
   if (list.length > MAX_DOUBTS) list = list.slice(list.length - MAX_DOUBTS);

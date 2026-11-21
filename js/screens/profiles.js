@@ -112,4 +112,9 @@ export function render(root, ctx) {
   }
 
   root.appendChild(el('p', 'muted', 'एक फ़ोन पर अधिकतम 4 प्रोफ़ाइल'));
+
+  // Entry point to the family view.
+  const family = touchButton('btn-secondary', 'परिवार के लिए: कोड से प्रगति देखें');
+  family.addEventListener('click', () => ctx.navigate('#/family'));
+  root.appendChild(family);
 }

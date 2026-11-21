@@ -35,6 +35,18 @@ function isAttempted(progress, concept) {
 function renderList(root, ctx, progress) {
   root.appendChild(el('h1', 'screen-title', 'सीखें: बल और दाब'));
 
+  // Pack status line: lesson card count, then offline readiness once the service worker is ready.
+  const packCount = (CHAPTER.concepts || []).length;
+  const packLine = el('p', 'muted', `पाठ कार्ड: ${packCount}`);
+  root.appendChild(packLine);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready
+      .then(() => {
+        if (packLine.isConnected) packLine.textContent += ' · ऑफ़लाइन के लिए तैयार';
+      })
+      .catch(() => {});
+  }
+
   const list = el('div', 'list');
   for (const concept of CHAPTER.concepts || []) {
     const m = conceptMastery(progress, concept);
