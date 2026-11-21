@@ -440,7 +440,6 @@ textarea {
 .app-footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
-  margin-top: 24px;
   padding: 16px 0 8px;
   font-size: 14px;
   color: var(--muted);
