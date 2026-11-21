@@ -133,7 +133,7 @@ export function getProfiles() {
   return Array.isArray(list) ? list.slice() : [];
 }
 
-export function createProfile({ nickname, avatar } = {}) {
+export function createProfile({ nickname, avatar, photo } = {}) {
   const nick = String(nickname ?? '').trim();
   const len = [...nick].length;
   if (len < 1 || len > NICK_MAX) {
@@ -141,6 +141,13 @@ export function createProfile({ nickname, avatar } = {}) {
   }
   if (!AVATARS.some((a) => a.id === avatar)) {
     throw new Error('कृपया एक अवतार चुनें');
+  }
+  // Optional profile photo (owner request, 22 Nov): a small data URL that
+  // lives only in this phone's storage. It is never synced or sent anywhere.
+  if (photo !== undefined && photo !== null) {
+    if (typeof photo !== 'string' || !photo.startsWith('data:image/') || photo.length > 160000) {
+      throw new Error('फ़ोटो सही नहीं है');
+    }
   }
   const profiles = getProfiles();
   if (profiles.length >= MAX_PROFILES) {
@@ -151,6 +158,7 @@ export function createProfile({ nickname, avatar } = {}) {
     id: newId(),
     nickname: nick,
     avatar,
+    photo: photo || null,
     familyCode: makeFamilyCode(taken),
     createdAt: new Date().toISOString(),
   };

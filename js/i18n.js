@@ -23,6 +23,10 @@ export const STRINGS = {
 
   // ----- profiles -----
   profiles_title: { hi: 'प्रोफ़ाइल चुनें' },
+  profiles_photo_add: { hi: 'अपनी फ़ोटो लगाएँ' },
+  profiles_photo_change: { hi: 'फ़ोटो बदलें' },
+  profiles_photo_note: { hi: 'फ़ोटो सिर्फ़ इसी फ़ोन पर रहेगी, कहीं नहीं भेजी जाएगी।' },
+  profiles_photo_failed: { hi: 'फ़ोटो नहीं लग पाई, फिर से कोशिश करें' },
   profiles_delete: { hi: 'हटाएँ' },
   profiles_confirm_delete: { hi: 'क्या यह प्रोफ़ाइल हटाना है?' },
   profiles_delete_failed: { hi: 'प्रोफ़ाइल नहीं हटाई जा सकी' },
