@@ -630,3 +630,45 @@ td:last-child {
   text-align: center;
   padding: 12px;
 }
+
+.chapter-heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blue);
+  margin: 8px 0 0;
+}
+
+.card > .chapter-heading:first-child {
+  margin-top: 0;
+}
+
+/* Small-screen hardening for 360px phones (owner: UI theek karo, 21 Nov). */
+.stat-row {
+  min-width: 0;
+}
+
+.stat-value {
+  overflow-wrap: break-word;
+}
+
+.app-header-profile {
+  min-width: 0;
+}
+
+.app-header-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  th {
+    white-space: normal;
+  }
+
+  th,
+  td {
+    padding: 8px 6px;
+    font-size: 15px;
+  }
+}

@@ -3,7 +3,7 @@
 import { getSettings, setSettings, addUsage, getDoubts, updateDoubt, getProfile, getProgress } from './store.js';
 import { conceptStatus, isMastered, weekMinutes } from './mastery.js';
 import { answerDoubt } from './tutor.js';
-import { CHAPTER } from './data/chapter.js';
+import { SUBJECT_PACK } from './data/chapter.js';
 
 const SUMMARY_HELP_CAP = 20;
 const TITLE_CAP = 60;
@@ -45,7 +45,7 @@ export async function syncFamilySummary(profile, progress, manual = false) {
 
     const mastery = (progress && progress.mastery) || {};
     const attempts = (progress && Array.isArray(progress.attempts)) ? progress.attempts : [];
-    const concepts = (CHAPTER && CHAPTER.concepts) || [];
+    const concepts = (SUBJECT_PACK && SUBJECT_PACK.concepts) || [];
 
     const conceptsNeedingHelp = concepts
       .filter((c) => {
@@ -97,7 +97,7 @@ export function flushDoubtQueue(profileId) {
   for (const d of getDoubts(profileId)) {
     if (d.status !== 'queued') continue;
     try {
-      const r = answerDoubt(d.text, CHAPTER);
+      const r = answerDoubt(d.text, SUBJECT_PACK);
       updateDoubt(profileId, d.id, {
         status: 'answered',
         answer: r.answer,

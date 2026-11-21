@@ -4,7 +4,7 @@ A Hindi-first study tutor for a Class 8 government-school student who learns Sci
 
 Built for **ACE Builders Hackathon 2026** (GigPoint × Codebenders), Problem Statement 3: *The Last-Mile Tutor*.
 
-Content: original Hindi written for **NCERT Class 8 Science, Chapter 8: Force and Pressure (बल और दाब)**, in our own words, not copied from the textbook.
+Content: original Hindi written for **NCERT Class 8 Science**, in our own words, not copied from the textbook. Chapter 8: Force and Pressure (बल और दाब) has the full pack (5 concepts); every other chapter of the subject has one starter concept (card + 3 questions), added on the owner's instruction on 21 Nov.
 
 ## The problem
 
@@ -13,7 +13,7 @@ A Hindi-medium student in a small town often has no tutor, no personal device, a
 ## What Saathi (साथी) does
 
 - **Profiles without accounts** — up to 4 learners on one phone, each entering with an avatar and a nickname. No phone number, no email, no real name is ever collected.
-- **Learn** — short concept cards in simple Hindi for Class 8 Science, *Force and Pressure* (बल और दाब), each with an everyday example and a read-aloud button (speech synthesis, hi-IN).
+- **Learn** — short concept cards in simple Hindi for all 15 chapters of Class 8 Science, grouped by chapter, each with an everyday example and a read-aloud button (speech synthesis, hi-IN).
 - **Practice that understands mistakes** — every wrong MCQ option is tagged with the misunderstanding behind it, and feedback explains that exact mistake in Hindi. A per-concept mastery score (starting at 0.3, updated as `m ← m + 0.3 × (correct − m)`) drives the next question: mostly the weakest concept, and after two wrong answers in a row the lesson card is shown again before continuing.
 - **Ask a doubt** — type in Hindi or speak (browser speech recognition, hi-IN). The tutor is on-device keyword matching over the chapter content, not an LLM call: answers are short, step-by-step Hindi, ending with a small check question, and they work immediately even offline. Only the family sync waits for connectivity. This keeps the tutor free, private and fully offline.
 - **Offline-first PWA** — installable; the chapter works fully offline after one download. Progress is stored on the device and syncs when a connection returns. A data meter shows today's approximate usage, with a data-saver mode.

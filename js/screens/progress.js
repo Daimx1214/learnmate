@@ -1,7 +1,7 @@
 // js/screens/progress.js — progress screen: streak, mastery per concept, weak topics,
 // family code with sync, and the data-saver toggle. Never shows doubt texts.
 
-import { CHAPTER } from '../data/chapter.js';
+import { CHAPTERS, SUBJECT_PACK } from '../data/chapter.js';
 import { getProgress, getSettings, setSettings, getUsage } from '../store.js';
 import { conceptStatus, weakConcepts, computeStreak, weekMinutes } from '../mastery.js';
 import { syncFamilySummary } from '../sync.js';
@@ -52,7 +52,9 @@ function masteryCard(progress) {
   const mastery = progress.mastery || {};
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
 
-  for (const concept of CHAPTER.concepts || []) {
+  for (const chapter of CHAPTERS) {
+    card.appendChild(el('h3', 'chapter-heading', chapter.title));
+    for (const concept of chapter.concepts || []) {
     const raw = Number.isFinite(Number(mastery[concept.id])) ? Number(mastery[concept.id]) : 0.3;
     const m = Math.min(1, Math.max(0, raw));
     const attempted = attempts.some((a) => a.conceptId === concept.id);
@@ -63,6 +65,7 @@ function masteryCard(progress) {
     head.append(el('strong', null, concept.title), el('span', 'chip', t(STATUS_LABEL[status])));
     row.append(head, el('p', 'muted', `${Math.round(m * 100)}%`), progressBar(m));
     card.appendChild(row);
+    }
   }
   return card;
 }
@@ -72,7 +75,7 @@ function weakCard(progress) {
   card.appendChild(el('h2', null, t('weak_heading')));
 
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
-  const weak = weakConcepts(CHAPTER, progress)
+  const weak = weakConcepts(SUBJECT_PACK, progress)
     .filter((c) => attempts.some((a) => a.conceptId === c.id))
     .slice(0, WEAK_CAP);
 

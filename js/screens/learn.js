@@ -1,4 +1,4 @@
-import { CHAPTER } from '../data/chapter.js';
+import { CHAPTERS, ALL_CONCEPTS } from '../data/chapter.js';
 import { getProgress } from '../store.js';
 import { conceptStatus } from '../mastery.js';
 import { t, speechLang } from '../i18n.js';
@@ -38,7 +38,7 @@ function renderList(root, ctx, progress) {
   root.appendChild(el('h1', 'screen-title', t('learn_title')));
 
   // Pack status line: lesson card count, then offline readiness once the service worker is ready.
-  const packCount = (CHAPTER.concepts || []).length;
+  const packCount = ALL_CONCEPTS.length;
   const packLine = el('p', 'muted', t('learn_cards', { n: packCount }));
   root.appendChild(packLine);
   if ('serviceWorker' in navigator) {
@@ -50,7 +50,9 @@ function renderList(root, ctx, progress) {
   }
 
   const list = el('div', 'list');
-  for (const concept of CHAPTER.concepts || []) {
+  for (const chapter of CHAPTERS) {
+    list.appendChild(el('h2', 'chapter-heading', chapter.title));
+    for (const concept of chapter.concepts || []) {
     const m = conceptMastery(progress, concept);
     const status = conceptStatus(m, isAttempted(progress, concept), progress?.attemptCounts?.[concept.id] ?? 0);
 
@@ -67,6 +69,7 @@ function renderList(root, ctx, progress) {
 
     card.append(btn, chip, bar);
     list.appendChild(card);
+    }
   }
   root.appendChild(list);
 }
@@ -131,7 +134,7 @@ export function render(root, ctx) {
     return;
   }
 
-  const concept = (CHAPTER.concepts || []).find((c) => c.id === conceptId);
+  const concept = ALL_CONCEPTS.find((c) => c.id === conceptId);
   if (!concept) {
     root.appendChild(el('p', null, t('learn_not_found')));
     const back = el('button', 'btn-secondary', t('back_to_list'));

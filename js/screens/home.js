@@ -1,4 +1,4 @@
-import { CHAPTER } from '../data/chapter.js';
+import { SUBJECT_PACK } from '../data/chapter.js';
 import { getProgress } from '../store.js';
 import { computeStreak, weakConcepts } from '../mastery.js';
 import { t } from '../i18n.js';
@@ -19,7 +19,7 @@ function todayKey(d = new Date()) {
 }
 
 function overallMastery(progress) {
-  const concepts = CHAPTER.concepts || [];
+  const concepts = SUBJECT_PACK.concepts || [];
   if (!concepts.length) return 0;
   const map = (progress && progress.mastery) || {};
   const sum = concepts.reduce((acc, c) => acc + (Number.isFinite(Number(map[c.id])) ? Number(map[c.id]) : 0.3), 0);
@@ -45,7 +45,7 @@ export function render(root, ctx) {
 
   const todayMinutes = Math.round((Number(studyDays[today]) || 0) / 60);
   const streak = computeStreak(studyDays, today);
-  const weakest = weakConcepts(CHAPTER, progress)[0];
+  const weakest = weakConcepts(SUBJECT_PACK, progress)[0];
   const weakTitle = weakest ? weakest.title : t('weak_none');
   const mastery = overallMastery(progress);
   const percent = Math.round(mastery * 100);
@@ -81,6 +81,6 @@ export function render(root, ctx) {
   }
   root.appendChild(actions);
 
-  root.appendChild(el('p', 'muted', t('home_chapter', { title: CHAPTER.title })));
+  root.appendChild(el('p', 'muted', t('home_chapter', { title: SUBJECT_PACK.title })));
   root.appendChild(el('p', 'muted', t('home_base')));
 }

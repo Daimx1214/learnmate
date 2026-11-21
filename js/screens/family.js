@@ -1,6 +1,6 @@
 import { addUsage, getProfiles, getProgress } from '../store.js';
 import { conceptStatus, isMastered, weekMinutes } from '../mastery.js';
-import { CHAPTER } from '../data/chapter.js';
+import { SUBJECT_PACK } from '../data/chapter.js';
 import { t } from '../i18n.js';
 
 const CODE_RE = /^[A-HJ-NP-Z2-9]{6}$/;
@@ -53,7 +53,7 @@ function localSummary(code) {
   const progress = getProgress(profile.id);
   const mastery = progress.mastery || {};
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
-  const concepts = (CHAPTER && CHAPTER.concepts) || [];
+  const concepts = (SUBJECT_PACK && SUBJECT_PACK.concepts) || [];
 
   const conceptsNeedingHelp = concepts
     .filter((c) => {

@@ -1,4 +1,4 @@
-import { CHAPTER, MISCONCEPTIONS } from '../data/chapter.js';
+import { SUBJECT_PACK, MISCONCEPTIONS } from '../data/chapter.js';
 import { getProgress, saveProgress } from '../store.js';
 import { applyAnswer, shouldShowLesson, pickNextQuestion } from '../mastery.js';
 import { t } from '../i18n.js';
@@ -37,7 +37,7 @@ export function render(root, ctx) {
   root.appendChild(view);
 
   const pick = () => {
-    picked = pickNextQuestion(CHAPTER, progress) || null;
+    picked = pickNextQuestion(SUBJECT_PACK, progress) || null;
     answered = null;
   };
 

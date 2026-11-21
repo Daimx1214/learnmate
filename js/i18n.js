@@ -52,7 +52,7 @@ export const STRINGS = {
   sync_later: { hi: 'अभी सिंक नहीं हो पाया, इंटरनेट जुड़ने पर अपने-आप होगा' },
   sync_saved_local: { hi: 'इस फ़ोन पर सहेजा गया — परिवार इसी फ़ोन पर कोड से देख सकता है' },
   profiles_intro: { hi: 'कक्षा 8 विज्ञान — हिंदी में, बिना ट्यूटर के, कम इंटरनेट पर।' },
-  ask_scope: { hi: 'LearnMate इसी अध्याय (बल और दाब) से जवाब देता है।' },
+  ask_scope: { hi: 'LearnMate कक्षा 8 विज्ञान के सभी अध्यायों से जवाब देता है।' },
   data_saver: { hi: 'डेटा बचत' },
 
   // ----- home -----
@@ -66,11 +66,11 @@ export const STRINGS = {
   home_btn_learn: { hi: 'आज का पाठ सीखें' },
   home_btn_practice: { hi: 'अभ्यास करें' },
   home_btn_ask: { hi: 'सवाल पूछें' },
-  home_chapter: { hi: 'अध्याय: {title}' },
-  home_base: { hi: 'आधार: NCERT कक्षा 8 विज्ञान, अध्याय 8: बल और दाब' },
+  home_chapter: { hi: 'विषय: {title} (सभी 15 अध्याय)' },
+  home_base: { hi: 'आधार: NCERT कक्षा 8 विज्ञान' },
 
   // ----- learn -----
-  learn_title: { hi: 'सीखें: बल और दाब' },
+  learn_title: { hi: 'सीखें: कक्षा 8 विज्ञान' },
   learn_cards: { hi: 'पाठ कार्ड: {n}' },
   learn_offline_ready: { hi: ' · ऑफ़लाइन के लिए तैयार' },
   learn_example: { hi: 'उदाहरण: {example}' },
