@@ -1,4 +1,4 @@
-import { AVATARS, getProfile, getActiveProfileId, addStudySeconds, getUsage } from './store.js';
+import { AVATARS, getProfile, getActiveProfileId, addStudySeconds } from './store.js';
 import { syncAll, isOnline } from './sync.js';
 import { t } from './i18n.js';
 import { getLang, setLang } from './lang.js';
@@ -131,9 +131,7 @@ function buildHeader() {
   const status = document.createElement('div');
   status.className = 'app-header-status';
   const dot = document.createElement('span');
-  const data = document.createElement('span');
-  data.className = 'app-header-data';
-  status.append(dot, data);
+  status.append(dot);
 
   headerEl.append(profileLink, status);
 
@@ -146,7 +144,7 @@ function buildHeader() {
     window.location.reload();
   });
   headerEl.appendChild(langBtn);
-  headerParts = { avatar, name, dot, data };
+  headerParts = { avatar, name, dot };
 }
 
 function updateStatusDot() {
@@ -189,8 +187,6 @@ function refreshHeader(profile) {
   }
   headerParts.name.textContent = profile.nickname;
   updateStatusDot();
-  const kb = Math.round(getUsage().bytes / 1024);
-  headerParts.data.textContent = kb === 0 ? t('data_today_zero') : t('data_today', { kb });
 }
 
 // One reusable footer, appended at the end of #app on every render.
@@ -202,18 +198,16 @@ function buildFooter() {
   footerEl.className = 'app-footer';
 
   const links = document.createElement('p');
+  links.className = 'footer-links';
   const about = document.createElement('a');
   about.href = '#/about';
   about.textContent = t('about_title');
   const family = document.createElement('a');
   family.href = '#/family';
   family.textContent = t('family_title');
-  links.append(about, document.createTextNode(' · '), family);
+  links.append(about, family);
 
-  const line = document.createElement('p');
-  line.textContent = t('footer_line');
-
-  footerEl.append(links, line);
+  footerEl.append(links);
   return footerEl;
 }
 
@@ -233,6 +227,27 @@ function renderError() {
 
   box.append(msg, retry);
   appEl.appendChild(box);
+}
+
+// Scroll-reveal: screen blocks rise in, staggered, as they enter view.
+let revealObserver = null;
+function animateIn() {
+  if (!('IntersectionObserver' in window)) return;
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealObserver.unobserve(e.target);
+        }
+      }
+    }, { threshold: 0.08 });
+  }
+  appEl.querySelectorAll('.card, .concept-row, .list > *').forEach((b, i) => {
+    b.style.setProperty('--d', `${Math.min(i, 10) * 45}ms`);
+    b.classList.add('reveal');
+    revealObserver.observe(b);
+  });
 }
 
 async function route() {
@@ -273,6 +288,8 @@ async function route() {
     if (headerEl) headerEl.after(navEl);
     await mod.render(appEl, ctx);
     appEl.appendChild(buildFooter());
+    document.body.dataset.route = name;
+    animateIn();
   } catch (err) {
     if (token !== routeToken) return;
     console.error(err);
@@ -323,6 +340,9 @@ function init() {
   window.addEventListener('online', () => {
     syncActive();
   });
+  window.addEventListener('scroll', () => {
+    if (headerEl) headerEl.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
   setInterval(studyTick, STUDY_TICK_MS);
   route();
   syncOnLoad();

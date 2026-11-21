@@ -1020,3 +1020,108 @@ caption {
 .app-footer p {
   margin: 2px 0;
 }
+
+/* ----- Motion pack (22 Nov 2026, owner request): animations, transitions,
+   scroll effects, and a small distinct accent per screen. ----- */
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+}
+.reveal.in {
+  animation: riseIn 0.45s cubic-bezier(0.22, 0.8, 0.32, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.app-header {
+  transition: box-shadow 0.25s ease;
+}
+.app-header.scrolled {
+  box-shadow: 0 6px 18px rgba(31, 58, 95, 0.16);
+}
+
+.btn, button {
+  transition: transform 0.16s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-1px); }
+  .card:hover { transform: translateY(-2px); }
+}
+.card {
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+.top-nav a {
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.16s ease;
+}
+.top-nav a:active {
+  transform: scale(0.96);
+}
+.avatar-option {
+  transition: transform 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+.avatar-option:active {
+  transform: scale(0.94);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.chip {
+  animation: popIn 0.3s ease both;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.toast {
+  animation: toastIn 0.3s ease both;
+}
+
+/* Each screen gets its own title accent colour. */
+body[data-route="learn"] .screen-title::after { background: var(--green); }
+body[data-route="ask"] .screen-title::after { background: var(--blue); }
+body[data-route="practice"] .screen-title::after { background: #E8A317; }
+body[data-route="progress"] .screen-title::after { background: var(--green); }
+
+/* Footer: one clean row of pill links. */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0;
+}
+.app-footer .footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.16s ease, background-color 0.2s ease;
+}
+.app-footer .footer-links a:active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; }
+}
