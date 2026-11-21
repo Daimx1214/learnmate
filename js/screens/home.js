@@ -1,4 +1,5 @@
-import { localizedPack } from '../data/chapter.js';
+import { localizedPack , availableSubjectIds } from '../data/chapter.js';
+import { getSubjectId, setSubjectId } from '../data/subject-store.js';
 import { getProgress } from '../store.js';
 import { computeStreak, weakConcepts } from '../mastery.js';
 import { t } from '../i18n.js';
@@ -32,6 +33,24 @@ function statRow(label, value) {
   return row;
 }
 
+function subjectRow() {
+  const wrap = el('div', 'subject-row');
+  const label = el('span', 'subject-label', t('subj_label'));
+  const sel = document.createElement('select');
+  sel.className = 'subject-select';
+  sel.setAttribute('aria-label', t('subj_label'));
+  for (const id of availableSubjectIds()) {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = t('subj_' + id);
+    if (id === getSubjectId()) opt.selected = true;
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', () => { setSubjectId(sel.value); location.reload(); });
+  wrap.append(label, sel);
+  return wrap;
+}
+
 export function render(root, ctx) {
   const profile = ctx.profile;
   if (!profile) {
@@ -51,6 +70,7 @@ export function render(root, ctx) {
   const percent = Math.round(mastery * 100);
 
   root.appendChild(el('h1', 'screen-title', t('home_greeting', { name: profile.nickname })));
+  root.appendChild(subjectRow());
 
   const card = el('div', 'card');
   card.append(

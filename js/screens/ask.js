@@ -139,7 +139,7 @@ export function render(root, ctx) {
 
   card.append(textarea, listeningNote, speechNote, photoInput, photoNote, actions);
   root.appendChild(card);
-  root.appendChild(el('p', 'muted', t('ask_scope')));
+  root.appendChild(el('p', 'muted', t('ask_scope', { subject: localizedPack().title })));
 
   // ----- speech -----
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;

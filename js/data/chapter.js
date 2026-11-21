@@ -1825,14 +1825,51 @@ export const SUBJECT_PACK = {
   concepts: ALL_CONCEPTS,
 };
 
-// ----- Language support (added 22 Nov 2026, owner request) -----
+// ----- Multi-subject registry + language support -----
 // English is the default language; Hindi remains complete. localizedPack()
-// and localizedChapters() return the content in the current language.
+// and localizedChapters() return the SELECTED subject's content in the
+// current language. A subject is selectable only when its pack has chapters.
 import { EN_CHAPTERS, EN_CONCEPTS, EN_MISCONCEPTIONS, EN_PACK_TITLE } from './content-en.js';
+import { MATH_CHAPTERS, MATH_MISCONCEPTIONS, MATH_PACK_TITLE } from './math.js';
+import { EN_MATH_CHAPTERS, EN_MATH_CONCEPTS, EN_MATH_MISCONCEPTIONS, EN_MATH_TITLE } from './math-en.js';
+import { COMPUTER_CHAPTERS, COMPUTER_MISCONCEPTIONS, COMPUTER_PACK_TITLE } from './computer.js';
+import { EN_COMPUTER_CHAPTERS, EN_COMPUTER_CONCEPTS, EN_COMPUTER_MISCONCEPTIONS, EN_COMPUTER_TITLE } from './computer-en.js';
+import { ENGLISH_CHAPTERS, ENGLISH_MISCONCEPTIONS, ENGLISH_PACK_TITLE } from './english.js';
+import { EN_ENGLISH_CHAPTERS, EN_ENGLISH_CONCEPTS, EN_ENGLISH_MISCONCEPTIONS, EN_ENGLISH_TITLE } from './english-en.js';
+import { URDU_CHAPTERS, URDU_MISCONCEPTIONS, URDU_PACK_TITLE } from './urdu.js';
+import { EN_URDU_CHAPTERS, EN_URDU_CONCEPTS, EN_URDU_MISCONCEPTIONS, EN_URDU_TITLE } from './urdu-en.js';
+import { SOCIAL_CHAPTERS, SOCIAL_MISCONCEPTIONS, SOCIAL_PACK_TITLE } from './social.js';
+import { EN_SOCIAL_CHAPTERS, EN_SOCIAL_CONCEPTS, EN_SOCIAL_MISCONCEPTIONS, EN_SOCIAL_TITLE } from './social-en.js';
+import { ISLAMIAT_CHAPTERS, ISLAMIAT_MISCONCEPTIONS, ISLAMIAT_PACK_TITLE } from './islamiat.js';
+import { EN_ISLAMIAT_CHAPTERS, EN_ISLAMIAT_CONCEPTS, EN_ISLAMIAT_MISCONCEPTIONS, EN_ISLAMIAT_TITLE } from './islamiat-en.js';
 import { getLang } from '../lang.js';
+import { getSubjectId } from './subject-store.js';
 
-function localizeConcept(c) {
-  const en = EN_CONCEPTS[c.id];
+function packOf(id, title, chapters) {
+  return { id, title, concepts: chapters.flatMap((c) => c.concepts || []) };
+}
+
+const SUBJECTS_DATA = {
+  science: { chapters: CHAPTERS, pack: SUBJECT_PACK, misc: MISCONCEPTIONS, enChapters: EN_CHAPTERS, enConcepts: EN_CONCEPTS, enMisc: EN_MISCONCEPTIONS, enTitle: EN_PACK_TITLE },
+  math: { chapters: MATH_CHAPTERS, pack: packOf('math8', MATH_PACK_TITLE, MATH_CHAPTERS), misc: MATH_MISCONCEPTIONS, enChapters: EN_MATH_CHAPTERS, enConcepts: EN_MATH_CONCEPTS, enMisc: EN_MATH_MISCONCEPTIONS, enTitle: EN_MATH_TITLE },
+  computer: { chapters: COMPUTER_CHAPTERS, pack: packOf('computer8', COMPUTER_PACK_TITLE, COMPUTER_CHAPTERS), misc: COMPUTER_MISCONCEPTIONS, enChapters: EN_COMPUTER_CHAPTERS, enConcepts: EN_COMPUTER_CONCEPTS, enMisc: EN_COMPUTER_MISCONCEPTIONS, enTitle: EN_COMPUTER_TITLE },
+  english: { chapters: ENGLISH_CHAPTERS, pack: packOf('english8', ENGLISH_PACK_TITLE, ENGLISH_CHAPTERS), misc: ENGLISH_MISCONCEPTIONS, enChapters: EN_ENGLISH_CHAPTERS, enConcepts: EN_ENGLISH_CONCEPTS, enMisc: EN_ENGLISH_MISCONCEPTIONS, enTitle: EN_ENGLISH_TITLE },
+  urdu: { chapters: URDU_CHAPTERS, pack: packOf('urdu8', URDU_PACK_TITLE, URDU_CHAPTERS), misc: URDU_MISCONCEPTIONS, enChapters: EN_URDU_CHAPTERS, enConcepts: EN_URDU_CONCEPTS, enMisc: EN_URDU_MISCONCEPTIONS, enTitle: EN_URDU_TITLE },
+  social: { chapters: SOCIAL_CHAPTERS, pack: packOf('social8', SOCIAL_PACK_TITLE, SOCIAL_CHAPTERS), misc: SOCIAL_MISCONCEPTIONS, enChapters: EN_SOCIAL_CHAPTERS, enConcepts: EN_SOCIAL_CONCEPTS, enMisc: EN_SOCIAL_MISCONCEPTIONS, enTitle: EN_SOCIAL_TITLE },
+  islamiat: { chapters: ISLAMIAT_CHAPTERS, pack: packOf('islamiat8', ISLAMIAT_PACK_TITLE, ISLAMIAT_CHAPTERS), misc: ISLAMIAT_MISCONCEPTIONS, enChapters: EN_ISLAMIAT_CHAPTERS, enConcepts: EN_ISLAMIAT_CONCEPTS, enMisc: EN_ISLAMIAT_MISCONCEPTIONS, enTitle: EN_ISLAMIAT_TITLE },
+};
+
+export function availableSubjectIds() {
+  return Object.keys(SUBJECTS_DATA).filter((id) => (SUBJECTS_DATA[id].chapters || []).length > 0);
+}
+
+function currentSubject() {
+  const d = SUBJECTS_DATA[getSubjectId()];
+  return d && d.chapters.length > 0 ? d : SUBJECTS_DATA.science;
+}
+
+function localizeConceptIn(c, enConcepts) {
+  const en = enConcepts[c.id];
   if (!en) return c;
   return {
     ...c,
@@ -1857,27 +1894,30 @@ function localizeConcept(c) {
 }
 
 export function localizedChapters() {
-  if (getLang() !== 'en') return CHAPTERS;
-  return CHAPTERS.map((ch) => ({
+  const s = currentSubject();
+  if (getLang() !== 'en') return s.chapters;
+  return s.chapters.map((ch) => ({
     ...ch,
-    title: EN_CHAPTERS[ch.id] || ch.title,
-    concepts: (ch.concepts || []).map(localizeConcept),
+    title: s.enChapters[ch.id] || ch.title,
+    concepts: (ch.concepts || []).map((c) => localizeConceptIn(c, s.enConcepts)),
   }));
 }
 
 export function localizedPack() {
+  const s = currentSubject();
   const lang = getLang();
-  if (lang !== 'en') return { ...SUBJECT_PACK, lang };
+  if (lang !== 'en') return { ...s.pack, lang };
   return {
-    id: SUBJECT_PACK.id,
-    title: EN_PACK_TITLE,
+    id: s.pack.id,
+    title: s.enTitle,
     lang,
     concepts: localizedChapters().flatMap((ch) => ch.concepts || []),
   };
 }
 
 export function misconceptionLabel(tag) {
-  if (getLang() === 'en' && EN_MISCONCEPTIONS[tag]) return EN_MISCONCEPTIONS[tag];
-  const m = MISCONCEPTIONS[tag];
+  const s = currentSubject();
+  if (getLang() === 'en' && s.enMisc[tag]) return s.enMisc[tag];
+  const m = s.misc[tag] || MISCONCEPTIONS[tag];
   return m ? m.label : tag;
 }

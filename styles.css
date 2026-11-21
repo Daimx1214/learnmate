@@ -1148,3 +1148,26 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   color: var(--muted);
   margin: 8px 0 0;
 }
+
+.subject-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 14px;
+}
+.subject-label {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 15px;
+}
+.subject-select {
+  flex: 1;
+  min-height: 48px;
+  font: inherit;
+  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--rekha, #E3DCCB);
+  background: var(--card);
+  color: var(--ink, inherit);
+}

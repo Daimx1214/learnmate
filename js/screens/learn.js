@@ -1,4 +1,5 @@
-import { localizedChapters, localizedPack } from '../data/chapter.js';
+import { localizedChapters, localizedPack, availableSubjectIds } from '../data/chapter.js';
+import { getSubjectId, setSubjectId } from '../data/subject-store.js';
 import { getProgress } from '../store.js';
 import { conceptStatus } from '../mastery.js';
 import { t, speechLang } from '../i18n.js';
@@ -26,7 +27,7 @@ function setBar(bar, fraction) {
 function conceptMastery(progress, concept) {
   const map = (progress && progress.mastery) || {};
   const raw = Number(map[concept.id]);
-  return Math.min(1, Math.max(0, Number.isFinite(raw) ? raw : 0.3));
+  return Math.min(1, Math.max(0, Number.isFinite(raw) ? raw : 0));
 }
 
 function isAttempted(progress, concept) {
@@ -34,8 +35,27 @@ function isAttempted(progress, concept) {
   return attempts.some((a) => a.conceptId === concept.id);
 }
 
+function subjectRow() {
+  const wrap = el('div', 'subject-row');
+  const label = el('span', 'subject-label', t('subj_label'));
+  const sel = document.createElement('select');
+  sel.className = 'subject-select';
+  sel.setAttribute('aria-label', t('subj_label'));
+  for (const id of availableSubjectIds()) {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = t('subj_' + id);
+    if (id === getSubjectId()) opt.selected = true;
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', () => { setSubjectId(sel.value); location.reload(); });
+  wrap.append(label, sel);
+  return wrap;
+}
+
 function renderList(root, ctx, progress) {
   root.appendChild(el('h1', 'screen-title', t('learn_title')));
+  root.appendChild(subjectRow());
 
   // Pack status line: lesson card count, then offline readiness once the service worker is ready.
   const packCount = localizedPack().concepts.length;

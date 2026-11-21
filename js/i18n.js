@@ -66,7 +66,15 @@ export const STRINGS = {
   sync_later: { en: 'Could not sync now. It will happen on its own when the internet connects.', hi: 'अभी सिंक नहीं हो पाया, इंटरनेट जुड़ने पर अपने-आप होगा' },
   sync_saved_local: { en: 'Saved on this phone. Family can view it on this phone with the code.', hi: 'इस फ़ोन पर सहेजा गया — परिवार इसी फ़ोन पर कोड से देख सकता है' },
   profiles_intro: { en: 'Class 8 Science — no tutor needed, works on low internet.', hi: 'कक्षा 8 विज्ञान — हिंदी में, बिना ट्यूटर के, कम इंटरनेट पर।' },
-  ask_scope: { en: 'LearnMate answers from all chapters of Class 8 Science.', hi: 'LearnMate कक्षा 8 विज्ञान के सभी अध्यायों से जवाब देता है।' },
+  ask_scope: { en: 'LearnMate answers from all chapters of {subject}.', hi: 'LearnMate {subject} के सभी अध्यायों से जवाब देता है।' },
+  subj_label: { en: 'Subject', hi: 'विषय' },
+  subj_science: { en: 'General Science', hi: 'सामान्य विज्ञान' },
+  subj_math: { en: 'Mathematics', hi: 'गणित' },
+  subj_english: { en: 'English', hi: 'English' },
+  subj_urdu: { en: 'Urdu', hi: 'اردو' },
+  subj_computer: { en: 'Computer Science', hi: 'कंप्यूटर विज्ञान' },
+  subj_social: { en: 'Social Studies', hi: 'सामाजिक अध्ययन' },
+  subj_islamiat: { en: 'Islamic Studies', hi: 'इस्लामी अध्ययन' },
   data_saver: { en: 'Data saver', hi: 'डेटा बचत' },
 
   // ----- home -----
