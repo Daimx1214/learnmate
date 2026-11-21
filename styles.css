@@ -66,11 +66,11 @@ body {
 #app {
   max-width: 640px;
   margin: 0 auto;
-  padding: 16px 20px 32px;
+  padding: 16px 20px 24px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
   min-height: 100dvh;
 }
 
@@ -150,14 +150,14 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 20px;
+  padding: 16px;
   box-shadow: 0 2px 10px rgba(31, 58, 95, 0.06);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 h2,
@@ -352,7 +352,7 @@ h2,
 
 .top-nav,
 #top-nav {
-  margin-top: -20px;
+  margin-top: -12px;
   position: sticky;
   top: calc(56px + var(--sat));
   width: 100%;
@@ -443,7 +443,7 @@ textarea {
 .brand-subtitle {
   font-size: 16px;
   font-weight: 400;
-  margin: 0 0 20px;
+  margin: 0 0 12px;
 }
 
 .brand-header {
@@ -457,7 +457,7 @@ textarea {
 .app-footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
-  padding: 20px 0 12px;
+  padding: 16px 0 10px;
   font-size: 14px;
   color: var(--muted);
   text-align: center;
@@ -490,7 +490,7 @@ textarea {
 }
 
 .concept-row {
-  padding: 14px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -564,7 +564,7 @@ td:last-child {
 #app > .grid-avatars {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 #app > .grid-avatars > .card {
@@ -582,7 +582,7 @@ td:last-child {
 .card:has(> .nickname-input) {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 @media (max-width: 480px) {
@@ -625,5 +625,5 @@ td:last-child {
 
 .family-code {
   text-align: center;
-  padding: 16px;
+  padding: 12px;
 }
