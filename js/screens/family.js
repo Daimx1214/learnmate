@@ -1,6 +1,7 @@
 import { addUsage, getProfiles, getProgress } from '../store.js';
 import { conceptStatus, isMastered, weekMinutes } from '../mastery.js';
-import { CHAPTER } from '../data/chapter.js';
+import { getCurrentChapter } from '../data/current.js';
+import { t } from '../i18n.js';
 
 const CODE_RE = /^[A-HJ-NP-Z2-9]{6}$/;
 const SUMMARY_HELP_CAP = 20;
@@ -48,6 +49,7 @@ function localTodayStr() {
 function localSummary(code) {
   const profile = getProfiles().find((p) => p && p.familyCode === code);
   if (!profile) return null;
+  const { CHAPTER } = getCurrentChapter();
   const progress = getProgress(profile.id);
   const mastery = progress.mastery || {};
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
@@ -71,7 +73,7 @@ function localSummary(code) {
 }
 
 export function render(root, ctx) {
-  root.appendChild(el('h1', 'screen-title', 'परिवार के लिए'));
+  root.appendChild(el('h1', 'screen-title', t('family_title')));
 
   const form = el('form');
   form.noValidate = true;
@@ -79,7 +81,7 @@ export function render(root, ctx) {
   const input = el('input');
   input.type = 'text';
   input.maxLength = 6;
-  input.placeholder = 'छह अक्षर का कोड';
+  input.placeholder = t('family_code_placeholder');
   input.autocomplete = 'off';
   input.autocapitalize = 'characters';
   input.style.minHeight = '48px';
@@ -90,7 +92,7 @@ export function render(root, ctx) {
     if (upper !== input.value) input.value = upper;
   });
 
-  const submit = el('button', 'btn', 'देखें');
+  const submit = el('button', 'btn', t('family_view'));
   submit.type = 'submit';
   submit.style.minHeight = '48px';
 
@@ -102,7 +104,7 @@ export function render(root, ctx) {
   const resultBox = el('section');
   root.appendChild(resultBox);
 
-  const note = el('p', 'muted', 'यह केवल पढ़ने के लिए है।');
+  const note = el('p', 'muted', t('family_read_only'));
   root.appendChild(note);
 
   let busy = false;
@@ -110,7 +112,7 @@ export function render(root, ctx) {
   async function lookup(code) {
     busy = true;
     submit.disabled = true;
-    resultBox.replaceChildren(el('p', 'muted', 'लोड हो रहा है...'));
+    resultBox.replaceChildren(el('p', 'muted', t('family_loading')));
     try {
       let res = null;
       try {
@@ -131,17 +133,17 @@ export function render(root, ctx) {
 
       if (!res) {
         const local = localSummary(code);
-        resultBox.replaceChildren(local ? summaryCard(local) : el('div', 'notice', 'यह कोड नहीं मिला'));
+        resultBox.replaceChildren(local ? summaryCard(local) : el('div', 'notice', t('family_not_found')));
         return;
       }
 
       if (res.status === 404) {
-        resultBox.replaceChildren(el('div', 'notice', 'यह कोड नहीं मिला'));
+        resultBox.replaceChildren(el('div', 'notice', t('family_not_found')));
         return;
       }
       if (!res.ok) {
         resultBox.replaceChildren();
-        ctx.toast('कुछ गड़बड़ हुई, बाद में कोशिश करें');
+        ctx.toast(t('family_error'));
         return;
       }
 
@@ -150,7 +152,7 @@ export function render(root, ctx) {
         data = await res.json();
       } catch {
         resultBox.replaceChildren();
-        ctx.toast('कुछ गड़बड़ हुई, बाद में कोशिश करें');
+        ctx.toast(t('family_error'));
         return;
       }
       resultBox.replaceChildren(summaryCard(data || {}));
@@ -165,7 +167,7 @@ export function render(root, ctx) {
     if (busy) return;
     const code = input.value.trim().toUpperCase();
     if (!CODE_RE.test(code)) {
-      ctx.toast('कोड सही नहीं है');
+      ctx.toast(t('family_bad_code'));
       return;
     }
     lookup(code);

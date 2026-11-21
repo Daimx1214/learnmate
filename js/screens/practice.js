@@ -1,6 +1,7 @@
-import { CHAPTER, MISCONCEPTIONS } from '../data/chapter.js';
+import { getCurrentChapter } from '../data/current.js';
 import { getProgress, saveProgress } from '../store.js';
 import { applyAnswer, shouldShowLesson, pickNextQuestion } from '../mastery.js';
+import { t } from '../i18n.js';
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -30,6 +31,7 @@ export function render(root, ctx) {
   let answered = null; // option object
 
   const pick = () => {
+    const { CHAPTER } = getCurrentChapter();
     picked = pickNextQuestion(CHAPTER, progress) || null;
     answered = null;
   };
@@ -37,7 +39,7 @@ export function render(root, ctx) {
   const showLesson = (concept) => {
     root.replaceChildren();
     root.appendChild(el('h1', 'screen-title', concept.title));
-    root.appendChild(el('p', 'muted', 'इस विषय में थोड़ी और मेहनत चाहिए। पहले यह पाठ पढ़ें।'));
+    root.appendChild(el('p', 'muted', t('practice_lesson_note')));
 
     const card = el('div', 'card');
     const ol = el('ol');
@@ -51,7 +53,7 @@ export function render(root, ctx) {
     root.appendChild(card);
     root.appendChild(el('div', 'notice', 'उदाहरण: ' + ((concept.card && concept.card.example) || '')));
 
-    const btn = el('button', 'btn', 'पाठ पढ़ लिया, आगे बढ़ें');
+    const btn = el('button', 'btn', t('practice_read_done'));
     btn.type = 'button';
     btn.addEventListener('click', () => {
       progress.wrongStreak = progress.wrongStreak || {};
@@ -65,29 +67,30 @@ export function render(root, ctx) {
   };
 
   const showFeedback = (concept, question, option) => {
+    const { MISCONCEPTIONS } = getCurrentChapter();
     const box = el('div', 'card');
     box.style.marginTop = '12px';
 
     if (option.correct) {
       box.style.borderLeft = '4px solid var(--green)';
-      const reason = question.explanation || 'बहुत अच्छा, यही सही उत्तर है।';
-      box.appendChild(el('p', null, 'बिल्कुल सही! ' + reason));
+      const reason = question.explanation || t('practice_default_reason');
+      box.appendChild(el('p', null, t('practice_correct', { reason })));
     } else {
       box.appendChild(el('p', null, option.feedback || ''));
       const label = option.misconception && MISCONCEPTIONS[option.misconception]
         ? MISCONCEPTIONS[option.misconception].label
         : null;
       if (label) {
-        box.appendChild(el('span', 'chip', 'गलतफ़हमी: ' + label));
+        box.appendChild(el('span', 'chip', t('practice_misconception', { label })));
       }
     }
     root.appendChild(box);
 
     const actions = el('div', 'actions');
-    const next = el('button', 'btn', 'आगे बढ़ें');
+    const next = el('button', 'btn', t('practice_next'));
     next.type = 'button';
     next.addEventListener('click', () => ctx.refresh());
-    const ghost = el('button', 'btn-ghost', 'पाठ देखें');
+    const ghost = el('button', 'btn-ghost', t('practice_view_lesson'));
     ghost.type = 'button';
     ghost.addEventListener('click', () => ctx.navigate('#/learn/' + concept.id));
     actions.append(next, ghost);
@@ -111,10 +114,10 @@ export function render(root, ctx) {
 
   const showQuestion = (concept, question) => {
     root.replaceChildren();
-    root.appendChild(el('h1', 'screen-title', 'अभ्यास: ' + concept.title));
+    root.appendChild(el('h1', 'screen-title', t('practice_title', { title: concept.title })));
 
     const { m, pct } = percentOf(progress, concept);
-    const chip = el('span', 'chip', `समझ: ${pct}%`);
+    const chip = el('span', 'chip', t('practice_mastery', { pct }));
     const bar = el('div', 'progress-bar');
     const fill = document.createElement('i');
     fill.style.setProperty('--p', String(m));
@@ -153,7 +156,7 @@ export function render(root, ctx) {
       pick();
     }
     if (!picked) {
-      root.appendChild(el('p', null, 'अभी कोई सवाल उपलब्ध नहीं है।'));
+      root.appendChild(el('p', null, t('practice_none')));
       return;
     }
     const { concept, question } = picked;

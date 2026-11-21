@@ -5,6 +5,7 @@ import {
   deleteProfile,
   setActiveProfile,
 } from '../store.js';
+import { t, langSelector } from '../i18n.js';
 
 const MAX_PROFILES = 4;
 
@@ -31,7 +32,8 @@ export function render(root, ctx) {
   const profiles = getProfiles();
   let selectedAvatar = AVATARS[0].id;
 
-  root.appendChild(el('h1', 'screen-title', 'प्रोफ़ाइल चुनें'));
+  root.appendChild(el('h1', 'screen-title', t('profiles_title')));
+  root.appendChild(langSelector());
 
   // Existing profiles.
   const grid = el('div', 'grid-avatars');
@@ -45,14 +47,14 @@ export function render(root, ctx) {
       ctx.navigate('#/home');
     });
 
-    const remove = touchButton('btn-ghost', 'हटाएँ');
+    const remove = touchButton('btn-ghost', t('profiles_delete'));
     remove.addEventListener('click', () => {
-      if (!window.confirm('क्या यह प्रोफ़ाइल हटाना है?')) return;
+      if (!window.confirm(t('profiles_confirm_delete'))) return;
       try {
         deleteProfile(p.id);
         ctx.refresh();
       } catch (err) {
-        ctx.toast('प्रोफ़ाइल नहीं हटाई जा सकी');
+        ctx.toast(t('profiles_delete_failed'));
       }
     });
 
@@ -75,7 +77,7 @@ export function render(root, ctx) {
       }
     };
     for (const a of AVATARS) {
-      const btn = touchButton('avatar-option', `${a.emoji} ${a.label_hi}`);
+      const btn = touchButton('avatar-option', `${a.emoji} ${t('avatar_' + a.id)}`);
       btn.addEventListener('click', () => {
         selectedAvatar = a.id;
         paintSelection();
@@ -88,12 +90,12 @@ export function render(root, ctx) {
     const input = el('input', 'nickname-input');
     input.type = 'text';
     input.maxLength = 20;
-    input.placeholder = 'तुम्हारा नाम';
-    input.setAttribute('aria-label', 'तुम्हारा नाम');
+    input.placeholder = t('profiles_name');
+    input.setAttribute('aria-label', t('profiles_name'));
     input.style.minHeight = '48px';
     input.style.width = '100%';
 
-    const start = touchButton('btn', 'शुरू करें');
+    const start = touchButton('btn', t('profiles_start'));
     start.addEventListener('click', () => {
       try {
         const created = createProfile({
@@ -103,7 +105,7 @@ export function render(root, ctx) {
         setActiveProfile(created.id);
         ctx.navigate('#/home');
       } catch (err) {
-        ctx.toast(err && err.message ? err.message : 'प्रोफ़ाइल नहीं बन सकी');
+        ctx.toast(err && err.message ? err.message : t('profiles_create_failed'));
       }
     });
 
@@ -111,10 +113,10 @@ export function render(root, ctx) {
     root.appendChild(form);
   }
 
-  root.appendChild(el('p', 'muted', 'एक फ़ोन पर अधिकतम 4 प्रोफ़ाइल'));
+  root.appendChild(el('p', 'muted', t('profiles_limit')));
 
   // Entry point to the family view.
-  const family = touchButton('btn-secondary', 'परिवार के लिए: कोड से प्रगति देखें');
+  const family = touchButton('btn-secondary', t('family_entry'));
   family.addEventListener('click', () => ctx.navigate('#/family'));
   root.appendChild(family);
 }

@@ -1,4 +1,4 @@
-// Saathi content file: the ONLY editable content file.
+// LearnMate content file: the ONLY editable content file.
 // CHAPTER holds the chapter id, subject, class, title and an ordered list of concepts.
 // Each concept has a short Hindi card (points + one example) and exactly 3 MCQ questions.
 // Each question has 4 options (a-d); exactly one has correct: true and no other fields.

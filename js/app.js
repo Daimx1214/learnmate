@@ -1,5 +1,6 @@
 import { AVATARS, getProfile, getActiveProfileId, addStudySeconds, getUsage } from './store.js';
 import { syncAll, isOnline } from './sync.js';
+import { t, applyLang, LANG_CHANGE_EVENT } from './i18n.js';
 
 // Route name -> whether it needs an active profile.
 const ROUTES = {
@@ -17,10 +18,10 @@ const NAV_ROUTES = new Set(['home', 'learn', 'practice', 'ask', 'progress']);
 const STUDY_ROUTES = new Set(['learn', 'practice', 'ask']);
 
 const NAV_ITEMS = [
-  { key: 'home', hash: '#/home', icon: '🏠', label: 'होम' },
-  { key: 'learn', hash: '#/learn', icon: '📖', label: 'सीखें' },
-  { key: 'ask', hash: '#/ask', icon: '❓', label: 'पूछें' },
-  { key: 'progress', hash: '#/progress', icon: '📊', label: 'प्रगति' },
+  { key: 'home', hash: '#/home', icon: '🏠', labelKey: 'nav_home' },
+  { key: 'learn', hash: '#/learn', icon: '📖', labelKey: 'nav_learn' },
+  { key: 'ask', hash: '#/ask', icon: '❓', labelKey: 'nav_ask' },
+  { key: 'progress', hash: '#/progress', icon: '📊', labelKey: 'nav_progress' },
 ];
 
 const STUDY_TICK_MS = 15000;
@@ -87,7 +88,7 @@ function buildNav() {
 
     const label = document.createElement('span');
     label.className = 'nav-label';
-    label.textContent = item.label;
+    label.textContent = t(item.labelKey);
 
     link.append(icon, label);
     navEl.appendChild(link);
@@ -154,7 +155,7 @@ function refreshHeader(profile) {
   headerParts.name.textContent = profile.nickname;
   updateStatusDot();
   const kb = Math.round(getUsage().bytes / 1024);
-  headerParts.data.textContent = `आज ~${kb} KB डेटा`;
+  headerParts.data.textContent = t('data_today', { kb });
 }
 
 function renderError() {
@@ -163,12 +164,12 @@ function renderError() {
   box.className = 'notice';
 
   const msg = document.createElement('p');
-  msg.textContent = 'कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।';
+  msg.textContent = t('app_error');
 
   const retry = document.createElement('button');
   retry.type = 'button';
   retry.className = 'btn';
-  retry.textContent = 'फिर से कोशिश करें';
+  retry.textContent = t('app_retry');
   retry.addEventListener('click', () => route());
 
   box.append(msg, retry);
@@ -251,8 +252,15 @@ async function syncOnLoad() {
 }
 
 function init() {
+  applyLang();
   buildNav();
   window.addEventListener('hashchange', route);
+  // setLang() dispatches this event: rebuild the nav labels and re-render the screen.
+  window.addEventListener(LANG_CHANGE_EVENT, () => {
+    applyLang();
+    buildNav();
+    route();
+  });
   window.addEventListener('online', updateStatusDot);
   window.addEventListener('offline', updateStatusDot);
   window.addEventListener('online', () => {

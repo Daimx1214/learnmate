@@ -1,16 +1,56 @@
 // js/tutor.js — pure offline doubt answering. No DOM, no storage, no network, no imports.
 
 const ANSWER_WORD_CAP = 90;
-const CLOSING = 'अब नीचे दिया छोटा सवाल हल करें।';
-const TEACHER_ADVICE = 'यह सवाल अपने शिक्षक से पूछें।';
 
-// Common Hindi function words. They are ignored when matching concept title words,
+// Fixed reply scaffolding per language. The hi entries are the original Hindi phrases.
+const PHRASES = {
+  hi: {
+    closing: 'अब नीचे दिया छोटा सवाल हल करें।',
+    teacher: 'यह सवाल अपने शिक्षक से पूछें।',
+    notMatched: (title) => `यह सवाल इस अध्याय में सीधे नहीं है। सबसे नज़दीक का विषय है: ${title}।`,
+    stepLabel: 'चरण',
+    exampleLabel: 'उदाहरण',
+    check: 'छोटा सवाल',
+  },
+  en: {
+    closing: 'Now solve the short question below.',
+    teacher: 'Ask your teacher about this question.',
+    notMatched: (title) => 'This question is not directly in this chapter. The closest topic is: ' + title + '.',
+    stepLabel: 'Step',
+    exampleLabel: 'Example',
+    check: 'Short question',
+  },
+  ur: {
+    closing: 'اب نیچے دیا گیا چھوٹا سوال حل کریں۔',
+    teacher: 'یہ سوال اپنے استاد سے پوچھیں۔',
+    notMatched: (title) => 'یہ سوال اس باب میں براہِ راست نہیں ہے۔ سب سے قریب کا موضوع ہے: ' + title + '۔',
+    stepLabel: 'مرحلہ',
+    exampleLabel: 'مثال',
+    check: 'چھوٹا سوال',
+  },
+};
+
+// Common function words per language. They are ignored when matching concept title words,
 // so a question like "आसमान नीला क्यों है" does not match a concept just on "है".
-const TITLE_STOPWORDS = new Set([
-  'क्या', 'क्यों', 'कैसे', 'कब', 'कहाँ', 'कौन', 'है', 'हैं', 'था', 'थी', 'थे', 'हो', 'होता', 'होती', 'होते',
-  'और', 'या', 'तथा', 'में', 'का', 'की', 'के', 'से', 'पर', 'को', 'ने', 'तो', 'भी', 'एक', 'यह', 'वह', 'ये', 'वे',
-  'जो', 'इस', 'उस', 'लिए', 'लिये', 'द्वारा',
-]);
+const STOPWORDS = {
+  hi: new Set([
+    'क्या', 'क्यों', 'कैसे', 'कब', 'कहाँ', 'कौन', 'है', 'हैं', 'था', 'थी', 'थे', 'हो', 'होता', 'होती', 'होते',
+    'और', 'या', 'तथा', 'में', 'का', 'की', 'के', 'से', 'पर', 'को', 'ने', 'तो', 'भी', 'एक', 'यह', 'वह', 'ये', 'वे',
+    'जो', 'इस', 'उस', 'लिए', 'लिये', 'द्वारा',
+  ]),
+  en: new Set([
+    'what', 'is', 'the', 'a', 'an', 'of', 'in', 'on', 'how', 'why', 'does', 'do', 'tell', 'me', 'about',
+  ]),
+  ur: new Set([
+    'کیا', 'کیوں', 'کیسے', 'کب', 'کہاں', 'کون', 'ہے', 'ہیں', 'تھا', 'تھی', 'تھے', 'ہو', 'اور', 'یا', 'میں',
+    'کا', 'کی', 'کے', 'سے', 'پر', 'کو', 'نے', 'تو', 'بھی', 'ایک', 'یہ', 'وہ', 'جو', 'اس', 'لیے', 'بارے', 'بتائیں', 'مجھے',
+  ]),
+};
+
+export function tutorPhrases(lang) {
+  const P = PHRASES[lang] || PHRASES.hi;
+  return { check: P.check };
+}
 
 export function wordCount(str) {
   return String(str ?? '').trim().split(/\s+/).filter(Boolean).length;
@@ -26,7 +66,7 @@ function normalise(text) {
     .trim();
 }
 
-function scoreConcept(normText, concept) {
+function scoreConcept(normText, concept, stopwords) {
   let score = 0;
   for (const kw of concept.keywords || []) {
     const k = normalise(kw);
@@ -34,17 +74,18 @@ function scoreConcept(normText, concept) {
   }
   const titleWords = normalise(concept.title)
     .split(' ')
-    .filter((w) => [...w].length >= 2 && !TITLE_STOPWORDS.has(w));
+    .filter((w) => [...w].length >= 2 && !stopwords.has(w));
   if (titleWords.some((w) => normText.includes(w))) score += 1;
   return score;
 }
 
-export function findClosestConcept(text, chapter) {
+export function findClosestConcept(text, chapter, lang = 'hi') {
+  const stopwords = STOPWORDS[lang] || STOPWORDS.hi;
   const normText = normalise(text);
   let best = null;
   let bestScore = 0;
   for (const concept of (chapter && chapter.concepts) || []) {
-    const score = scoreConcept(normText, concept);
+    const score = scoreConcept(normText, concept, stopwords);
     if (score > bestScore) {
       bestScore = score;
       best = concept;
@@ -53,24 +94,25 @@ export function findClosestConcept(text, chapter) {
   return { concept: best, score: bestScore };
 }
 
-function buildAnswer(concept, matched, points, example) {
+function buildAnswer(concept, matched, points, example, P) {
   const parts = [];
   if (!matched) {
-    parts.push(`यह सवाल इस अध्याय में सीधे नहीं है। सबसे नज़दीक का विषय है: ${concept.title}।`);
+    parts.push(P.notMatched(concept.title));
   }
-  points.forEach((p, i) => parts.push(`चरण ${i + 1}: ${p}`));
-  if (example) parts.push(`उदाहरण: ${example}`);
-  parts.push(CLOSING);
+  points.forEach((p, i) => parts.push(`${P.stepLabel} ${i + 1}: ${p}`));
+  if (example) parts.push(`${P.exampleLabel}: ${example}`);
+  parts.push(P.closing);
   return parts.join(' ');
 }
 
-export function answerDoubt(text, chapter) {
-  const { concept: best, score } = findClosestConcept(text, chapter);
+export function answerDoubt(text, chapter, lang = 'hi') {
+  const P = PHRASES[lang] || PHRASES.hi;
+  const { concept: best, score } = findClosestConcept(text, chapter, lang);
   const matched = score > 0;
   const concept = matched ? best : ((chapter && chapter.concepts) || [])[0] || null;
 
   if (!concept) {
-    return { matched: false, conceptId: null, answer: CLOSING, checkQuestion: null, correctOptionId: null, card: null };
+    return { matched: false, conceptId: null, answer: P.closing, checkQuestion: null, correctOptionId: null, card: null };
   }
 
   const card = concept.card || { points: [], example: '' };
@@ -79,13 +121,13 @@ export function answerDoubt(text, chapter) {
 
   // The unmatched teacher sentence is reserved words outside the capped body,
   // so truncation of the body can never cut it off. Matched answers keep the full cap.
-  const teacher = matched ? '' : TEACHER_ADVICE;
+  const teacher = matched ? '' : P.teacher;
   const bodyCap = ANSWER_WORD_CAP - wordCount(teacher);
 
   // Drop points from the end until the body fits in the remaining word cap.
   let answer = '';
   for (let n = allPoints.length; n >= 0; n--) {
-    answer = buildAnswer(concept, matched, allPoints.slice(0, n), example);
+    answer = buildAnswer(concept, matched, allPoints.slice(0, n), example, P);
     if (wordCount(answer) <= bodyCap) break;
   }
   if (wordCount(answer) > bodyCap) {

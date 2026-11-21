@@ -1,7 +1,7 @@
 // sw.js — root service worker (scope: ./). Offline-first app shell cache.
 // /api/ requests are never cached. Other cross-origin and non-GET requests pass through.
 
-const CACHE = 'learnmate-v1';
+const CACHE = 'learnmate-v2';
 
 const SHELL = [
   './',
@@ -21,6 +21,8 @@ const SHELL = [
   './js/tutor.js',
   './js/sync.js',
   './js/data/chapter.js',
+  './js/data/chapter.en.js',
+  './js/data/chapter.ur.js',
   './js/screens/profiles.js',
   './js/screens/home.js',
   './js/screens/learn.js',

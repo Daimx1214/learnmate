@@ -1,16 +1,17 @@
 // js/screens/progress.js — progress screen: streak, mastery per concept, weak topics,
 // family code with sync, and the data-saver toggle. Never shows doubt texts.
 
-import { CHAPTER } from '../data/chapter.js';
+import { getCurrentChapter } from '../data/current.js';
 import { getProgress, getSettings, setSettings, getUsage } from '../store.js';
 import { conceptStatus, weakConcepts, computeStreak, weekMinutes } from '../mastery.js';
 import { syncFamilySummary } from '../sync.js';
+import { t, langSelector } from '../i18n.js';
 
 const WEAK_CAP = 3;
 const STATUS_LABEL = {
-  mastered: 'सीखा',
-  help: 'और अभ्यास चाहिए',
-  learning: 'सीख रहे हैं',
+  mastered: 'status_mastered',
+  help: 'status_help',
+  learning: 'status_learning',
 };
 
 function el(tag, className, text) {
@@ -40,13 +41,14 @@ function streakCard(progress, today) {
   const days = progress.studyDays || {};
   const card = el('div', 'card');
   card.append(
-    el('p', null, `लगातार दिन: ${computeStreak(days, today)}`),
-    el('p', null, `इस हफ़्ते: ${weekMinutes(days, today)} मिनट`)
+    el('p', null, t('progress_streak', { n: computeStreak(days, today) })),
+    el('p', null, t('progress_week', { n: weekMinutes(days, today) }))
   );
   return card;
 }
 
 function masteryCard(progress) {
+  const { CHAPTER } = getCurrentChapter();
   const card = el('div', 'card');
   const mastery = progress.mastery || {};
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
@@ -59,7 +61,7 @@ function masteryCard(progress) {
 
     const row = el('div', 'concept-row');
     const head = el('div', 'concept-head');
-    head.append(el('strong', null, concept.title), el('span', 'chip', STATUS_LABEL[status]));
+    head.append(el('strong', null, concept.title), el('span', 'chip', t(STATUS_LABEL[status])));
     row.append(head, el('p', 'muted', `${Math.round(m * 100)}%`), progressBar(m));
     card.appendChild(row);
   }
@@ -67,8 +69,9 @@ function masteryCard(progress) {
 }
 
 function weakCard(progress) {
+  const { CHAPTER } = getCurrentChapter();
   const card = el('div', 'card');
-  card.appendChild(el('h2', null, 'कमज़ोर विषय'));
+  card.appendChild(el('h2', null, t('weak_heading')));
 
   const attempts = Array.isArray(progress.attempts) ? progress.attempts : [];
   const weak = weakConcepts(CHAPTER, progress)
@@ -76,7 +79,7 @@ function weakCard(progress) {
     .slice(0, WEAK_CAP);
 
   if (weak.length === 0) {
-    card.appendChild(el('p', 'muted', 'अभी कोई कमज़ोर विषय नहीं'));
+    card.appendChild(el('p', 'muted', t('weak_none')));
     return card;
   }
   const list = el('ul', 'weak-list');
@@ -87,19 +90,20 @@ function weakCard(progress) {
 
 function familyCard(ctx, profile, progress) {
   const card = el('div', 'card');
-  card.appendChild(el('h2', null, 'परिवार'));
+  card.appendChild(el('h2', null, t('family_heading')));
 
   const code = el('div', 'family-code', profile.familyCode);
+  code.setAttribute('dir', 'ltr');
   code.style.fontSize = '2rem';
   code.style.fontWeight = '700';
   code.style.letterSpacing = '0.2em';
-  card.append(code, el('p', 'muted', 'परिवार इस कोड से प्रगति देख सकता है'));
+  card.append(code, el('p', 'muted', t('family_code_note')));
 
   if (getSettings().dataSaver) {
-    card.appendChild(el('p', 'muted', 'डेटा बचत चालू है'));
+    card.appendChild(el('p', 'muted', t('data_saver_on')));
   }
 
-  const btn = el('button', 'btn-secondary', 'परिवार के साथ सिंक करें');
+  const btn = el('button', 'btn-secondary', t('family_sync'));
   btn.type = 'button';
   btn.addEventListener('click', async () => {
     btn.disabled = true;
@@ -110,7 +114,7 @@ function familyCard(ctx, profile, progress) {
       ok = false;
     }
     btn.disabled = false;
-    ctx.toast(ok ? 'सिंक हो गया' : 'अभी सिंक नहीं हो पाया, इंटरनेट जुड़ने पर अपने-आप होगा');
+    ctx.toast(ok ? t('sync_done') : t('sync_later'));
   });
   card.appendChild(btn);
   return card;
@@ -125,24 +129,31 @@ function dataSaverRow(ctx) {
     setSettings({ dataSaver: input.checked });
     ctx.refresh();
   };
-  label.append(el('span', null, 'डेटा बचत'), input);
+  label.append(el('span', null, t('data_saver')), input);
   return label;
+}
+
+// Language choice, shown in the same row style as the data-saver toggle.
+function languageRow() {
+  const row = el('div', 'toggle');
+  row.append(el('span', null, t('lang_label')), langSelector());
+  return row;
 }
 
 function usageLine() {
   const kb = Math.round(getUsage().bytes / 1024);
-  return el('p', 'muted', `आज ~${kb} KB डेटा`);
+  return el('p', 'muted', t('data_today', { kb }));
 }
 
 export function render(root, ctx) {
-  root.appendChild(el('h1', 'screen-title', 'मेरी प्रगति'));
+  root.appendChild(el('h1', 'screen-title', t('progress_title')));
 
   const profile = ctx.profile;
   if (!profile) {
     const card = el('div', 'card');
-    const link = el('a', 'btn', 'प्रोफ़ाइल चुनें');
+    const link = el('a', 'btn', t('profile_pick_link'));
     link.href = '#/profiles';
-    card.append(el('p', 'muted', 'पहले प्रोफ़ाइल चुनें'), link);
+    card.append(el('p', 'muted', t('profile_pick_first')), link);
     root.appendChild(card);
     return;
   }
@@ -155,5 +166,6 @@ export function render(root, ctx) {
   root.appendChild(weakCard(progress));
   root.appendChild(familyCard(ctx, profile, progress));
   root.appendChild(dataSaverRow(ctx));
+  root.appendChild(languageRow());
   root.appendChild(usageLine());
 }

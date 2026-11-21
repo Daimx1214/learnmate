@@ -1,6 +1,7 @@
-import { CHAPTER } from '../data/chapter.js';
+import { getCurrentChapter } from '../data/current.js';
 import { getProgress } from '../store.js';
 import { computeStreak, weakConcepts } from '../mastery.js';
+import { t } from '../i18n.js';
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -18,6 +19,7 @@ function todayKey(d = new Date()) {
 }
 
 function overallMastery(progress) {
+  const { CHAPTER } = getCurrentChapter();
   const concepts = CHAPTER.concepts || [];
   if (!concepts.length) return 0;
   const map = (progress && progress.mastery) || {};
@@ -38,6 +40,7 @@ export function render(root, ctx) {
     return;
   }
 
+  const { CHAPTER } = getCurrentChapter();
   const progress = getProgress(profile.id) || {};
   const today = todayKey();
   const studyDays = progress.studyDays || {};
@@ -45,20 +48,20 @@ export function render(root, ctx) {
   const todayMinutes = Math.round((Number(studyDays[today]) || 0) / 60);
   const streak = computeStreak(studyDays, today);
   const weakest = weakConcepts(CHAPTER, progress)[0];
-  const weakTitle = weakest ? weakest.title : 'अभी कोई कमज़ोर विषय नहीं';
+  const weakTitle = weakest ? weakest.title : t('weak_none');
   const mastery = overallMastery(progress);
   const percent = Math.round(mastery * 100);
 
-  root.appendChild(el('h1', 'screen-title', `नमस्ते, ${profile.nickname}!`));
+  root.appendChild(el('h1', 'screen-title', t('home_greeting', { name: profile.nickname })));
 
   const card = el('div', 'card');
   card.append(
-    statRow('आज का अध्ययन', `${todayMinutes} मिनट`),
-    statRow('लगातार दिन', `${streak} दिन`),
-    statRow('सबसे कमज़ोर विषय', weakTitle),
+    statRow(t('home_stat_today'), t('home_minutes', { n: todayMinutes })),
+    statRow(t('home_stat_streak'), t('home_days', { n: streak })),
+    statRow(t('home_stat_weak'), weakTitle),
   );
 
-  const masteryLabel = el('p', 'muted', `कुल समझ: ${percent}%`);
+  const masteryLabel = el('p', 'muted', t('home_mastery', { pct: percent }));
   const bar = el('div', 'progress-bar');
   const fill = document.createElement('i');
   fill.style.setProperty('--p', String(mastery));
@@ -68,9 +71,9 @@ export function render(root, ctx) {
 
   const actions = el('div', 'actions');
   const buttons = [
-    ['आज का पाठ सीखें', '#/learn'],
-    ['अभ्यास करें', '#/practice'],
-    ['सवाल पूछें', '#/ask'],
+    [t('home_btn_learn'), '#/learn'],
+    [t('home_btn_practice'), '#/practice'],
+    [t('home_btn_ask'), '#/ask'],
   ];
   for (const [text, hash] of buttons) {
     const btn = el('button', 'btn', text);
@@ -80,6 +83,6 @@ export function render(root, ctx) {
   }
   root.appendChild(actions);
 
-  root.appendChild(el('p', 'muted', `अध्याय: ${CHAPTER.title}`));
-  root.appendChild(el('p', 'muted', 'आधार: कक्षा 8 विज्ञान पाठ्यक्रम'));
+  root.appendChild(el('p', 'muted', t('home_chapter', { title: CHAPTER.title })));
+  root.appendChild(el('p', 'muted', t('home_base')));
 }

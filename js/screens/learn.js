@@ -1,11 +1,12 @@
-import { CHAPTER } from '../data/chapter.js';
+import { getCurrentChapter } from '../data/current.js';
 import { getProgress } from '../store.js';
 import { conceptStatus } from '../mastery.js';
+import { t, getLang, speechLang } from '../i18n.js';
 
 const STATUS_LABEL = {
-  mastered: 'सीखा',
-  help: 'और अभ्यास चाहिए',
-  learning: 'सीख रहे हैं',
+  mastered: 'status_mastered',
+  help: 'status_help',
+  learning: 'status_learning',
 };
 
 function el(tag, className, text) {
@@ -33,16 +34,17 @@ function isAttempted(progress, concept) {
 }
 
 function renderList(root, ctx, progress) {
-  root.appendChild(el('h1', 'screen-title', 'सीखें: बल और दाब'));
+  const { CHAPTER } = getCurrentChapter();
+  root.appendChild(el('h1', 'screen-title', t('learn_title')));
 
   // Pack status line: lesson card count, then offline readiness once the service worker is ready.
   const packCount = (CHAPTER.concepts || []).length;
-  const packLine = el('p', 'muted', `पाठ कार्ड: ${packCount}`);
+  const packLine = el('p', 'muted', t('learn_cards', { n: packCount }));
   root.appendChild(packLine);
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready
       .then(() => {
-        if (packLine.isConnected) packLine.textContent += ' · ऑफ़लाइन के लिए तैयार';
+        if (packLine.isConnected) packLine.textContent += t('learn_offline_ready');
       })
       .catch(() => {});
   }
@@ -60,7 +62,7 @@ function renderList(root, ctx, progress) {
     btn.style.fontSize = '18px';
     btn.addEventListener('click', () => ctx.navigate('#/learn/' + concept.id));
 
-    const chip = el('span', 'chip', STATUS_LABEL[status] || STATUS_LABEL.learning);
+    const chip = el('span', 'chip', t(STATUS_LABEL[status] || STATUS_LABEL.learning));
     const bar = setBar(el('div', 'progress-bar'), m);
 
     card.append(btn, chip, bar);
@@ -75,9 +77,7 @@ function renderConcept(root, ctx, progress, concept) {
   root.appendChild(el('h1', 'screen-title', concept.title));
 
   if (reshow) {
-    root.appendChild(
-      el('div', 'notice', 'इस विषय में थोड़ी और मेहनत चाहिए। पहले यह पाठ फिर से देखें।'),
-    );
+    root.appendChild(el('div', 'notice', t('learn_reshow')));
   }
 
   const card = el('div', 'card');
@@ -91,12 +91,12 @@ function renderConcept(root, ctx, progress, concept) {
   card.appendChild(ol);
   root.appendChild(card);
 
-  root.appendChild(el('div', 'notice', 'उदाहरण: ' + ((concept.card && concept.card.example) || '')));
+  root.appendChild(el('div', 'notice', t('learn_example', { example: (concept.card && concept.card.example) || '' })));
 
   const actions = el('div', 'actions');
 
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    const listen = el('button', 'btn-secondary', 'सुनें');
+    const listen = el('button', 'btn-secondary', t('learn_listen'));
     listen.type = 'button';
     listen.addEventListener('click', () => {
       const points = (concept.card && concept.card.points) || [];
@@ -104,17 +104,17 @@ function renderConcept(root, ctx, progress, concept) {
       const text = [...points, example].filter(Boolean).join(' । ');
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'hi-IN';
+      utterance.lang = speechLang(getLang());
       window.speechSynthesis.speak(utterance);
     });
     actions.appendChild(listen);
   }
 
-  const practice = el('button', 'btn', reshow ? 'समझ गया, अभ्यास करें' : 'अभ्यास शुरू करें');
+  const practice = el('button', 'btn', reshow ? t('learn_practice_after') : t('learn_practice'));
   practice.type = 'button';
   practice.addEventListener('click', () => ctx.navigate('#/practice'));
 
-  const back = el('button', 'btn-secondary', 'सूची पर वापस');
+  const back = el('button', 'btn-secondary', t('back_to_list'));
   back.type = 'button';
   back.addEventListener('click', () => ctx.navigate('#/learn'));
 
@@ -129,6 +129,7 @@ export function render(root, ctx) {
     return;
   }
 
+  const { CHAPTER } = getCurrentChapter();
   const progress = getProgress(profile.id) || {};
   const conceptId = ctx.params && ctx.params.conceptId;
 
@@ -139,8 +140,8 @@ export function render(root, ctx) {
 
   const concept = (CHAPTER.concepts || []).find((c) => c.id === conceptId);
   if (!concept) {
-    root.appendChild(el('p', null, 'यह पाठ नहीं मिला'));
-    const back = el('button', 'btn-secondary', 'सूची पर वापस');
+    root.appendChild(el('p', null, t('learn_not_found')));
+    const back = el('button', 'btn-secondary', t('back_to_list'));
     back.type = 'button';
     back.addEventListener('click', () => ctx.navigate('#/learn'));
     root.appendChild(back);

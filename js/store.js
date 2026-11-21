@@ -241,7 +241,7 @@ export function updateDoubt(profileId, id, patch = {}) {
 
 export function getSettings() {
   const stored = readJSON(KEYS.settings, {});
-  return { dataSaver: false, lastSyncAt: null, ...(stored && typeof stored === 'object' ? stored : {}) };
+  return { dataSaver: false, lang: 'hi', lastSyncAt: null, ...(stored && typeof stored === 'object' ? stored : {}) };
 }
 
 export function setSettings(patch = {}) {

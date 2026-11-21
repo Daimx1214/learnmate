@@ -1,16 +1,15 @@
-import { CHAPTER } from '../data/chapter.js';
+import { getCurrentChapter } from '../data/current.js';
 import { addDoubt, updateDoubt, getDoubts, getProgress } from '../store.js';
 import { answerDoubt, findClosestConcept } from '../tutor.js';
 import { isOnline } from '../sync.js';
 import { weakConcepts } from '../mastery.js';
+import { t, getLang, speechLang } from '../i18n.js';
 
 const TEXT_MAX = 300;
 const LIST_CAP = 10;
 const PHOTO_MAX_SIDE = 800;
 const PHOTO_MAX_BYTES = 153600;
 const PHOTO_QUALITIES = [0.8, 0.7, 0.6, 0.5];
-const OFFLINE_NOTE = 'इंटरनेट नहीं है। आपका सवाल सहेज लिया गया है, जुड़ने पर जवाब मिल जाएगा। अभी इस विषय का पाठ देखें:';
-const PHOTO_NOTE = 'फ़ोटो सहेज लिया गया है। फ़ोटो को अभी पढ़ा या जाँचा नहीं गया है।';
 
 // Approximate decoded size of a data URL's payload, in bytes.
 function dataUrlBytes(url) {
@@ -70,11 +69,11 @@ function button(label, className, onClick) {
 
 export function render(root, ctx) {
   const profile = ctx.profile;
-  root.appendChild(el('h1', 'screen-title', 'सवाल पूछें'));
+  root.appendChild(el('h1', 'screen-title', t('ask_title')));
 
   if (!profile) {
-    root.appendChild(el('p', null, 'पहले प्रोफ़ाइल चुनें'));
-    const link = el('a', 'btn-secondary', 'प्रोफ़ाइल चुनें');
+    root.appendChild(el('p', null, t('profile_pick_first')));
+    const link = el('a', 'btn-secondary', t('profile_pick_link'));
     link.href = '#/profiles';
     link.style.minHeight = '48px';
     root.appendChild(link);
@@ -84,25 +83,25 @@ export function render(root, ctx) {
   // ----- input -----
   const card = el('div', 'card');
   const textarea = el('textarea');
-  textarea.placeholder = 'अपना सवाल लिखें...';
+  textarea.placeholder = t('ask_placeholder');
   textarea.maxLength = TEXT_MAX;
   textarea.style.minHeight = '48px';
   textarea.style.width = '100%';
   textarea.style.fontSize = '18px';
 
-  const listeningNote = el('p', 'muted', 'सुन रहा हूँ...');
+  const listeningNote = el('p', 'muted', t('ask_listening'));
   listeningNote.hidden = true;
   const speechNote = el('p', 'muted');
 
-  const speakBtn = button('बोलकर पूछें', 'btn-yellow', () => toggleSpeech());
-  const sendBtn = button('भेजें', 'btn', () => submit());
+  const speakBtn = button(t('ask_speak'), 'btn-yellow', () => toggleSpeech());
+  const sendBtn = button(t('ask_send'), 'btn', () => submit());
 
   // ----- optional photo -----
   const photoInput = el('input');
   photoInput.type = 'file';
   photoInput.accept = 'image/*';
   photoInput.hidden = true;
-  const photoBtn = button('फ़ोटो जोड़ें', 'btn-secondary', () => photoInput.click());
+  const photoBtn = button(t('ask_add_photo'), 'btn-secondary', () => photoInput.click());
   const photoNote = el('p', 'muted');
   let pendingPhoto = null;
 
@@ -117,19 +116,19 @@ export function render(root, ctx) {
     if (!file) return;
     if (!String(file.type || '').startsWith('image/')) {
       photoInput.value = '';
-      photoNote.textContent = 'यह फ़ाइल फ़ोटो नहीं है, कृपया कोई इमेज चुनें';
+      photoNote.textContent = t('ask_not_image');
       return;
     }
-    photoNote.textContent = 'फ़ोटो तैयार हो रही है...';
+    photoNote.textContent = t('ask_photo_preparing');
     try {
       pendingPhoto = await downscalePhoto(file);
-      photoNote.textContent = 'फ़ोटो जुड़ गई है';
+      photoNote.textContent = t('ask_photo_added');
     } catch (e) {
       photoInput.value = '';
       photoNote.textContent =
         e && e.message === 'too-large'
-          ? 'फ़ोटो बहुत बड़ी है, कोई दूसरी फ़ोटो चुनें'
-          : 'फ़ोटो नहीं खोली जा सकी, कोई दूसरी फ़ोटो चुनें';
+          ? t('ask_photo_too_large')
+          : t('ask_photo_failed');
     }
   }
   photoInput.addEventListener('change', () => onPhotoChosen(photoInput.files && photoInput.files[0]));
@@ -152,7 +151,7 @@ export function render(root, ctx) {
 
   if (SR) {
     recognition = new SR();
-    recognition.lang = 'hi-IN';
+    recognition.lang = speechLang(getLang());
     recognition.interimResults = false;
     recognition.onresult = (event) => {
       const alt = event.results && event.results[0] && event.results[0][0];
@@ -161,12 +160,12 @@ export function render(root, ctx) {
     };
     recognition.onerror = () => {
       setListening(false);
-      ctx.toast('आवाज़ नहीं सुनी जा सकी, फिर से कोशिश करें');
+      ctx.toast(t('ask_voice_unheard'));
     };
     recognition.onend = () => setListening(false);
   } else {
     speakBtn.disabled = true;
-    speechNote.textContent = 'इस फ़ोन पर बोलकर पूछने की सुविधा नहीं है';
+    speechNote.textContent = t('ask_no_voice');
   }
 
   function toggleSpeech() {
@@ -184,7 +183,7 @@ export function render(root, ctx) {
       recognition.start();
       setListening(true);
     } catch {
-      ctx.toast('आवाज़ शुरू नहीं हो सकी');
+      ctx.toast(t('ask_voice_start_failed'));
     }
   }
 
@@ -194,7 +193,7 @@ export function render(root, ctx) {
 
   function showAnswer(result) {
     answerBox.replaceChildren();
-    answerBox.appendChild(el('h2', null, 'जवाब'));
+    answerBox.appendChild(el('h2', null, t('ask_answer_heading')));
 
     const answerCard = el('div', 'card');
     const body = el('p', null, result.answer || '');
@@ -215,7 +214,7 @@ export function render(root, ctx) {
       for (const opt of cq.options || []) {
         const b = button(opt.text, 'btn-secondary', () => {
           feedback.textContent =
-            opt.id === result.correctOptionId ? 'बिल्कुल सही!' : 'अभी नहीं। फिर से सोचें।';
+            opt.id === result.correctOptionId ? t('ask_right') : t('ask_wrong');
         });
         optionRow.appendChild(b);
       }
@@ -226,11 +225,12 @@ export function render(root, ctx) {
 
   // Offline-style card of the closest concept. Photo-only doubts pass '' for
   // text and PHOTO_NOTE as intro; the photo is never read for the concept pick.
-  function showOffline(text, intro = OFFLINE_NOTE, forcedConcept = null) {
+  function showOffline(text, intro = t('ask_offline_note'), forcedConcept = null) {
+    const { CHAPTER } = getCurrentChapter();
     answerBox.replaceChildren();
     answerBox.appendChild(el('div', 'notice', intro));
 
-    const closest = findClosestConcept(text, CHAPTER);
+    const closest = findClosestConcept(text, CHAPTER, getLang());
     const concept = forcedConcept || (closest && closest.concept) || (CHAPTER.concepts || [])[0];
     if (!concept) return;
 
@@ -239,18 +239,19 @@ export function render(root, ctx) {
     const firstPoint = (concept.card && concept.card.points && concept.card.points[0]) || '';
     const pointP = el('p', null, firstPoint);
     pointP.style.fontSize = '18px';
-    const openBtn = button('यह पाठ खोलें', 'btn', () => ctx.navigate('#/learn/' + concept.id));
+    const openBtn = button(t('ask_open_lesson'), 'btn', () => ctx.navigate('#/learn/' + concept.id));
     conceptCard.append(pointP, openBtn);
     answerBox.appendChild(conceptCard);
   }
 
   // Runs the offline tutor, stores the answer on the doubt, returns the result.
   function answerAndSave(id, text) {
+    const { CHAPTER } = getCurrentChapter();
     let result;
     try {
-      result = answerDoubt(text, CHAPTER);
+      result = answerDoubt(text, CHAPTER, getLang());
     } catch {
-      ctx.toast('जवाब नहीं बन सका, फिर से कोशिश करें');
+      ctx.toast(t('ask_failed'));
       return null;
     }
     updateDoubt(profile.id, id, {
@@ -267,15 +268,16 @@ export function render(root, ctx) {
   // flush never answers them from empty text.
   function showPhotoOnly() {
     // Weakest concept for this learner; if none is returned, showOffline falls back to the first concept.
+    const { CHAPTER } = getCurrentChapter();
     const weak = weakConcepts(CHAPTER, getProgress(profile.id));
-    showOffline('', PHOTO_NOTE, (weak && weak[0]) || null);
+    showOffline('', t('ask_photo_note'), (weak && weak[0]) || null);
   }
 
   function submit() {
     const text = textarea.value.trim();
     const photo = pendingPhoto;
     if (!text && !photo) {
-      ctx.toast('कृपया सवाल लिखें या फ़ोटो जोड़ें');
+      ctx.toast(t('ask_need_input'));
       return;
     }
 
@@ -304,7 +306,7 @@ export function render(root, ctx) {
   }
 
   // ----- past doubts -----
-  root.appendChild(el('h2', null, 'आपके पिछले सवाल'));
+  root.appendChild(el('h2', null, t('ask_past')));
   const list = el('div', 'list');
   root.appendChild(list);
 
@@ -314,7 +316,7 @@ export function render(root, ctx) {
       return;
     }
     if (!isOnline()) {
-      ctx.toast('इंटरनेट नहीं है, जुड़ने पर जवाब मिलेगा');
+      ctx.toast(t('ask_offline_wait'));
       return;
     }
     const result = answerAndSave(doubt.id, doubt.text);
@@ -329,15 +331,15 @@ export function render(root, ctx) {
     // Stored oldest first; show newest first, capped.
     const doubts = getDoubts(profile.id).slice(-LIST_CAP).reverse();
     if (!doubts.length) {
-      list.appendChild(el('p', 'muted', 'अभी कोई सवाल नहीं पूछा गया'));
+      list.appendChild(el('p', 'muted', t('ask_none')));
       return;
     }
     for (const d of doubts) {
       const answered = d.status === 'answered';
       const item = el('div', 'card');
-      const q = el('p', null, d.text || 'केवल फ़ोटो');
+      const q = el('p', null, d.text || t('ask_photo_only'));
       q.style.fontSize = '18px';
-      const status = el('span', 'chip', answered ? 'जवाब मिला' : d.status === 'photo_only' ? 'फ़ोटो सहेजी गई' : 'भेजने की प्रतीक्षा में');
+      const status = el('span', 'chip', answered ? t('ask_status_answered') : d.status === 'photo_only' ? t('ask_status_photo') : t('ask_status_queued'));
       const row = el('div');
       row.style.display = 'flex';
       row.style.alignItems = 'center';
@@ -345,7 +347,7 @@ export function render(root, ctx) {
       if (d.photo) {
         const thumb = el('img');
         thumb.src = d.photo;
-        thumb.alt = 'फ़ोटो';
+        thumb.alt = t('ask_photo_alt');
         thumb.style.maxWidth = '48px';
         thumb.style.maxHeight = '48px';
         thumb.style.objectFit = 'contain';
@@ -354,7 +356,7 @@ export function render(root, ctx) {
       row.appendChild(q);
       item.append(row, status);
       if (!answered) {
-        item.appendChild(button('जवाब देखें', 'btn-ghost', () => answerStored(d)));
+        item.appendChild(button(t('ask_see_answer'), 'btn-ghost', () => answerStored(d)));
       }
       list.appendChild(item);
     }
