@@ -21,7 +21,7 @@ function formatRupees(n) {
 
 function section(title) {
   const card = el('div', 'card');
-  card.appendChild(el('h2', null, title));
+  card.appendChild(el('h2', 'card-title', title));
   return card;
 }
 

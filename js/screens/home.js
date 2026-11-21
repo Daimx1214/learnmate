@@ -27,7 +27,7 @@ function overallMastery(progress) {
 
 function statRow(label, value) {
   const row = el('div', 'stat-row');
-  row.append(el('span', 'muted', label), el('strong', null, value));
+  row.append(el('span', 'muted stat-label', label), el('strong', 'stat-value', value));
   return row;
 }
 
