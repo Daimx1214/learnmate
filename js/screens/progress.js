@@ -162,6 +162,6 @@ export function render(root, ctx) {
   root.appendChild(familyCard(ctx, profile, progress));
   const saverCard = el('div', 'card');
   saverCard.appendChild(dataSaverRow(ctx));
+  saverCard.appendChild(usageLine());
   root.appendChild(saverCard);
-  root.appendChild(usageLine());
 }

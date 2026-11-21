@@ -81,6 +81,10 @@ export function render(root, ctx) {
   }
   root.appendChild(actions);
 
-  root.appendChild(el('p', 'muted', t('home_chapter', { title: SUBJECT_PACK.title })));
-  root.appendChild(el('p', 'muted', t('home_base')));
+  const meta = el('div', 'home-meta');
+  meta.append(
+    el('p', 'muted', t('home_chapter', { title: SUBJECT_PACK.title })),
+    el('p', 'muted', t('home_base'))
+  );
+  root.appendChild(meta);
 }

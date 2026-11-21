@@ -893,3 +893,67 @@ select:focus {
 .app-footer p {
   margin: 4px 0;
 }
+
+/* ===== Visual-review fixes (22 Nov) ===== */
+.actions > .btn,
+.actions > button {
+  flex: 1 1 0;
+}
+
+.list .card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list .card > .chip {
+  margin-top: 0;
+}
+
+.list .card .chip + .progress-bar {
+  margin-top: 0;
+}
+
+.concept-head {
+  margin-bottom: 6px;
+}
+
+.concept-row .progress-bar {
+  margin-top: 6px;
+}
+
+.card:has(> .stat-row) {
+  align-items: start;
+}
+
+.stat-value {
+  line-height: 1.25;
+}
+
+.home-meta {
+  line-height: 1.45;
+}
+
+.home-meta p + p {
+  margin-top: 2px;
+}
+
+@media (min-width: 481px) {
+  th,
+  td {
+    padding: 10px;
+  }
+}
+
+table tr:last-child td {
+  border-top: 2px solid var(--border);
+  background: #FFF6DD;
+}
+
+caption {
+  text-align: left;
+}
+
+.notice {
+  text-wrap: pretty;
+}
