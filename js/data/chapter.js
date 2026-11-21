@@ -1824,3 +1824,60 @@ export const SUBJECT_PACK = {
   title: 'कक्षा 8 विज्ञान',
   concepts: ALL_CONCEPTS,
 };
+
+// ----- Language support (added 22 Nov 2026, owner request) -----
+// English is the default language; Hindi remains complete. localizedPack()
+// and localizedChapters() return the content in the current language.
+import { EN_CHAPTERS, EN_CONCEPTS, EN_MISCONCEPTIONS, EN_PACK_TITLE } from './content-en.js';
+import { getLang } from '../lang.js';
+
+function localizeConcept(c) {
+  const en = EN_CONCEPTS[c.id];
+  if (!en) return c;
+  return {
+    ...c,
+    title: en.title,
+    card: { points: (en.points || []).slice(), example: en.example },
+    questions: (c.questions || []).map((q) => {
+      const eq = (en.questions || {})[q.id];
+      if (!eq) return q;
+      return {
+        ...q,
+        text: eq.text,
+        options: (q.options || []).map((o) => {
+          const eo = (eq.options || {})[o.id];
+          if (!eo) return o;
+          const out = { ...o, text: eo.text };
+          if ('feedback' in eo) out.feedback = eo.feedback;
+          return out;
+        }),
+      };
+    }),
+  };
+}
+
+export function localizedChapters() {
+  if (getLang() !== 'en') return CHAPTERS;
+  return CHAPTERS.map((ch) => ({
+    ...ch,
+    title: EN_CHAPTERS[ch.id] || ch.title,
+    concepts: (ch.concepts || []).map(localizeConcept),
+  }));
+}
+
+export function localizedPack() {
+  const lang = getLang();
+  if (lang !== 'en') return { ...SUBJECT_PACK, lang };
+  return {
+    id: SUBJECT_PACK.id,
+    title: EN_PACK_TITLE,
+    lang,
+    concepts: localizedChapters().flatMap((ch) => ch.concepts || []),
+  };
+}
+
+export function misconceptionLabel(tag) {
+  if (getLang() === 'en' && EN_MISCONCEPTIONS[tag]) return EN_MISCONCEPTIONS[tag];
+  const m = MISCONCEPTIONS[tag];
+  return m ? m.label : tag;
+}

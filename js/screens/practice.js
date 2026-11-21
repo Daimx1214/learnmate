@@ -1,4 +1,4 @@
-import { SUBJECT_PACK, ALL_CONCEPTS, MISCONCEPTIONS } from '../data/chapter.js';
+import { localizedPack, misconceptionLabel } from '../data/chapter.js';
 import { getProgress, saveProgress } from '../store.js';
 import { applyAnswer, shouldShowLesson, pickNextQuestion, pickForConcept } from '../mastery.js';
 import { t } from '../i18n.js';
@@ -44,7 +44,7 @@ export function render(root, ctx) {
   const pick = () => {
     if (forcedId && !forcedUsed) {
       forcedUsed = true;
-      const concept = ALL_CONCEPTS.find((c) => c.id === forcedId);
+      const concept = localizedPack().concepts.find((c) => c.id === forcedId);
       const forced = concept ? pickForConcept(concept, progress) : null;
       if (forced && forced.question) {
         picked = forced;
@@ -52,7 +52,7 @@ export function render(root, ctx) {
         return;
       }
     }
-    picked = pickNextQuestion(SUBJECT_PACK, progress) || null;
+    picked = pickNextQuestion(localizedPack(), progress) || null;
     answered = null;
   };
 
@@ -97,9 +97,7 @@ export function render(root, ctx) {
       box.appendChild(el('p', null, t('practice_correct', { reason })));
     } else {
       box.appendChild(el('p', null, option.feedback || ''));
-      const label = option.misconception && MISCONCEPTIONS[option.misconception]
-        ? MISCONCEPTIONS[option.misconception].label
-        : null;
+      const label = option.misconception ? misconceptionLabel(option.misconception) : null;
       if (label) {
         box.appendChild(el('span', 'chip', t('practice_misconception', { label })));
       }

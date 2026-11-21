@@ -2,7 +2,7 @@
 
 const ANSWER_WORD_CAP = 90;
 
-// Fixed reply scaffolding (Hindi only).
+// Fixed reply scaffolding (English and Hindi).
 const PHRASES = {
   hi: {
     closing: 'अब नीचे दिया छोटा सवाल हल करें।',
@@ -11,6 +11,14 @@ const PHRASES = {
     stepLabel: 'चरण',
     exampleLabel: 'उदाहरण',
     check: 'छोटा सवाल',
+  },
+  en: {
+    closing: 'Now solve the small question given below.',
+    teacher: 'Ask this question to your teacher.',
+    notMatched: (title) => `This question is not directly in this chapter. The nearest topic is: ${title}.`,
+    stepLabel: 'Step',
+    exampleLabel: 'Example',
+    check: 'Quick question',
   },
 };
 
@@ -22,10 +30,14 @@ const STOPWORDS = {
     'और', 'या', 'तथा', 'में', 'का', 'की', 'के', 'से', 'पर', 'को', 'ने', 'तो', 'भी', 'एक', 'यह', 'वह', 'ये', 'वे',
     'जो', 'इस', 'उस', 'लिए', 'लिये', 'द्वारा',
   ]),
+  en: new Set([
+    'what', 'why', 'how', 'when', 'where', 'who', 'is', 'are', 'was', 'were', 'the', 'a', 'an',
+    'of', 'in', 'on', 'to', 'and', 'or', 'does', 'do', 'can', 'it', 'this', 'that', 'for', 'with',
+  ]),
 };
 
-export function tutorPhrases() {
-  return { check: PHRASES.hi.check };
+export function tutorPhrases(lang) {
+  return { check: (PHRASES[lang] || PHRASES.hi).check };
 }
 
 export function wordCount(str) {
@@ -56,7 +68,7 @@ function scoreConcept(normText, concept, stopwords) {
 }
 
 export function findClosestConcept(text, chapter) {
-  const stopwords = STOPWORDS.hi;
+  const stopwords = STOPWORDS[chapter && chapter.lang === 'en' ? 'en' : 'hi'];
   const normText = normalise(text);
   let best = null;
   let bestScore = 0;
@@ -82,7 +94,7 @@ function buildAnswer(concept, matched, points, example, P) {
 }
 
 export function answerDoubt(text, chapter) {
-  const P = PHRASES.hi;
+  const P = PHRASES[chapter && chapter.lang === 'en' ? 'en' : 'hi'];
   const { concept: best, score } = findClosestConcept(text, chapter);
   const matched = score > 0;
   const concept = matched ? best : ((chapter && chapter.concepts) || [])[0] || null;

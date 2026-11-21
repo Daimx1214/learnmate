@@ -1,4 +1,4 @@
-import { SUBJECT_PACK } from '../data/chapter.js';
+import { localizedPack } from '../data/chapter.js';
 import { addDoubt, updateDoubt, getDoubts, getProgress } from '../store.js';
 import { answerDoubt, findClosestConcept } from '../tutor.js';
 import { isOnline } from '../sync.js';
@@ -230,8 +230,8 @@ export function render(root, ctx) {
     answerBox.replaceChildren();
     answerBox.appendChild(el('div', 'notice', intro));
 
-    const closest = findClosestConcept(text, SUBJECT_PACK);
-    const concept = forcedConcept || (closest && closest.concept) || (SUBJECT_PACK.concepts || [])[0];
+    const closest = findClosestConcept(text, localizedPack());
+    const concept = forcedConcept || (closest && closest.concept) || (localizedPack().concepts || [])[0];
     if (!concept) return;
 
     const conceptCard = el('div', 'card');
@@ -248,7 +248,7 @@ export function render(root, ctx) {
   function answerAndSave(id, text) {
     let result;
     try {
-      result = answerDoubt(text, SUBJECT_PACK);
+      result = answerDoubt(text, localizedPack());
     } catch {
       ctx.toast(t('ask_failed'));
       return null;
@@ -267,7 +267,7 @@ export function render(root, ctx) {
   // flush never answers them from empty text.
   function showPhotoOnly() {
     // Weakest concept for this learner; if none is returned, showOffline falls back to the first concept.
-    const weak = weakConcepts(SUBJECT_PACK, getProgress(profile.id));
+    const weak = weakConcepts(localizedPack(), getProgress(profile.id));
     showOffline('', t('ask_photo_note'), (weak && weak[0]) || null);
   }
 

@@ -1,3 +1,5 @@
+import { getLang } from './lang.js';
+
 // js/store.js — localStorage wrapper. All keys are prefixed 'saathi.v1.'.
 // Every storage access is wrapped; if localStorage is unavailable or full,
 // an in-memory Map keeps the session working.
@@ -137,21 +139,21 @@ export function createProfile({ nickname, avatar, photo } = {}) {
   const nick = String(nickname ?? '').trim();
   const len = [...nick].length;
   if (len < 1 || len > NICK_MAX) {
-    throw new Error('नाम 1 से 20 अक्षरों का होना चाहिए');
+    throw new Error(getLang() === 'hi' ? 'नाम 1 से 20 अक्षरों का होना चाहिए' : 'The name must be 1 to 20 characters');
   }
   if (!AVATARS.some((a) => a.id === avatar)) {
-    throw new Error('कृपया एक अवतार चुनें');
+    throw new Error(getLang() === 'hi' ? 'कृपया एक अवतार चुनें' : 'Please choose an avatar');
   }
   // Optional profile photo (owner request, 22 Nov): a small data URL that
   // lives only in this phone's storage. It is never synced or sent anywhere.
   if (photo !== undefined && photo !== null) {
     if (typeof photo !== 'string' || !photo.startsWith('data:image/') || photo.length > 160000) {
-      throw new Error('फ़ोटो सही नहीं है');
+      throw new Error(getLang() === 'hi' ? 'फ़ोटो सही नहीं है' : 'The photo is not valid');
     }
   }
   const profiles = getProfiles();
   if (profiles.length >= MAX_PROFILES) {
-    throw new Error('एक फ़ोन पर अधिकतम 4 प्रोफ़ाइल बनाई जा सकती हैं');
+    throw new Error(getLang() === 'hi' ? 'एक फ़ोन पर अधिकतम 4 प्रोफ़ाइल बनाई जा सकती हैं' : 'At most 4 profiles can be made on one phone');
   }
   const taken = new Set(profiles.map((p) => p.familyCode));
   const profile = {

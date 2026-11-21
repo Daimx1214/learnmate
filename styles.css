@@ -998,3 +998,25 @@ caption {
   border-radius: 50%;
   object-fit: cover;
 }
+
+/* Language toggle in the header (added 22 Nov 2026). */
+.lang-toggle {
+  flex: none;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--blue);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Slim footer (owner request 22 Nov 2026): two rows only. */
+.app-footer {
+  padding: 12px 0 8px;
+}
+.app-footer p {
+  margin: 2px 0;
+}

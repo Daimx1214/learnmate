@@ -1,6 +1,7 @@
 import { AVATARS, getProfile, getActiveProfileId, addStudySeconds, getUsage } from './store.js';
 import { syncAll, isOnline } from './sync.js';
 import { t } from './i18n.js';
+import { getLang, setLang } from './lang.js';
 
 // Route name -> whether it needs an active profile.
 const ROUTES = {
@@ -135,6 +136,16 @@ function buildHeader() {
   status.append(dot, data);
 
   headerEl.append(profileLink, status);
+
+  const langBtn = document.createElement('button');
+  langBtn.type = 'button';
+  langBtn.className = 'lang-toggle';
+  langBtn.textContent = t('lang_switch_label');
+  langBtn.addEventListener('click', () => {
+    setLang(getLang() === 'hi' ? 'en' : 'hi');
+    window.location.reload();
+  });
+  headerEl.appendChild(langBtn);
   headerParts = { avatar, name, dot, data };
 }
 
@@ -190,25 +201,19 @@ function buildFooter() {
   footerEl = document.createElement('footer');
   footerEl.className = 'app-footer';
 
-  const l1 = document.createElement('p');
-  l1.textContent = 'LearnMate — कक्षा 8 विज्ञान · हिंदी में · मुफ़्त';
-
-  const l2 = document.createElement('p');
+  const links = document.createElement('p');
   const about = document.createElement('a');
   about.href = '#/about';
-  about.textContent = 'हमारे बारे में';
+  about.textContent = t('about_title');
   const family = document.createElement('a');
   family.href = '#/family';
-  family.textContent = 'परिवार के लिए';
-  l2.append(about, document.createTextNode(' · '), family, document.createTextNode(' · NCERT अध्याय 8: बल और दाब'));
+  family.textContent = t('family_title');
+  links.append(about, document.createTextNode(' · '), family);
 
-  const l3 = document.createElement('p');
-  l3.textContent = 'कोई लॉगिन नहीं · कोई विज्ञापन नहीं · डेटा सिर्फ़ इसी फ़ोन पर रहता है';
+  const line = document.createElement('p');
+  line.textContent = t('footer_line');
 
-  const l4 = document.createElement('p');
-  l4.textContent = 'ACE Builders Hackathon 2026 · Codebenders IDE में बना';
-
-  footerEl.append(l1, l2, l3, l4);
+  footerEl.append(links, line);
   return footerEl;
 }
 
@@ -309,6 +314,8 @@ async function syncOnLoad() {
 }
 
 function init() {
+  document.title = t('app_title');
+  document.documentElement.lang = getLang() === 'hi' ? 'hi' : 'en';
   buildNav();
   window.addEventListener('hashchange', route);
   window.addEventListener('online', updateStatusDot);
