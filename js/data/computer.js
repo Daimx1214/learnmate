@@ -1,4 +1,886 @@
-// Class 8 Computer Science content pack (base language). Registered in chapter.js.
+// LearnMate content pack: Class 8 Computer Science (base language, Hindi).
+// Registered in chapter.js. Each chapter has exactly 3 concepts; each concept
+// has a short Hindi card (points + one example) and exactly 3 MCQ questions
+// (one easy, one medium, one hard). Each question has 4 options (a-d);
+// exactly one has correct: true and no other fields. Every wrong option has
+// a misconception tag (a key of COMPUTER_MISCONCEPTIONS) and Hindi feedback.
+
 export const COMPUTER_PACK_TITLE = 'कक्षा 8 कंप्यूटर विज्ञान';
-export const COMPUTER_CHAPTERS = [];
-export const COMPUTER_MISCONCEPTIONS = {};
+
+export const COMPUTER_CHAPTERS = [
+  {
+    id: 'comp-tantra',
+    title: 'कंप्यूटर तंत्र',
+    concepts: [
+      {
+        id: 'comp-input-output',
+        title: 'इनपुट और आउटपुट डिवाइस',
+        keywords: ['इनपुट', 'आउटपुट', 'कीबोर्ड', 'माउस', 'मॉनीटर', 'प्रिंटर', 'input', 'output', 'keyboard', 'monitor', 'printer'],
+        card: {
+          points: [
+            'जिन डिवाइस से हम कंप्यूटर को जानकारी देते हैं, वे इनपुट डिवाइस हैं, जैसे कीबोर्ड और माउस।',
+            'जिन डिवाइस से कंप्यूटर हमें परिणाम दिखाता या सुनाता है, वे आउटपुट डिवाइस हैं, जैसे मॉनीटर और स्पीकर।',
+            'स्कैनर काग़ज़ की तस्वीर को कंप्यूटर में डालता है, और प्रिंटर काग़ज़ पर छापता है।',
+          ],
+          example: 'टाइप करते समय कीबोर्ड इनपुट है और स्क्रीन पर दिखता अक्षर मॉनीटर का आउटपुट है।',
+        },
+        questions: [
+          {
+            id: 'comp-input-output-q1',
+            difficulty: 'easy',
+            text: 'कीबोर्ड कौन-सी डिवाइस है?',
+            options: [
+              { id: 'a', text: 'आउटपुट डिवाइस', misconception: 'input-is-output', feedback: 'कीबोर्ड से हम अक्षर कंप्यूटर में डालते हैं, इसलिए यह इनपुट डिवाइस है।' },
+              { id: 'b', text: 'इनपुट डिवाइस', correct: true },
+              { id: 'c', text: 'स्टोरेज डिवाइस', misconception: 'keyboard-is-storage', feedback: 'कीबोर्ड कुछ सहेजता नहीं, वह केवल अक्षर अंदर भेजता है। सहेजने का काम हार्ड डिस्क या पेन ड्राइव का है।' },
+              { id: 'd', text: 'केवल गेम खेलने की डिवाइस', misconception: 'keyboard-only-games', feedback: 'कीबोर्ड से पढ़ाई, लिखाई और हर तरह का काम होता है, केवल गेम नहीं।' },
+            ],
+          },
+          {
+            id: 'comp-input-output-q2',
+            difficulty: 'medium',
+            text: 'प्रिंटर कौन-सी डिवाइस है और क्यों?',
+            options: [
+              { id: 'a', text: 'इनपुट डिवाइस, क्योंकि वह काग़ज़ अंदर लेता है', misconception: 'printer-is-input', feedback: 'काग़ज़ अंदर जाना इनपुट नहीं है। प्रिंटर कंप्यूटर से जानकारी लेकर काग़ज़ पर छापता है, इसलिए वह आउटपुट है।' },
+              { id: 'b', text: 'स्टोरेज डिवाइस, क्योंकि वह पेज सहेजता है', misconception: 'printer-is-storage', feedback: 'प्रिंटर कुछ सहेजता नहीं, वह केवल छापता है।' },
+              { id: 'c', text: 'आउटपुट डिवाइस, क्योंकि वह काग़ज़ पर परिणाम छापता है', correct: true },
+              { id: 'd', text: 'CPU का हिस्सा', misconception: 'printer-is-cpu', feedback: 'प्रिंटर बाहर से जुड़ी अलग डिवाइस है, CPU सिस्टम यूनिट के अंदर होता है।' },
+            ],
+          },
+          {
+            id: 'comp-input-output-q3',
+            difficulty: 'hard',
+            text: 'नीचे कौन-सा जोड़ा सही है?',
+            options: [
+              { id: 'a', text: 'माउस — आउटपुट, स्पीकर — इनपुट', misconception: 'input-output-swapped', feedback: 'माउस से हम इशारा अंदर भेजते हैं, वह इनपुट है। स्पीकर आवाज़ बाहर देता है, वह आउटपुट है।' },
+              { id: 'b', text: 'स्कैनर — आउटपुट, मॉनीटर — इनपुट', misconception: 'input-output-swapped', feedback: 'स्कैनर तस्वीर अंदर डालता है, वह इनपुट है। मॉनीटर दिखाता है, वह आउटपुट है।' },
+              { id: 'c', text: 'माइक्रोफ़ोन — इनपुट, हेडफ़ोन — आउटपुट', correct: true },
+              { id: 'd', text: 'वेबकैम — आउटपुट, प्रिंटर — इनपुट', misconception: 'input-output-swapped', feedback: 'वेबकैम तस्वीर अंदर भेजता है, वह इनपुट है। प्रिंटर छापता है, वह आउटपुट है।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-cpu-memory',
+        title: 'CPU और मेमोरी (RAM व ROM)',
+        keywords: ['CPU', 'RAM', 'ROM', 'मेमोरी', 'दिमाग़', 'सीपीयू', 'रैम', 'रोम', 'memory', 'processor'],
+        card: {
+          points: [
+            'CPU कंप्यूटर का दिमाग़ है। यह सारे हिसाब करता है और सब भागों को आदेश देता है।',
+            'RAM अस्थायी मेमोरी है। बिजली बंद होते ही इसका डेटा मिट जाता है।',
+            'ROM स्थायी मेमोरी है। इसमें कंप्यूटर को चालू करने के ज़रूरी निर्देश सहेजे रहते हैं।',
+            'जो प्रोग्राम चल रहे होते हैं, वे काम के समय RAM में रहते हैं।',
+          ],
+          example: 'मोबाइल बंद करके फिर चालू करने पर खुला हुआ गेम बंद हो जाता है, क्योंकि वह RAM में था।',
+        },
+        questions: [
+          {
+            id: 'comp-cpu-memory-q1',
+            difficulty: 'easy',
+            text: 'कंप्यूटर का दिमाग़ किसे कहते हैं?',
+            options: [
+              { id: 'a', text: 'मॉनीटर को', misconception: 'monitor-is-brain', feedback: 'मॉनीटर केवल दिखाता है। हिसाब और फ़ैसले CPU करता है।' },
+              { id: 'b', text: 'कीबोर्ड को', misconception: 'keyboard-is-brain', feedback: 'कीबोर्ड केवल अक्षर अंदर भेजता है, सोचना CPU का काम है।' },
+              { id: 'c', text: 'CPU को', correct: true },
+              { id: 'd', text: 'प्रिंटर को', misconception: 'printer-is-brain', feedback: 'प्रिंटर केवल छापता है, वह सोचता नहीं।' },
+            ],
+          },
+          {
+            id: 'comp-cpu-memory-q2',
+            difficulty: 'medium',
+            text: 'RAM की सबसे सही पहचान क्या है?',
+            options: [
+              { id: 'a', text: 'बिजली बंद होने पर भी डेटा हमेशा सहेजा रहता है', misconception: 'ram-is-permanent', feedback: 'RAM अस्थायी है। बिजली बंद होते ही RAM का डेटा मिट जाता है।' },
+              { id: 'b', text: 'काम के समय की अस्थायी मेमोरी, बिजली बंद होते ही ख़ाली हो जाती है', correct: true },
+              { id: 'c', text: 'केवल पढ़ने वाली स्थायी मेमोरी', misconception: 'ram-is-rom', feedback: 'केवल पढ़ने वाली स्थायी मेमोरी ROM है, RAM नहीं।' },
+              { id: 'd', text: 'फ़ोटो सहेजने वाली डिस्क', misconception: 'ram-is-disk', feedback: 'फ़ोटो डिस्क या पेन ड्राइव में सहेजी जाती हैं, RAM में नहीं।' },
+            ],
+          },
+          {
+            id: 'comp-cpu-memory-q3',
+            difficulty: 'hard',
+            text: 'कंप्यूटर चालू करते ही सबसे पहले निर्देश कहाँ से मिलते हैं?',
+            options: [
+              { id: 'a', text: 'RAM से, क्योंकि वही सबसे तेज़ है', misconception: 'startup-from-ram', feedback: 'बंद कंप्यूटर की RAM ख़ाली होती है। चालू करने के निर्देश ROM में सहेजे होते हैं।' },
+              { id: 'b', text: 'पेन ड्राइव से', misconception: 'startup-from-pendrive', feedback: 'पेन ड्राइव बाहर की स्टोरेज है। हर कंप्यूटर के अपने ROM में चालू होने के निर्देश होते हैं।' },
+              { id: 'c', text: 'मॉनीटर से', misconception: 'monitor-is-brain', feedback: 'मॉनीटर केवल तस्वीर दिखाता है, निर्देश नहीं देता।' },
+              { id: 'd', text: 'ROM से, क्योंकि चालू करने के निर्देश वहीं स्थायी रूप से सहेजे होते हैं', correct: true },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-storage-devices',
+        title: 'स्टोरेज डिवाइस (HDD, SSD, पेन ड्राइव)',
+        keywords: ['स्टोरेज', 'हार्ड डिस्क', 'HDD', 'SSD', 'पेन ड्राइव', 'सहेजना', 'storage', 'hard disk', 'pen drive'],
+        card: {
+          points: [
+            'स्टोरेज डिवाइस डेटा को स्थायी रूप से सहेजते हैं, ताकि बिजली बंद होने पर भी वह बना रहे।',
+            'HDD में घूमती हुई चुंबकीय डिस्क होती है। यह सस्ती है और ज़्यादा जगह देती है, पर धीमी है।',
+            'SSD में कोई घूमता भाग नहीं होता। यह HDD से तेज़ और मज़बूत है, पर महँगी है।',
+            'पेन ड्राइव छोटी, हल्की स्टोरेज है, जो USB से जुड़कर डेटा एक जगह से दूसरी जगह ले जाती है।',
+          ],
+          example: 'अपनी प्रोजेक्ट फ़ाइल पेन ड्राइव में डालकर स्कूल के कंप्यूटर पर खोलना स्टोरेज का ही कमाल है।',
+        },
+        questions: [
+          {
+            id: 'comp-storage-devices-q1',
+            difficulty: 'easy',
+            text: 'कौन-सी डिवाइस डेटा स्थायी रूप से सहेजती है?',
+            options: [
+              { id: 'a', text: 'RAM', misconception: 'ram-is-permanent', feedback: 'RAM अस्थायी है, बिजली बंद होते ही ख़ाली हो जाती है। स्थायी सहेजने के लिए डिस्क चाहिए।' },
+              { id: 'b', text: 'मॉनीटर', misconception: 'monitor-is-storage', feedback: 'मॉनीटर केवल दिखाता है, कुछ सहेजता नहीं।' },
+              { id: 'c', text: 'हार्ड डिस्क (HDD)', correct: true },
+              { id: 'd', text: 'स्पीकर', misconception: 'speaker-is-storage', feedback: 'स्पीकर आवाज़ सुनाता है, डेटा नहीं सहेजता।' },
+            ],
+          },
+          {
+            id: 'comp-storage-devices-q2',
+            difficulty: 'medium',
+            text: 'SSD, HDD से किस बात में बेहतर है?',
+            options: [
+              { id: 'a', text: 'इसमें घूमती डिस्क होती है', misconception: 'ssd-has-disk', feedback: 'घूमती डिस्क HDD में होती है। SSD में कोई घूमता भाग नहीं होता।' },
+              { id: 'b', text: 'यह तेज़ है और इसमें कोई घूमता भाग नहीं होता', correct: true },
+              { id: 'c', text: 'यह हमेशा सस्ती होती है', misconception: 'ssd-is-cheaper', feedback: 'SSD आमतौर पर HDD से महँगी होती है, उसकी ख़ूबी रफ़्तार है।' },
+              { id: 'd', text: 'इसे बिजली की ज़रूरत नहीं पड़ती', misconception: 'ssd-no-power', feedback: 'हर इलेक्ट्रॉनिक डिवाइस को बिजली चाहिए। SSD को भी बिजली लगती है।' },
+            ],
+          },
+          {
+            id: 'comp-storage-devices-q3',
+            difficulty: 'hard',
+            text: '8 GB की पेन ड्राइव में लगभग कितनी 1 MB वाली फ़ोटो आ सकती हैं?',
+            options: [
+              { id: 'a', text: 'लगभग 8', misconception: 'gb-mb-confusion', feedback: '1 GB में 1024 MB होते हैं। 8 GB यानी लगभग 8192 MB, इसलिए फ़ोटो भी हज़ारों में आएँगी।' },
+              { id: 'b', text: 'लगभग 80', misconception: 'gb-mb-confusion', feedback: '8 GB = 8 × 1024 = 8192 MB। हर फ़ोटो 1 MB की है, इसलिए लगभग 8000 फ़ोटो आएँगी।' },
+              { id: 'c', text: 'केवल 1', misconception: 'gb-mb-confusion', feedback: '1 GB में ही 1024 MB होते हैं। 8 GB में तो लगभग 8192 MB जगह है।' },
+              { id: 'd', text: 'लगभग 8000', correct: true },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'comp-sankhya',
+    title: 'संख्या पद्धति',
+    concepts: [
+      {
+        id: 'comp-binary-numbers',
+        title: 'बाइनरी संख्याएँ',
+        keywords: ['बाइनरी', '0', '1', 'आधार 2', 'स्थान मान', 'binary', 'base 2', 'digits'],
+        card: {
+          points: [
+            'कंप्यूटर केवल दो अंक समझता है: 0 और 1।',
+            '0 और 1 से बनी संख्याओं को बाइनरी संख्याएँ कहते हैं। इनका आधार 2 होता है।',
+            'हमारी रोज़ की संख्याओं में 0 से 9 तक दस अंक होते हैं, उनका आधार 10 होता है।',
+            'बाइनरी में दाईं ओर से हर स्थान का मान दोगुना होता जाता है: 1, 2, 4, 8, 16।',
+          ],
+          example: 'कंप्यूटर के लिए हर अक्षर और तस्वीर भी अंत में 0 और 1 की लंबी कतार ही होती है।',
+        },
+        questions: [
+          {
+            id: 'comp-binary-numbers-q1',
+            difficulty: 'easy',
+            text: 'बाइनरी पद्धति में कौन-से अंक होते हैं?',
+            options: [
+              { id: 'a', text: '0 से 9 तक सारे अंक', misconception: 'binary-has-ten-digits', feedback: '0 से 9 तक दस अंक दशमलव पद्धति के हैं। बाइनरी में केवल 0 और 1 होते हैं।' },
+              { id: 'b', text: 'केवल 0 और 1', correct: true },
+              { id: 'c', text: 'केवल 1 से 9 तक के अंक', misconception: 'binary-has-ten-digits', feedback: '1 से 9 दशमलव के अंक हैं। बाइनरी में केवल दो अंक हैं: 0 और 1।' },
+              { id: 'd', text: 'सभी अक्षर और अंक', misconception: 'binary-has-letters', feedback: 'बाइनरी में अक्षर नहीं होते, केवल 0 और 1 होते हैं।' },
+            ],
+          },
+          {
+            id: 'comp-binary-numbers-q2',
+            difficulty: 'medium',
+            text: 'बाइनरी संख्या 101 का दशमलव मान क्या है?',
+            options: [
+              { id: 'a', text: '3', misconception: 'binary-count-digits', feedback: 'अंकों को गिनना नहीं है। स्थान मान जोड़ो: 4 + 0 + 1 = 5।' },
+              { id: 'b', text: '101', misconception: 'binary-same-as-decimal', feedback: '101 बाइनरी को सीधे 101 नहीं पढ़ते। इसके स्थान मान 4, 2, 1 हैं।' },
+              { id: 'c', text: '5', correct: true },
+              { id: 'd', text: '7', misconception: 'binary-all-ones', feedback: '7 तब होता जब संख्या 111 होती। यहाँ बीच का अंक 0 है, इसलिए 4 + 0 + 1 = 5।' },
+            ],
+          },
+          {
+            id: 'comp-binary-numbers-q3',
+            difficulty: 'hard',
+            text: 'बाइनरी संख्या 1101 का दशमलव मान क्या है?',
+            options: [
+              { id: 'a', text: '13', correct: true },
+              { id: 'b', text: '11', misconception: 'binary-place-value-skip', feedback: 'स्थान मान 8, 4, 2, 1 हैं। जहाँ 1 है वहाँ जोड़ो: 8 + 4 + 0 + 1 = 13।' },
+              { id: 'c', text: '9', misconception: 'binary-place-value-skip', feedback: 'केवल 8 + 1 नहीं जोड़ना। बीच का 1 भी है: 8 + 4 + 0 + 1 = 13।' },
+              { id: 'd', text: '1101', misconception: 'binary-same-as-decimal', feedback: 'बाइनरी संख्या को वैसा ही नहीं पढ़ते। स्थान मान जोड़ने से 13 मिलता है।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-conversion',
+        title: 'दशमलव से बाइनरी और बाइनरी से दशमलव',
+        keywords: ['बदलना', 'भाग', 'शेषफल', 'दशमलव', 'conversion', 'decimal to binary', 'remainder'],
+        card: {
+          points: [
+            'दशमलव संख्या को बाइनरी में बदलने के लिए उसे बार-बार 2 से भाग देते हैं।',
+            'हर बार का शेषफल लिखते जाते हैं, और अंत में शेषफलों को उल्टा, यानी नीचे से ऊपर की ओर पढ़ते हैं।',
+            'बाइनरी को दशमलव में बदलने के लिए हर 1 के स्थान मान को जोड़ देते हैं।',
+            'जाँच के लिए बदली हुई संख्या को वापस बदलकर देख लेना चाहिए।',
+          ],
+          example: '13 को 2 से बार-बार भाग देने पर शेषफल क्रम से 1, 0, 1, 1 आते हैं। उन्हें उल्टा पढ़ने पर 1101 बनता है।',
+        },
+        questions: [
+          {
+            id: 'comp-conversion-q1',
+            difficulty: 'easy',
+            text: 'दशमलव 5 की बाइनरी संख्या क्या है?',
+            options: [
+              { id: 'a', text: '100', misconception: 'conversion-off-by-one', feedback: '100 का मान 4 होता है। 5 के लिए 4 + 1 चाहिए, यानी 101।' },
+              { id: 'b', text: '101', correct: true },
+              { id: 'c', text: '110', misconception: 'conversion-wrong-combo', feedback: '110 का मान 4 + 2 = 6 होता है। 5 के लिए 101 सही है।' },
+              { id: 'd', text: '5', misconception: 'binary-same-as-decimal', feedback: 'बाइनरी में अंक 5 होता ही नहीं। 5 को 101 लिखा जाता है।' },
+            ],
+          },
+          {
+            id: 'comp-conversion-q2',
+            difficulty: 'medium',
+            text: 'दशमलव 10 की बाइनरी क्या है?',
+            options: [
+              { id: 'a', text: '1001', misconception: 'conversion-wrong-combo', feedback: '1001 का मान 8 + 1 = 9 है। 10 के लिए 8 + 2 चाहिए, यानी 1010।' },
+              { id: 'b', text: '1010', correct: true },
+              { id: 'c', text: '1111', misconception: 'conversion-all-ones', feedback: '1111 का मान 15 होता है। 10 के लिए 1010 सही है।' },
+              { id: 'd', text: '101', misconception: 'conversion-missing-digit', feedback: '101 का मान 5 है। 10 के लिए एक और स्थान चाहिए: 1010।' },
+            ],
+          },
+          {
+            id: 'comp-conversion-q3',
+            difficulty: 'hard',
+            text: 'बाइनरी 1001 को दशमलव में बदलो।',
+            options: [
+              { id: 'a', text: '8', misconception: 'binary-place-value-skip', feedback: 'आख़िरी 1 का मान 1 भी जोड़ो: 8 + 0 + 0 + 1 = 9।' },
+              { id: 'b', text: '10', misconception: 'binary-place-value-skip', feedback: 'स्थान मान 8, 4, 2, 1 हैं। जहाँ 1 है वहीं जोड़ो: 8 + 1 = 9।' },
+              { id: 'c', text: '9', correct: true },
+              { id: 'd', text: '1001', misconception: 'binary-same-as-decimal', feedback: 'बाइनरी को वैसा ही नहीं छोड़ते। स्थान मान जोड़ने पर 9 मिलता है।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-bits-bytes',
+        title: 'बिट और बाइट',
+        keywords: ['बिट', 'बाइट', 'KB', 'MB', 'GB', 'bit', 'byte', 'kilobyte', 'megabyte'],
+        card: {
+          points: [
+            '0 या 1 की एक इकाई को बिट कहते हैं। यह कंप्यूटर की सबसे छोटी इकाई है।',
+            '8 बिट मिलकर 1 बाइट बनता है।',
+            '1 KB = 1024 बाइट, 1 MB = 1024 KB और 1 GB = 1024 MB होता है।',
+            'फ़ाइलों और मेमोरी का आकार बाइट, KB, MB और GB में नापा जाता है।',
+          ],
+          example: 'एक अक्षर सहेजने में लगभग 1 बाइट लगता है, इसलिए छोटी-सी कहानी भी कई KB की होती है।',
+        },
+        questions: [
+          {
+            id: 'comp-bits-bytes-q1',
+            difficulty: 'easy',
+            text: '1 बाइट में कितने बिट होते हैं?',
+            options: [
+              { id: 'a', text: '10', misconception: 'byte-is-ten-bits', feedback: '10 दशमलव की आदत है। 1 बाइट में 8 बिट होते हैं।' },
+              { id: 'b', text: '8', correct: true },
+              { id: 'c', text: '100', misconception: 'byte-is-hundred-bits', feedback: '1 बाइट में केवल 8 बिट होते हैं, 100 नहीं।' },
+              { id: 'd', text: '2', misconception: 'bit-byte-same', feedback: '2 अंक बाइनरी के हैं, पर 1 बाइट 8 बिट का होता है।' },
+            ],
+          },
+          {
+            id: 'comp-bits-bytes-q2',
+            difficulty: 'medium',
+            text: 'इनमें सबसे छोटी इकाई कौन-सी है?',
+            options: [
+              { id: 'a', text: 'बिट', correct: true },
+              { id: 'b', text: 'बाइट', misconception: 'bit-byte-same', feedback: 'बाइट बिट से बड़ा है, 8 बिट का 1 बाइट बनता है।' },
+              { id: 'c', text: 'KB', misconception: 'unit-size-confusion', feedback: 'KB में 1024 बाइट होते हैं, वह बिट से बहुत बड़ा है।' },
+              { id: 'd', text: 'GB', misconception: 'unit-size-confusion', feedback: 'GB सबसे बड़ी इकाइयों में है। सबसे छोटी इकाई बिट है।' },
+            ],
+          },
+          {
+            id: 'comp-bits-bytes-q3',
+            difficulty: 'hard',
+            text: '2 KB में कितने बाइट होते हैं?',
+            options: [
+              { id: 'a', text: '2000', misconception: 'kb-is-1000', feedback: 'कंप्यूटर में 1 KB = 1024 बाइट होता है। 2 KB = 2 × 1024 = 2048 बाइट।' },
+              { id: 'b', text: '2048', correct: true },
+              { id: 'c', text: '1024', misconception: 'kb-times-forgot', feedback: '1024 केवल 1 KB का होता है। 2 KB के लिए दोगुना करो: 2048।' },
+              { id: 'd', text: '16', misconception: 'bit-byte-same', feedback: '16 बिट की गिनती है। सवाल बाइट का है: 2 × 1024 = 2048 बाइट।' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'comp-algorithm',
+    title: 'एल्गोरिद्म',
+    concepts: [
+      {
+        id: 'comp-algorithm-kya',
+        title: 'एल्गोरिद्म क्या है',
+        keywords: ['एल्गोरिद्म', 'चरण', 'निर्देश', 'तरीक़ा', 'algorithm', 'steps', 'instructions'],
+        card: {
+          points: [
+            'किसी काम को करने के चरण-दर-चरण निर्देशों को एल्गोरिद्म कहते हैं।',
+            'एल्गोरिद्म के चरण साफ़ और सही क्रम में होने चाहिए।',
+            'हर एल्गोरिद्म कहीं न कहीं ख़त्म होना चाहिए, वह हमेशा चलता नहीं रह सकता।',
+            'एल्गोरिद्म किसी भी भाषा में लिखा जा सकता है, वह प्रोग्राम से पहले बनता है।',
+          ],
+          example: 'चाय बनाने की विधि भी एक एल्गोरिद्म है: पानी उबालो, पत्ती डालो, दूध मिलाओ, छान लो।',
+        },
+        questions: [
+          {
+            id: 'comp-algorithm-kya-q1',
+            difficulty: 'easy',
+            text: 'एल्गोरिद्म क्या है?',
+            options: [
+              { id: 'a', text: 'कंप्यूटर का एक भाग', misconception: 'algorithm-is-hardware', feedback: 'एल्गोरिद्म कोई भाग नहीं है। यह काम करने के चरणों की सूची है।' },
+              { id: 'b', text: 'किसी काम के चरण-दर-चरण निर्देश', correct: true },
+              { id: 'c', text: 'केवल गणित का सवाल', misconception: 'algorithm-is-math-only', feedback: 'एल्गोरिद्म हर काम के लिए हो सकता है, जैसे चाय बनाना या रास्ता ढूँढना।' },
+              { id: 'd', text: 'एक तरह की गेम', misconception: 'algorithm-is-game', feedback: 'एल्गोरिद्म गेम नहीं, काम करने का तरीक़ा है।' },
+            ],
+          },
+          {
+            id: 'comp-algorithm-kya-q2',
+            difficulty: 'medium',
+            text: 'अच्छे एल्गोरिद्म की पहचान क्या है?',
+            options: [
+              { id: 'a', text: 'वह बहुत लंबा हो', misconception: 'longer-is-better', feedback: 'लंबाई अच्छी बात नहीं। चरण साफ़ और क्रम से हों, यही पहचान है।' },
+              { id: 'b', text: 'वह कभी ख़त्म न हो', misconception: 'algorithm-never-ends', feedback: 'जो कभी ख़त्म न हो वह सही एल्गोरिद्म नहीं। हर एल्गोरिद्म का अंत होना चाहिए।' },
+              { id: 'c', text: 'उसके चरण साफ़ हों और वह अंत में ख़त्म हो', correct: true },
+              { id: 'd', text: 'उसे केवल कंप्यूटर समझे', misconception: 'algorithm-only-computer', feedback: 'एल्गोरिद्म इंसान भी समझ और अपना सकता है, जैसे खाना बनाने की विधि।' },
+            ],
+          },
+          {
+            id: 'comp-algorithm-kya-q3',
+            difficulty: 'hard',
+            text: 'चाय बनाने के एल्गोरिद्म में कौन-सा क्रम सही है?',
+            options: [
+              { id: 'a', text: 'चाय छानो, फिर पानी उबालो', misconception: 'steps-wrong-order', feedback: 'छानना सबसे अंत में होता है। पहले पानी उबालना होगा।' },
+              { id: 'b', text: 'पानी उबालो, पत्ती डालो, फिर छान लो', correct: true },
+              { id: 'c', text: 'कप में चाय डालो, फिर पानी उबालो', misconception: 'steps-wrong-order', feedback: 'कप में चाय सबसे अंत में आती है। पहले पानी उबलेगा, पत्ती पड़ेगी, फिर छनेगी।' },
+              { id: 'd', text: 'पत्ती खाओ, फिर पानी पियो', misconception: 'steps-wrong-order', feedback: 'यह चाय बनाना ही नहीं है। सही क्रम: पानी उबालो, पत्ती डालो, छान लो।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-flowchart',
+        title: 'फ़्लोचार्ट और उसके चिन्ह',
+        keywords: ['फ़्लोचार्ट', 'चिन्ह', 'ओवल', 'डायमंड', 'आयत', 'flowchart', 'symbols', 'decision'],
+        card: {
+          points: [
+            'एल्गोरिद्म को तस्वीरों और चिन्हों से दिखाना फ़्लोचार्ट कहलाता है।',
+            'अंडाकार (ओवल) चिन्ह शुरुआत और अंत के लिए होता है।',
+            'आयत (रेक्टैंगल) किसी काम या हिसाब के लिए, और समांतर चतुर्भुज इनपुट-आउटपुट के लिए होता है।',
+            'हीरे जैसा चिन्ह (डायमंड) फ़ैसले के लिए होता है, जहाँ जवाब हाँ या नहीं में मिलता है।',
+          ],
+          example: 'नंबर सम है या विषम, यह जाँचने वाले स्थान पर डायमंड बनेगा, क्योंकि वहाँ फ़ैसला होता है।',
+        },
+        questions: [
+          {
+            id: 'comp-flowchart-q1',
+            difficulty: 'easy',
+            text: 'फ़्लोचार्ट में शुरुआत और अंत किस चिन्ह से दिखाते हैं?',
+            options: [
+              { id: 'a', text: 'आयत', misconception: 'symbol-rectangle-start', feedback: 'आयत काम या हिसाब के लिए होता है। शुरुआत-अंत के लिए अंडाकार चिन्ह होता है।' },
+              { id: 'b', text: 'अंडाकार (ओवल)', correct: true },
+              { id: 'c', text: 'डायमंड', misconception: 'symbol-diamond-start', feedback: 'डायमंड फ़ैसले के लिए होता है, शुरुआत के लिए नहीं।' },
+              { id: 'd', text: 'तीर', misconception: 'symbol-arrow-start', feedback: 'तीर केवल दिशा दिखाता है, शुरुआत नहीं।' },
+            ],
+          },
+          {
+            id: 'comp-flowchart-q2',
+            difficulty: 'medium',
+            text: '"क्या नंबर 10 से बड़ा है?" — फ़ैसला लेने वाला चिन्ह कौन-सा है?',
+            options: [
+              { id: 'a', text: 'आयत', misconception: 'decision-is-rectangle', feedback: 'आयत सीधा काम दिखाता है। जहाँ हाँ-नहीं का फ़ैसला हो, वहाँ डायमंड बनता है।' },
+              { id: 'b', text: 'डायमंड', correct: true },
+              { id: 'c', text: 'अंडाकार', misconception: 'decision-is-oval', feedback: 'अंडाकार शुरुआत और अंत के लिए है, फ़ैसले के लिए नहीं।' },
+              { id: 'd', text: 'समांतर चतुर्भुज', misconception: 'decision-is-parallelogram', feedback: 'समांतर चतुर्भुज इनपुट-आउटपुट के लिए होता है। फ़ैसले के लिए डायमंड होता है।' },
+            ],
+          },
+          {
+            id: 'comp-flowchart-q3',
+            difficulty: 'hard',
+            text: 'कीबोर्ड से नंबर लेना फ़्लोचार्ट में किस चिन्ह से दिखाएँगे?',
+            options: [
+              { id: 'a', text: 'समांतर चतुर्भुज', correct: true },
+              { id: 'b', text: 'डायमंड', misconception: 'input-is-diamond', feedback: 'डायमंड फ़ैसले के लिए है। कुछ लेना या देना इनपुट-आउटपुट है, उसका चिन्ह समांतर चतुर्भुज है।' },
+              { id: 'c', text: 'आयत', misconception: 'input-is-rectangle', feedback: 'आयत हिसाब या काम के लिए है। नंबर लेना इनपुट है, उसका चिन्ह समांतर चतुर्भुज है।' },
+              { id: 'd', text: 'अंडाकार', misconception: 'input-is-oval', feedback: 'अंडाकार शुरुआत-अंत के लिए है। इनपुट का चिन्ह समांतर चतुर्भुज होता है।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-sequence-loop',
+        title: 'क्रम और लूप',
+        keywords: ['क्रम', 'सीक्वेंस', 'लूप', 'दोहराव', 'sequence', 'loop', 'repeat'],
+        card: {
+          points: [
+            'जब चरण एक के बाद एक क्रम से चलें, तो उसे सीक्वेंस कहते हैं।',
+            'जब कुछ चरण बार-बार दोहराए जाएँ, तो उसे लूप कहते हैं।',
+            'लूप से समय बचता है, क्योंकि एक ही बात बार-बार लिखनी नहीं पड़ती।',
+            'लूप की कोई शर्त या गिनती होती है, जिससे वह सही समय पर रुक जाता है।',
+          ],
+          example: 'सीढ़ियाँ चढ़ते समय हर सीढ़ी पर वही काम दोहराते हैं, यह लूप जैसा है।',
+        },
+        questions: [
+          {
+            id: 'comp-sequence-loop-q1',
+            difficulty: 'easy',
+            text: 'लूप का मतलब क्या है?',
+            options: [
+              { id: 'a', text: 'काम को एक ही बार करना', misconception: 'loop-runs-once', feedback: 'एक बार करना लूप नहीं है। लूप में चरण बार-बार दोहराए जाते हैं।' },
+              { id: 'b', text: 'कुछ चरणों को बार-बार दोहराना', correct: true },
+              { id: 'c', text: 'काम को बीच में छोड़ देना', misconception: 'loop-means-stop', feedback: 'छोड़ना लूप नहीं है। लूप दोहराव को कहते हैं।' },
+              { id: 'd', text: 'तस्वीर बनाना', misconception: 'loop-is-drawing', feedback: 'तस्वीर बनाना अलग काम है। लूप चरणों के दोहराव को कहते हैं।' },
+            ],
+          },
+          {
+            id: 'comp-sequence-loop-q2',
+            difficulty: 'medium',
+            text: '"1 से 10 तक गिनती बोलो" — इसमें लूप कहाँ है?',
+            options: [
+              { id: 'a', text: 'हर अगली संख्या बोलना बार-बार दोहराया जाने वाला चरण है', correct: true },
+              { id: 'b', text: 'इसमें कोई दोहराव नहीं है', misconception: 'no-loop-in-counting', feedback: '1, 2, 3... हर बार वही काम दोहर रहा है, यही लूप है।' },
+              { id: 'c', text: 'केवल 10 बोलना लूप है', misconception: 'loop-only-last', feedback: 'लूप पूरी गिनती में है, केवल आख़िरी संख्या में नहीं।' },
+              { id: 'd', text: 'गिनती केवल लिखने से लूप बनती है', misconception: 'loop-only-writing', feedback: 'लूप बोलने या लिखने से नहीं, दोहराव से बनता है।' },
+            ],
+          },
+          {
+            id: 'comp-sequence-loop-q3',
+            difficulty: 'hard',
+            text: 'लूप के लिए सबसे ज़रूरी बात क्या है?',
+            options: [
+              { id: 'a', text: 'उसके रुकने की शर्त या गिनती हो', correct: true },
+              { id: 'b', text: 'वह बिना रुके हमेशा चले', misconception: 'loop-never-stops', feedback: 'बिना रुके चलने वाला लूप ग़लती है। हर लूप को सही समय पर रुकना चाहिए।' },
+              { id: 'c', text: 'उसमें केवल एक चरण हो', misconception: 'loop-one-step-only', feedback: 'लूप में कई चरण भी हो सकते हैं। ज़रूरी बात रुकने की शर्त है।' },
+              { id: 'd', text: 'उसे हाथ से लिखना पड़े', misconception: 'loop-only-writing', feedback: 'लूप सोच का तरीक़ा है, हाथ से लिखना ज़रूरी नहीं।' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'comp-programming',
+    title: 'प्रोग्रामिंग की शुरुआत',
+    concepts: [
+      {
+        id: 'comp-variables',
+        title: 'वेरिएबल और डेटा',
+        keywords: ['वेरिएबल', 'डेटा', 'मान', 'Python', 'variable', 'data', 'value', 'string'],
+        card: {
+          points: [
+            'वेरिएबल एक नाम वाला डिब्बा है, जिसमें कोई मान सहेजा जाता है।',
+            'वेरिएबल का मान बदल सकता है, जैसे खेल में स्कोर बढ़ता रहता है।',
+            'डेटा कई तरह का होता है: संख्याएँ, शब्द (टेक्स्ट) और हाँ-नहीं (सही/ग़लत)।',
+            'Python में x = 5 लिखने का मतलब है, x नाम के डिब्बे में 5 रख दिया।',
+          ],
+          example: 'गेम में "स्कोर" नाम का वेरिएबल हर सही जवाब पर बढ़ जाता है।',
+        },
+        questions: [
+          {
+            id: 'comp-variables-q1',
+            difficulty: 'easy',
+            text: 'वेरिएबल क्या है?',
+            options: [
+              { id: 'a', text: 'कंप्यूटर की स्क्रीन', misconception: 'variable-is-screen', feedback: 'स्क्रीन दिखाने का काम करती है। वेरिएबल मान सहेजने वाला नाम है।' },
+              { id: 'b', text: 'नाम वाला स्थान, जिसमें कोई मान सहेजा जाता है', correct: true },
+              { id: 'c', text: 'एक तरह का कीबोर्ड', misconception: 'variable-is-keyboard', feedback: 'कीबोर्ड डिवाइस है। वेरिएबल प्रोग्राम के अंदर मान रखने का नाम है।' },
+              { id: 'd', text: 'हमेशा एक ही रहने वाली संख्या', misconception: 'variable-never-changes', feedback: 'वेरिएबल का मान बदल सकता है, इसीलिए उसे वेरिएबल कहते हैं।' },
+            ],
+          },
+          {
+            id: 'comp-variables-q2',
+            difficulty: 'medium',
+            text: 'Python में x = 5 का क्या मतलब है?',
+            options: [
+              { id: 'a', text: 'x और 5 बराबर हैं या नहीं, यह जाँच', misconception: 'equal-is-compare', feedback: 'एक = का निशान मान रखने के लिए है। जाँच के लिए == लगता है। यहाँ 5, x में रखा गया है।' },
+              { id: 'b', text: 'x नाम के वेरिएबल में 5 रख दिया गया', correct: true },
+              { id: 'c', text: 'x को मिटा दिया गया', misconception: 'assign-is-delete', feedback: 'यहाँ कुछ मिटा नहीं, x में 5 रखा गया है।' },
+              { id: 'd', text: '5 नाम के वेरिएबल में x रख दिया', misconception: 'assign-is-reversed', feedback: 'मान दाईं ओर से बाईं ओर के नाम में जाता है। 5, x में रखा गया है, उल्टा नहीं।' },
+            ],
+          },
+          {
+            id: 'comp-variables-q3',
+            difficulty: 'hard',
+            text: 'कौन-सा डेटा शब्द (टेक्स्ट) है?',
+            options: [
+              { id: 'a', text: '25', misconception: 'number-is-text', feedback: '25 संख्या है। शब्द हमेशा "..." निशानों के अंदर लिखा जाता है।' },
+              { id: 'b', text: '"अली"', correct: true },
+              { id: 'c', text: 'सही (true)', misconception: 'boolean-is-text', feedback: 'सही/ग़लत अलग तरह का डेटा है, उसे बूलियन कहते हैं।' },
+              { id: 'd', text: '3.5', misconception: 'decimal-is-text', feedback: '3.5 दशमलव संख्या है, शब्द नहीं।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-conditions',
+        title: 'शर्तें (if-else)',
+        keywords: ['शर्त', 'if', 'else', 'फ़ैसला', 'तुलना', 'condition', 'decision'],
+        card: {
+          points: [
+            'प्रोग्राम में फ़ैसला लेने के लिए if-else का प्रयोग होता है।',
+            'शर्त सही हो तो if वाला भाग चलता है, ग़लत हो तो else वाला भाग चलता है।',
+            'दोनों भागों में से एक बार में केवल एक ही चलता है।',
+            'शर्तें तुलना से बनती हैं, जैसे नंबर बड़ा है, छोटा है या बराबर है।',
+          ],
+          example: 'अगर अंक 33 या अधिक हों तो "पास", वरना "फ़ेल" — यही if-else है।',
+        },
+        questions: [
+          {
+            id: 'comp-conditions-q1',
+            difficulty: 'easy',
+            text: 'if-else का काम क्या है?',
+            options: [
+              { id: 'a', text: 'एक ही काम बार-बार करना', misconception: 'if-is-loop', feedback: 'बार-बार करना लूप का काम है। if-else फ़ैसला लेता है।' },
+              { id: 'b', text: 'शर्त देखकर फ़ैसला लेना', correct: true },
+              { id: 'c', text: 'तस्वीर छापना', misconception: 'if-is-printing', feedback: 'छापना प्रिंटर का काम है। if-else शर्त पर फ़ैसला करता है।' },
+              { id: 'd', text: 'कंप्यूटर बंद करना', misconception: 'if-is-shutdown', feedback: 'if-else प्रोग्राम के अंदर फ़ैसले के लिए होता है।' },
+            ],
+          },
+          {
+            id: 'comp-conditions-q2',
+            difficulty: 'medium',
+            text: 'शर्त ग़लत (false) हो तो कौन-सा भाग चलेगा?',
+            options: [
+              { id: 'a', text: 'if वाला भाग', misconception: 'false-runs-if', feedback: 'if वाला भाग शर्त सही होने पर चलता है। ग़लत होने पर else चलता है।' },
+              { id: 'b', text: 'else वाला भाग', correct: true },
+              { id: 'c', text: 'दोनों भाग', misconception: 'if-runs-both', feedback: 'दोनों एक साथ नहीं चलते। एक बार में केवल एक भाग चलता है।' },
+              { id: 'd', text: 'कोई भाग नहीं', misconception: 'false-runs-none', feedback: 'else इसीलिए होता है कि शर्त ग़लत होने पर वह चले।' },
+            ],
+          },
+          {
+            id: 'comp-conditions-q3',
+            difficulty: 'hard',
+            text: 'अंक = 40 हैं। नियम है: if अंक >= 33 तो पास, else फ़ेल। परिणाम क्या होगा?',
+            options: [
+              { id: 'a', text: 'पास, क्योंकि 40, 33 से अधिक है', correct: true },
+              { id: 'b', text: 'फ़ेल, क्योंकि 40 पूरा 50 नहीं', misconception: 'condition-wrong-compare', feedback: 'नियम 33 से तुलना का है, 50 से नहीं। 40 >= 33 सही है, इसलिए पास।' },
+              { id: 'c', text: 'दोनों, पास भी फ़ेल भी', misconception: 'if-runs-both', feedback: 'एक बार में एक ही परिणाम आता है।' },
+              { id: 'd', text: 'कुछ नहीं होगा', misconception: 'false-runs-none', feedback: 'शर्त सही है, इसलिए if वाला भाग ज़रूर चलेगा।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-loops-basics',
+        title: 'लूप और Scratch/Python की शुरुआत',
+        keywords: ['लूप', 'Scratch', 'Python', 'for', 'while', 'repeat', 'loop', 'blocks'],
+        card: {
+          points: [
+            'लूप एक ही काम को कई बार करने का तरीक़ा है, जैसे 5 बार "सलाम" छापना।',
+            'Scratch में ब्लॉक जोड़कर प्रोग्राम बनता है, इसमें "repeat" ब्लॉक लूप का काम करता है।',
+            'Python में for लूप गिनती के साथ और while लूप शर्त के साथ चलता है।',
+            'while लूप की शर्त कभी ग़लत न हो तो वह रुकता ही नहीं, इसे अनंत लूप कहते हैं।',
+          ],
+          example: 'Scratch में बिल्ली को बार-बार 10 क़दम चलाने के लिए repeat ब्लॉक में "move" ब्लॉक रख देते हैं।',
+        },
+        questions: [
+          {
+            id: 'comp-loops-basics-q1',
+            difficulty: 'easy',
+            text: 'Scratch में लूप बनाने के लिए कौन-सा ब्लॉक काम आता है?',
+            options: [
+              { id: 'a', text: 'repeat ब्लॉक', correct: true },
+              { id: 'b', text: 'आवाज़ वाला ब्लॉक', misconception: 'scratch-sound-is-loop', feedback: 'आवाज़ ब्लॉक ध्वनि बजाता है। दोहराव के लिए repeat ब्लॉक होता है।' },
+              { id: 'c', text: 'रंग बदलने वाला ब्लॉक', misconception: 'scratch-color-is-loop', feedback: 'रंग ब्लॉक केवल दिखावट बदलता है। लूप के लिए repeat चाहिए।' },
+              { id: 'd', text: 'मिटाने वाला ब्लॉक', misconception: 'scratch-delete-is-loop', feedback: 'मिटाना अलग काम है। दोहराव repeat ब्लॉक से होता है।' },
+            ],
+          },
+          {
+            id: 'comp-loops-basics-q2',
+            difficulty: 'medium',
+            text: 'while लूप कब रुकता है?',
+            options: [
+              { id: 'a', text: 'एक बार चलकर अपने आप', misconception: 'while-runs-once', feedback: 'while एक बार के लिए नहीं है। वह शर्त सही रहने तक चलता रहता है।' },
+              { id: 'b', text: 'जब उसकी शर्त ग़लत हो जाती है', correct: true },
+              { id: 'c', text: 'कभी नहीं रुकता', misconception: 'while-never-stops', feedback: 'सही बने while लूप की शर्त कभी न कभी ग़लत होती है, तभी वह रुकता है।' },
+              { id: 'd', text: 'केवल कंप्यूटर बंद करने पर', misconception: 'while-stops-on-shutdown', feedback: 'लूप शर्त से रुकता है, कंप्यूटर बंद करने की ज़रूरत नहीं।' },
+            ],
+          },
+          {
+            id: 'comp-loops-basics-q3',
+            difficulty: 'hard',
+            text: 'किसी प्रोग्राम में लूप रुक ही नहीं रहा। सबसे संभावित कारण क्या है?',
+            options: [
+              { id: 'a', text: 'लूप की शर्त कभी ग़लत नहीं हो रही', correct: true },
+              { id: 'b', text: 'कंप्यूटर बहुत तेज़ है', misconception: 'infinite-loop-is-speed', feedback: 'रफ़्तार से लूप अनंत नहीं बनता। शर्त का हमेशा सही रहना कारण है।' },
+              { id: 'c', text: 'वेरिएबल का नाम लंबा है', misconception: 'infinite-loop-is-name', feedback: 'नाम की लंबाई से लूप नहीं अटकता। शर्त देखो।' },
+              { id: 'd', text: 'स्क्रीन छोटी है', misconception: 'infinite-loop-is-screen', feedback: 'स्क्रीन का आकार लूप से जुड़ा नहीं। शर्त हमेशा सही रहना ही कारण है।' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'comp-internet',
+    title: 'इंटरनेट और सुरक्षा',
+    concepts: [
+      {
+        id: 'comp-internet-web',
+        title: 'इंटरनेट और वेब की बुनियाद',
+        keywords: ['इंटरनेट', 'वेब', 'ब्राउज़र', 'URL', 'वेबसाइट', 'internet', 'web', 'browser', 'website'],
+        card: {
+          points: [
+            'इंटरनेट दुनिया भर के कंप्यूटरों का जाल है, जो आपस में जुड़े हैं।',
+            'वेब (WWW) इंटरनेट पर चलने वाली एक सेवा है, जिसमें वेब पेज होते हैं।',
+            'वेब पेज देखने के लिए ब्राउज़र लगता है, जैसे Chrome या Firefox।',
+            'हर वेब पेज का अपना पता होता है, जिसे URL कहते हैं।',
+          ],
+          example: 'ईमेल और वीडियो कॉल भी इंटरनेट से चलती हैं, पर वे वेब नहीं हैं।',
+        },
+        questions: [
+          {
+            id: 'comp-internet-web-q1',
+            difficulty: 'easy',
+            text: 'वेब पेज देखने के लिए किसका प्रयोग होता है?',
+            options: [
+              { id: 'a', text: 'ब्राउज़र', correct: true },
+              { id: 'b', text: 'प्रिंटर', misconception: 'browser-is-printer', feedback: 'प्रिंटर छापता है। वेब पेज ब्राउज़र में खुलता है।' },
+              { id: 'c', text: 'स्कैनर', misconception: 'browser-is-scanner', feedback: 'स्कैनर तस्वीर अंदर डालता है। पेज देखने के लिए ब्राउज़र चाहिए।' },
+              { id: 'd', text: 'पेन ड्राइव', misconception: 'browser-is-pendrive', feedback: 'पेन ड्राइव स्टोरेज है। वेब पेज ब्राउज़र से खुलता है।' },
+            ],
+          },
+          {
+            id: 'comp-internet-web-q2',
+            difficulty: 'medium',
+            text: 'इंटरनेट और वेब में सही संबंध क्या है?',
+            options: [
+              { id: 'a', text: 'दोनों एक ही चीज़ हैं', misconception: 'internet-is-web', feedback: 'दोनों एक नहीं हैं। वेब इंटरनेट पर चलने वाली एक सेवा है।' },
+              { id: 'b', text: 'वेब इंटरनेट पर चलने वाली एक सेवा है', correct: true },
+              { id: 'c', text: 'इंटरनेट वेब का एक भाग है', misconception: 'web-is-bigger', feedback: 'उल्टा है। इंटरनेट बड़ा जाल है, वेब उसकी एक सेवा है।' },
+              { id: 'd', text: 'वेब बिना इंटरनेट के चलता है', misconception: 'web-without-internet', feedback: 'वेब पेज इंटरनेट के बिना नहीं खुल सकते।' },
+            ],
+          },
+          {
+            id: 'comp-internet-web-q3',
+            difficulty: 'hard',
+            text: 'कौन-सी चीज़ इंटरनेट का प्रयोग करती है, पर वेब नहीं है?',
+            options: [
+              { id: 'a', text: 'ईमेल भेजना', correct: true },
+              { id: 'b', text: 'वेबसाइट खोलना', misconception: 'website-is-not-web', feedback: 'वेबसाइट खोलना ही वेब है। ईमेल अलग सेवा है, जो इंटरनेट पर चलती है।' },
+              { id: 'c', text: 'ऑनलाइन ख़बरों का पेज पढ़ना', misconception: 'news-is-not-web', feedback: 'ख़बरों का पेज वेब पेज है। ईमेल वेब नहीं है।' },
+              { id: 'd', text: 'ब्राउज़र में वीडियो देखना', misconception: 'video-is-not-web', feedback: 'ब्राउज़र में चलने वाली सेवा वेब है। ईमेल वेब से अलग सेवा है।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-password-safety',
+        title: 'मज़बूत पासवर्ड और ऑनलाइन सुरक्षा',
+        keywords: ['पासवर्ड', 'OTP', 'सुरक्षा', 'खाता', 'password', 'safety', 'account'],
+        card: {
+          points: [
+            'मज़बूत पासवर्ड लंबा होता है, जिसमें बड़े-छोटे अक्षर, अंक और निशान मिले होते हैं।',
+            'अपना नाम, जन्मतिथि या "12345" जैसा आसान पासवर्ड कभी न रखो।',
+            'हर खाते का पासवर्ड अलग रखो और किसी को मत बताओ।',
+            'OTP किसी को नहीं देते, बैंक या कंपनी भी फ़ोन पर OTP नहीं माँगती।',
+          ],
+          example: '"Ali2015" कमज़ोर पासवर्ड है, पर "Mango#Tree42" जैसा पासवर्ड कहीं मज़बूत है।',
+        },
+        questions: [
+          {
+            id: 'comp-password-safety-q1',
+            difficulty: 'easy',
+            text: 'इनमें सबसे मज़बूत पासवर्ड कौन-सा है?',
+            options: [
+              { id: 'a', text: '12345', misconception: 'short-password-safe', feedback: 'केवल अंक और वह भी क्रम से, यह सबसे कमज़ोर पासवर्ड है।' },
+              { id: 'b', text: 'मेरा नाम', misconception: 'name-password-safe', feedback: 'नाम सबको पता होता है, इसलिए नाम वाला पासवर्ड आसान होता है।' },
+              { id: 'c', text: 'Mango#Tree42', correct: true },
+              { id: 'd', text: 'password', misconception: 'common-password-safe', feedback: '"password" दुनिया के सबसे आम पासवर्डों में है, सब उसे आज़माते हैं।' },
+            ],
+          },
+          {
+            id: 'comp-password-safety-q2',
+            difficulty: 'medium',
+            text: 'कोई अनजान व्यक्ति फ़ोन पर OTP माँगे तो क्या करना चाहिए?',
+            options: [
+              { id: 'a', text: 'तुरंत बता देना चाहिए', misconception: 'share-otp-safe', feedback: 'OTP कभी किसी को नहीं देते। OTP बताना खाते की चाबी दे देना है।' },
+              { id: 'b', text: 'OTP न दें और घर के बड़ों को बताएँ', correct: true },
+              { id: 'c', text: 'केवल आख़िरी अंक बताएँ', misconception: 'share-otp-safe', feedback: 'आधा OTP भी नहीं देना चाहिए। OTP पूरा गुप्त होता है।' },
+              { id: 'd', text: 'मैसेज में भेज दें', misconception: 'share-otp-safe', feedback: 'OTP किसी तरह भी, किसी को भी नहीं भेजते।' },
+            ],
+          },
+          {
+            id: 'comp-password-safety-q3',
+            difficulty: 'hard',
+            text: 'पासवर्ड की सुरक्षा के लिए सबसे सही आदत कौन-सी है?',
+            options: [
+              { id: 'a', text: 'हर खाते का अलग और लंबा पासवर्ड रखना', correct: true },
+              { id: 'b', text: 'सभी खातों का एक ही पासवर्ड रखना', misconception: 'same-password-safe', feedback: 'एक पासवर्ड खुला तो सारे खाते ख़तरे में। हर खाते का अलग पासवर्ड रखो।' },
+              { id: 'c', text: 'पासवर्ड लिखकर सबको दिखाना', misconception: 'password-show-safe', feedback: 'पासवर्ड गुप्त रखते हैं, किसी को दिखाते नहीं।' },
+              { id: 'd', text: 'पासवर्ड में केवल जन्मतिथि रखना', misconception: 'name-password-safe', feedback: 'जन्मतिथि बहुतों को पता होती है, वह सुरक्षित पासवर्ड नहीं।' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'comp-digital-citizenship',
+        title: 'डिजिटल नागरिकता और साइबर बुलिंग',
+        keywords: ['डिजिटल नागरिकता', 'साइबर बुलिंग', 'निजी जानकारी', 'व्यवहार', 'cyberbullying', 'safety', 'respect'],
+        card: {
+          points: [
+            'इंटरनेट पर भी वैसे ही अच्छे व्यवहार का नियम है, जैसा असली जीवन में होता है।',
+            'ऑनलाइन किसी को डराना, धमकाना या मज़ाक उड़ाना साइबर बुलिंग है, यह ग़लत है।',
+            'अपनी निजी जानकारी, जैसे घर का पता या स्कूल का नाम, अनजान लोगों को न दो।',
+            'कोई ग़लत बात हो तो बड़े को बताओ, और बुरे व्यक्ति को ब्लॉक व रिपोर्ट करो।',
+          ],
+          example: 'क्लास के ग्रुप में किसी साथी की तस्वीर पर बुरी टिप्पणी करना साइबर बुलिंग है।',
+        },
+        questions: [
+          {
+            id: 'comp-digital-citizenship-q1',
+            difficulty: 'easy',
+            text: 'साइबर बुलिंग क्या है?',
+            options: [
+              { id: 'a', text: 'ऑनलाइन किसी को डराना या उसका मज़ाक उड़ाना', correct: true },
+              { id: 'b', text: 'इंटरनेट पर पढ़ाई करना', misconception: 'bullying-is-study', feedback: 'पढ़ाई अच्छी बात है। ऑनलाइन डराना या मज़ाक उड़ाना साइबर बुलिंग है।' },
+              { id: 'c', text: 'मज़बूत पासवर्ड बनाना', misconception: 'bullying-is-password', feedback: 'पासवर्ड सुरक्षा की बात है। बुलिंग ऑनलाइन बुरा व्यवहार है।' },
+              { id: 'd', text: 'वीडियो कॉल करना', misconception: 'bullying-is-call', feedback: 'वीडियो कॉल सामान्य बात है। किसी को ऑनलाइन सताना बुलिंग है।' },
+            ],
+          },
+          {
+            id: 'comp-digital-citizenship-q2',
+            difficulty: 'medium',
+            text: 'ऑनलाइन खेल में अनजान खिलाड़ी घर का पता माँगे तो क्या करोगे?',
+            options: [
+              { id: 'a', text: 'पता बता दूँगा, वह दोस्त बन गया है', misconception: 'personal-info-safe', feedback: 'ऑनलाइन मिला व्यक्ति अनजान ही होता है। निजी जानकारी कभी न दो।' },
+              { id: 'b', text: 'पता नहीं दूँगा और बड़ों को बताऊँगा', correct: true },
+              { id: 'c', text: 'केवल शहर का नाम बताऊँगा', misconception: 'personal-info-safe', feedback: 'थोड़ी जानकारी भी अनजान को नहीं देते। सुरक्षित रहना ही सही है।' },
+              { id: 'd', text: 'अपनी तस्वीर भेज दूँगा', misconception: 'personal-info-safe', feedback: 'तस्वीर भी निजी जानकारी है, अनजान को नहीं भेजते।' },
+            ],
+          },
+          {
+            id: 'comp-digital-citizenship-q3',
+            difficulty: 'hard',
+            text: 'क्लास ग्रुप में कोई साथी का मज़ाक उड़ा रहा है। सबसे सही काम क्या है?',
+            options: [
+              { id: 'a', text: 'मैं भी हँसकर साथ दूँ', misconception: 'bullying-is-fun', feedback: 'साथ देना भी बुलिंग में शामिल होना है। यह ग़लत है।' },
+              { id: 'b', text: 'चुप रहूँ, मेरा कोई लेना-देना नहीं', misconception: 'bullying-ignore-ok', feedback: 'चुप रहना मदद नहीं करता। सही काम है बड़ों को बताना और रिपोर्ट करना।' },
+              { id: 'c', text: 'मज़ाक रोकने को कहूँ, बड़ों को बताऊँ और रिपोर्ट करूँ', correct: true },
+              { id: 'd', text: 'उस साथी को धमकी दूँ', misconception: 'bullying-fight-back', feedback: 'धमकी से बात बिगड़ती है। बड़ों को बताना और रिपोर्ट करना सही रास्ता है।' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const COMPUTER_MISCONCEPTIONS = {
+  'input-is-output': { label: 'इनपुट को आउटपुट समझना' },
+  'keyboard-is-storage': { label: 'कीबोर्ड को स्टोरेज समझना' },
+  'keyboard-only-games': { label: 'कीबोर्ड को केवल गेम का साधन समझना' },
+  'printer-is-input': { label: 'प्रिंटर को इनपुट समझना' },
+  'printer-is-storage': { label: 'प्रिंटर को स्टोरेज समझना' },
+  'printer-is-cpu': { label: 'प्रिंटर को CPU का भाग समझना' },
+  'input-output-swapped': { label: 'इनपुट-आउटपुट को उल्टा समझना' },
+  'monitor-is-brain': { label: 'मॉनीटर को कंप्यूटर का दिमाग़ समझना' },
+  'keyboard-is-brain': { label: 'कीबोर्ड को दिमाग़ समझना' },
+  'printer-is-brain': { label: 'प्रिंटर को दिमाग़ समझना' },
+  'ram-is-permanent': { label: 'RAM को स्थायी मेमोरी समझना' },
+  'ram-is-rom': { label: 'RAM और ROM को एक समझना' },
+  'ram-is-disk': { label: 'RAM को डिस्क समझना' },
+  'startup-from-ram': { label: 'चालू होने के निर्देश RAM में समझना' },
+  'startup-from-pendrive': { label: 'चालू होने के निर्देश पेन ड्राइव में समझना' },
+  'monitor-is-storage': { label: 'मॉनीटर को स्टोरेज समझना' },
+  'speaker-is-storage': { label: 'स्पीकर को स्टोरेज समझना' },
+  'ssd-has-disk': { label: 'SSD में घूमती डिस्क समझना' },
+  'ssd-is-cheaper': { label: 'SSD को हमेशा सस्ता समझना' },
+  'ssd-no-power': { label: 'SSD को बिना बिजली चलने वाला समझना' },
+  'gb-mb-confusion': { label: 'GB और MB का संबंध न जानना' },
+  'binary-has-ten-digits': { label: 'बाइनरी में दस अंक समझना' },
+  'binary-has-letters': { label: 'बाइनरी में अक्षर समझना' },
+  'binary-count-digits': { label: 'बाइनरी का मान अंकों की गिनती समझना' },
+  'binary-same-as-decimal': { label: 'बाइनरी को दशमलव जैसा ही पढ़ना' },
+  'binary-all-ones': { label: '0 वाले स्थान को भी जोड़ लेना' },
+  'binary-place-value-skip': { label: 'स्थान मान ग़लत जोड़ना' },
+  'conversion-off-by-one': { label: 'बदलते समय एक कम-ज़्यादा करना' },
+  'conversion-wrong-combo': { label: 'स्थान मानों का ग़लत मेल चुनना' },
+  'conversion-all-ones': { label: 'सारे स्थान 1 समझना' },
+  'conversion-missing-digit': { label: 'बाइनरी में अंक छोड़ देना' },
+  'byte-is-ten-bits': { label: 'बाइट में 10 बिट समझना' },
+  'byte-is-hundred-bits': { label: 'बाइट में 100 बिट समझना' },
+  'bit-byte-same': { label: 'बिट और बाइट को एक समझना' },
+  'unit-size-confusion': { label: 'इकाइयों का आकार न पहचानना' },
+  'kb-is-1000': { label: '1 KB को 1000 बाइट समझना' },
+  'kb-times-forgot': { label: 'गुणा करना भूल जाना' },
+  'algorithm-is-hardware': { label: 'एल्गोरिद्म को कंप्यूटर का भाग समझना' },
+  'algorithm-is-math-only': { label: 'एल्गोरिद्म को केवल गणित समझना' },
+  'algorithm-is-game': { label: 'एल्गोरिद्म को गेम समझना' },
+  'longer-is-better': { label: 'लंबे को ही अच्छा समझना' },
+  'algorithm-never-ends': { label: 'एल्गोरिद्म का अंत न समझना' },
+  'algorithm-only-computer': { label: 'एल्गोरिद्म को केवल कंप्यूटर के लिए समझना' },
+  'steps-wrong-order': { label: 'चरणों का क्रम ग़लत रखना' },
+  'symbol-rectangle-start': { label: 'आयत को शुरुआत का चिन्ह समझना' },
+  'symbol-diamond-start': { label: 'डायमंड को शुरुआत का चिन्ह समझना' },
+  'symbol-arrow-start': { label: 'तीर को शुरुआत का चिन्ह समझना' },
+  'decision-is-rectangle': { label: 'फ़ैसले का चिन्ह आयत समझना' },
+  'decision-is-oval': { label: 'फ़ैसले का चिन्ह अंडाकार समझना' },
+  'decision-is-parallelogram': { label: 'फ़ैसले का चिन्ह समांतर चतुर्भुज समझना' },
+  'input-is-diamond': { label: 'इनपुट का चिन्ह डायमंड समझना' },
+  'input-is-rectangle': { label: 'इनपुट का चिन्ह आयत समझना' },
+  'input-is-oval': { label: 'इनपुट का चिन्ह अंडाकार समझना' },
+  'loop-runs-once': { label: 'लूप को एक बार चलना समझना' },
+  'loop-means-stop': { label: 'लूप का मतलब रुकना समझना' },
+  'loop-is-drawing': { label: 'लूप को तस्वीर बनाना समझना' },
+  'no-loop-in-counting': { label: 'गिनती में दोहराव न देखना' },
+  'loop-only-last': { label: 'लूप को केवल आख़िरी चरण समझना' },
+  'loop-only-writing': { label: 'लूप को केवल लिखने से जोड़ना' },
+  'loop-never-stops': { label: 'लूप का कभी न रुकना सही समझना' },
+  'loop-one-step-only': { label: 'लूप में एक ही चरण समझना' },
+  'variable-is-screen': { label: 'वेरिएबल को स्क्रीन समझना' },
+  'variable-is-keyboard': { label: 'वेरिएबल को कीबोर्ड समझना' },
+  'variable-never-changes': { label: 'वेरिएबल का मान न बदलना समझना' },
+  'equal-is-compare': { label: '= को तुलना का निशान समझना' },
+  'assign-is-delete': { label: 'मान रखने को मिटाना समझना' },
+  'assign-is-reversed': { label: 'मान रखने की दिशा उल्टी समझना' },
+  'number-is-text': { label: 'संख्या को शब्द समझना' },
+  'boolean-is-text': { label: 'सही-ग़लत को शब्द समझना' },
+  'decimal-is-text': { label: 'दशमलव संख्या को शब्द समझना' },
+  'if-is-loop': { label: 'if-else को लूप समझना' },
+  'if-is-printing': { label: 'if-else को छापना समझना' },
+  'if-is-shutdown': { label: 'if-else को कंप्यूटर बंद करना समझना' },
+  'false-runs-if': { label: 'शर्त ग़लत होने पर if चलना समझना' },
+  'if-runs-both': { label: 'if और else दोनों का एक साथ चलना समझना' },
+  'false-runs-none': { label: 'शर्त ग़लत होने पर कुछ न चलना समझना' },
+  'condition-wrong-compare': { label: 'तुलना ग़लत संख्या से करना' },
+  'scratch-sound-is-loop': { label: 'आवाज़ ब्लॉक को लूप समझना' },
+  'scratch-color-is-loop': { label: 'रंग ब्लॉक को लूप समझना' },
+  'scratch-delete-is-loop': { label: 'मिटाने वाले ब्लॉक को लूप समझना' },
+  'while-runs-once': { label: 'while लूप को एक बार चलना समझना' },
+  'while-never-stops': { label: 'while लूप का कभी न रुकना समझना' },
+  'while-stops-on-shutdown': { label: 'while लूप का कंप्यूटर बंद करने से रुकना समझना' },
+  'infinite-loop-is-speed': { label: 'अनंत लूप का कारण रफ़्तार समझना' },
+  'infinite-loop-is-name': { label: 'अनंत लूप का कारण नाम समझना' },
+  'infinite-loop-is-screen': { label: 'अनंत लूप का कारण स्क्रीन समझना' },
+  'browser-is-printer': { label: 'ब्राउज़र को प्रिंटर समझना' },
+  'browser-is-scanner': { label: 'ब्राउज़र को स्कैनर समझना' },
+  'browser-is-pendrive': { label: 'ब्राउज़र को पेन ड्राइव समझना' },
+  'internet-is-web': { label: 'इंटरनेट और वेब को एक समझना' },
+  'web-is-bigger': { label: 'वेब को इंटरनेट से बड़ा समझना' },
+  'web-without-internet': { label: 'वेब को बिना इंटरनेट चलना समझना' },
+  'website-is-not-web': { label: 'वेबसाइट को वेब न समझना' },
+  'news-is-not-web': { label: 'ख़बरों के पेज को वेब न समझना' },
+  'video-is-not-web': { label: 'ब्राउज़र के वीडियो को वेब न समझना' },
+  'short-password-safe': { label: 'छोटे पासवर्ड को सुरक्षित समझना' },
+  'name-password-safe': { label: 'नाम या जन्मतिथि के पासवर्ड को सुरक्षित समझना' },
+  'common-password-safe': { label: 'आम पासवर्ड को सुरक्षित समझना' },
+  'share-otp-safe': { label: 'OTP बाँटना सुरक्षित समझना' },
+  'same-password-safe': { label: 'सभी खातों का एक पासवर्ड सुरक्षित समझना' },
+  'password-show-safe': { label: 'पासवर्ड दिखाना सुरक्षित समझना' },
+  'bullying-is-study': { label: 'साइबर बुलिंग को पढ़ाई समझना' },
+  'bullying-is-password': { label: 'साइबर बुलिंग को पासवर्ड समझना' },
+  'bullying-is-call': { label: 'साइबर बुलिंग को वीडियो कॉल समझना' },
+  'personal-info-safe': { label: 'निजी जानकारी बाँटना सुरक्षित समझना' },
+  'bullying-is-fun': { label: 'बुलिंग में साथ देना मज़ाक समझना' },
+  'bullying-ignore-ok': { label: 'बुलिंग पर चुप रहना ठीक समझना' },
+  'bullying-fight-back': { label: 'बुलिंग का जवाब धमकी से देना ठीक समझना' },
+};
