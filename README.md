@@ -12,7 +12,7 @@ A Hindi-medium student in a small town often has no tutor, no personal device, a
 
 ## What Saathi (साथी) does
 
-- **Profiles without accounts** — up to 4 learners on one phone, each entering with an avatar and a nickname. No phone number, no email, no real name is ever collected.
+- **Profiles without accounts** — up to 4 learners on one phone, each entering with a nickname and an emoji avatar, or their own photo, which is stored only on the phone and never sent anywhere. No phone number, no email, no real name is ever collected.
 - **Learn** — short concept cards in simple Hindi for all 15 chapters of Class 8 Science, grouped by chapter, each with an everyday example and a read-aloud button (speech synthesis, hi-IN).
 - **Practice that understands mistakes** — every wrong MCQ option is tagged with the misunderstanding behind it, and feedback explains that exact mistake in Hindi. A per-concept mastery score (starting at 0.3, updated as `m ← m + 0.3 × (correct − m)`) drives the next question: mostly the weakest concept, and after two wrong answers in a row the lesson card is shown again before continuing.
 - **Ask a doubt** — type in Hindi or speak (browser speech recognition, hi-IN). The tutor is on-device keyword matching over the chapter content, not an LLM call: answers are short, step-by-step Hindi, ending with a small check question, and they work immediately even offline. Only the family sync waits for connectivity. This keeps the tutor free, private and fully offline.

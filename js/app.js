@@ -166,7 +166,16 @@ function refreshHeader(profile) {
   }
   setBrandMode(false);
   const avatar = AVATARS.find((a) => a.id === profile.avatar) || AVATARS[0];
-  headerParts.avatar.textContent = avatar.emoji;
+  headerParts.avatar.textContent = '';
+  if (profile.photo) {
+    const img = document.createElement('img');
+    img.className = 'header-photo';
+    img.src = profile.photo;
+    img.alt = '';
+    headerParts.avatar.appendChild(img);
+  } else {
+    headerParts.avatar.textContent = avatar.emoji;
+  }
   headerParts.name.textContent = profile.nickname;
   updateStatusDot();
   const kb = Math.round(getUsage().bytes / 1024);

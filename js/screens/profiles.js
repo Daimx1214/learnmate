@@ -28,6 +28,35 @@ function touchButton(className, text) {
   return btn;
 }
 
+// Shrinks a picked photo to a small JPEG data URL (max side 256px,
+// ~60 KB) so up to 4 profile photos fit in on-device storage.
+async function downscaleProfilePhoto(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = () => reject(new Error('decode'));
+      i.src = url;
+    });
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
+    if (!w || !h) throw new Error('decode');
+    const scale = Math.min(1, 256 / Math.max(w, h));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(w * scale));
+    canvas.height = Math.max(1, Math.round(h * scale));
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    for (const q of [0.85, 0.75, 0.65, 0.55]) {
+      const dataUrl = canvas.toDataURL('image/jpeg', q);
+      if (dataUrl.startsWith('data:image/jpeg') && dataUrl.length <= 80000) return dataUrl;
+    }
+    throw new Error('too-large');
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function render(root, ctx) {
   const profiles = getProfiles();
   let selectedAvatar = AVATARS[0].id;
@@ -41,7 +70,16 @@ export function render(root, ctx) {
     const avatar = avatarFor(p.avatar);
     const card = el('div', 'card');
 
-    const pick = touchButton('btn-secondary', `${avatar.emoji} ${p.nickname}`);
+    const pick = touchButton('btn-secondary', p.photo ? '' : `${avatar.emoji} ${p.nickname}`);
+    if (p.photo) {
+      const img = el('img', 'row-photo');
+      img.src = p.photo;
+      img.alt = '';
+      pick.append(img, el('span', null, p.nickname));
+      pick.style.display = 'inline-flex';
+      pick.style.alignItems = 'center';
+      pick.style.gap = '10px';
+    }
     pick.addEventListener('click', () => {
       setActiveProfile(p.id);
       ctx.navigate('#/home');
@@ -87,6 +125,38 @@ export function render(root, ctx) {
     }
     paintSelection();
 
+    // Optional own photo (owner request, 22 Nov). Stored only on this
+    // phone inside the profile; when set, it replaces the emoji avatar
+    // in the header and the profile list.
+    let selectedPhoto = null;
+    const photoRow = el('div', 'photo-row');
+    const preview = el('span', 'photo-preview', '📷');
+    const photoBtn = touchButton('btn-secondary', t('profiles_photo_add'));
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.hidden = true;
+    fileInput.setAttribute('aria-label', t('profiles_photo_add'));
+    photoBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      try {
+        selectedPhoto = await downscaleProfilePhoto(file);
+        preview.textContent = '';
+        const img = el('img', 'photo-preview-img');
+        img.src = selectedPhoto;
+        img.alt = '';
+        preview.appendChild(img);
+        photoBtn.textContent = t('profiles_photo_change');
+      } catch (err) {
+        ctx.toast(t('profiles_photo_failed'));
+      }
+      fileInput.value = '';
+    });
+    photoRow.append(preview, photoBtn, fileInput);
+    const photoNote = el('p', 'muted', t('profiles_photo_note'));
+
     const input = el('input', 'nickname-input');
     input.type = 'text';
     input.maxLength = 20;
@@ -101,6 +171,7 @@ export function render(root, ctx) {
         const created = createProfile({
           nickname: input.value,
           avatar: selectedAvatar,
+          photo: selectedPhoto,
         });
         setActiveProfile(created.id);
         ctx.navigate('#/home');
@@ -109,7 +180,7 @@ export function render(root, ctx) {
       }
     });
 
-    form.append(avatarGrid, input, start);
+    form.append(avatarGrid, photoRow, photoNote, input, start);
     root.appendChild(form);
   }
 
