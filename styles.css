@@ -359,7 +359,7 @@ h2,
   width: 100%;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   background: #fff;
   border-bottom: 1px solid var(--border);
   z-index: 15;
