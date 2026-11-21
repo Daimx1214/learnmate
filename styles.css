@@ -427,3 +427,24 @@ html[dir="rtl"] body {
   display: inline-block;
 }
 
+/* Brand name */
+.brand-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue, #1e3a5f);
+  margin: 0 0 4px;
+}
+
+.brand-subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 16px;
+}
+
+.brand-header {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blue, #1e3a5f);
+}
+
+

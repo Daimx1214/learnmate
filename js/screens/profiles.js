@@ -32,7 +32,8 @@ export function render(root, ctx) {
   const profiles = getProfiles();
   let selectedAvatar = AVATARS[0].id;
 
-  root.appendChild(el('h1', 'screen-title', t('profiles_title')));
+  root.appendChild(el('div', 'brand-title', 'LearnMate'));
+  root.appendChild(el('h1', 'brand-subtitle', t('profiles_title')));
   root.appendChild(langSelector());
 
   // Existing profiles.

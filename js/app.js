@@ -143,13 +143,28 @@ function updateStatusDot() {
   headerParts.dot.className = `status-dot ${navigator.onLine ? 'online' : 'offline'}`;
 }
 
-// Shows the header for an active profile; removes it when there is none.
+// Switches the header between the profile link and the bare brand name.
+function setBrandMode(on) {
+  headerEl.querySelector('.app-header-profile').hidden = on;
+  headerEl.querySelector('.app-header-status').hidden = on;
+  let brand = headerEl.querySelector('.brand-header');
+  if (!brand) {
+    brand = document.createElement('span');
+    brand.className = 'brand-header';
+    brand.textContent = 'LearnMate';
+    headerEl.prepend(brand);
+  }
+  brand.hidden = !on;
+}
+
+// Shows the header for an active profile; shows the brand name when there is none.
 function refreshHeader(profile) {
+  if (!headerEl) buildHeader();
   if (!profile) {
-    if (headerEl) headerEl.remove();
+    setBrandMode(true);
     return;
   }
-  if (!headerEl) buildHeader();
+  setBrandMode(false);
   const avatar = AVATARS.find((a) => a.id === profile.avatar) || AVATARS[0];
   headerParts.avatar.textContent = avatar.emoji;
   headerParts.name.textContent = profile.nickname;
@@ -209,7 +224,7 @@ async function route() {
     if (token !== routeToken) return;
     appEl.innerHTML = '';
     refreshHeader(profile);
-    if (headerEl && profile) appEl.prepend(headerEl);
+    if (headerEl) appEl.prepend(headerEl);
     await mod.render(appEl, ctx);
   } catch (err) {
     if (token !== routeToken) return;
