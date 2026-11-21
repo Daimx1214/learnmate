@@ -1,4 +1,4 @@
-import { localizedPack , availableSubjectIds } from '../data/chapter.js';
+import { localizedPack, localizedChapters, availableSubjectIds } from '../data/chapter.js';
 import { getSubjectId, setSubjectId } from '../data/subject-store.js';
 import { getProgress } from '../store.js';
 import { computeStreak, weakConcepts } from '../mastery.js';
@@ -103,7 +103,7 @@ export function render(root, ctx) {
 
   const meta = el('div', 'home-meta');
   meta.append(
-    el('p', 'muted', t('home_chapter', { title: localizedPack().title })),
+    el('p', 'muted', t('home_chapter', { title: localizedPack().title, chapters: localizedChapters().length })),
     el('p', 'muted', t('home_base'))
   );
   root.appendChild(meta);

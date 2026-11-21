@@ -92,7 +92,7 @@ export const STRINGS = {
   home_btn_learn: { en: "Learn today's lesson", hi: 'आज का पाठ सीखें' },
   home_btn_practice: { en: 'Practice', hi: 'अभ्यास करें' },
   home_btn_ask: { en: 'Ask a question', hi: 'सवाल पूछें' },
-  home_chapter: { en: 'Subject: {title} (all 15 chapters)', hi: 'विषय: {title} (सभी 15 अध्याय)' },
+  home_chapter: { en: 'Subject: {title} ({chapters} chapters)', hi: 'विषय: {title} ({chapters} अध्याय)' },
   home_base: { en: 'Based on the Class 8 curriculum', hi: 'आधार: कक्षा 8 पाठ्यक्रम' },
 
   // ----- learn -----
