@@ -27,7 +27,7 @@ const NAV_ITEMS = [
 const STUDY_TICK_MS = 15000;
 
 const appEl = document.getElementById('app');
-const navEl = document.getElementById('bottom-nav');
+const navEl = document.getElementById('top-nav');
 
 let currentName = '';
 let routeToken = 0;
@@ -255,6 +255,8 @@ async function route() {
     appEl.innerHTML = '';
     refreshHeader(profile);
     if (headerEl) appEl.prepend(headerEl);
+    // The navigation lives at the top, directly under the header.
+    if (headerEl) headerEl.after(navEl);
     await mod.render(appEl, ctx);
     appEl.appendChild(buildFooter());
   } catch (err) {

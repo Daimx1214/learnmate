@@ -59,7 +59,7 @@ body {
 #app {
   max-width: 640px;
   margin: 0 auto;
-  padding: 16px 16px 96px;
+  padding: 16px 16px 24px;
   box-sizing: border-box;
 }
 
@@ -299,7 +299,7 @@ h2,
 
 .toast {
   position: fixed;
-  bottom: 88px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--blue);
@@ -317,26 +317,27 @@ h2,
   border-radius: 8px;
 }
 
-.bottom-nav,
-#bottom-nav {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
+.top-nav,
+#top-nav {
+  position: sticky;
+  top: 56px;
   width: 100%;
-  max-width: 640px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   background: #fff;
-  border-top: 1px solid var(--border);
-  z-index: 10;
+  border-bottom: 1px solid var(--border);
+  z-index: 15;
 }
 
-.bottom-nav a,
-.bottom-nav button,
-#bottom-nav a,
-#bottom-nav button {
+#top-nav[hidden] {
+  display: none;
+}
+
+.top-nav a,
+.top-nav button,
+#top-nav a,
+#top-nav button {
   min-height: 56px;
   display: flex;
   flex-direction: column;
@@ -352,8 +353,8 @@ h2,
   font-family: inherit;
 }
 
-.bottom-nav .active,
-#bottom-nav .active {
+.top-nav .active,
+#top-nav .active {
   color: var(--blue);
   font-weight: 700;
 }
