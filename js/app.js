@@ -98,7 +98,7 @@ function buildNav() {
 }
 
 function updateNav(name) {
-  const visible = NAV_ROUTES.has(name) || (name !== 'profiles' && !!getActiveProfileId());
+  const visible = NAV_ROUTES.has(name) || !!getActiveProfileId();
   navEl.hidden = !visible;
   for (const link of navEl.querySelectorAll('a')) {
     const isActive = link.dataset.key === name;

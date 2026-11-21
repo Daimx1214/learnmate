@@ -135,7 +135,7 @@ export function render(root, ctx) {
     view.appendChild(el('h1', 'screen-title', t('practice_title', { title: concept.title })));
 
     const { m, pct } = percentOf(progress, concept);
-    const chip = el('span', 'chip', t('practice_mastery', { pct }));
+    const chip = el('span', 'chip', t('practice_mastery', { pct, concept: concept.title }));
     const bar = el('div', 'progress-bar');
     const fill = document.createElement('i');
     fill.style.setProperty('--p', String(m));

@@ -171,7 +171,7 @@ export function weakConcepts(chapter, progress) {
       const attempted = count > 0;
       return { concept: c, m, attempted, count };
     })
-    .filter((x) => conceptStatus(x.m, x.attempted, x.count) !== 'mastered')
+    .filter((x) => x.attempted && x.m < 0.5)
     .sort((a, b) => a.m - b.m)
     .map((x) => x.concept);
 }

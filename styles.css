@@ -1028,11 +1028,11 @@ html {
 }
 
 @keyframes riseIn {
-  from { opacity: 0.6; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(8px); }
+  to { transform: translateY(0); }
 }
 .reveal {
-  opacity: 0.6;
+  opacity: 1;
 }
 .reveal.in {
   animation: riseIn 0.3s cubic-bezier(0.22, 0.8, 0.32, 1) both;
@@ -1131,4 +1131,12 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   font-weight: 600;
   color: #C0392B;
   margin-left: 6px;
+}
+
+.stat-row .stat-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 58%;
+  text-align: right;
 }

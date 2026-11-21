@@ -69,7 +69,7 @@ export function render(root, ctx) {
 
   const actions = el('div', 'actions');
   const buttons = [
-    [t('home_btn_learn'), weakest ? `#/learn/${weakest.id}` : '#/learn'],
+    [t('home_btn_learn'), `#/learn/${(weakest || localizedPack().concepts[0]).id}`],
     [t('home_btn_practice'), '#/practice'],
     [t('home_btn_ask'), '#/ask'],
   ];

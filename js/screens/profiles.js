@@ -96,7 +96,8 @@ export function render(root, ctx) {
       }
     });
 
-    card.append(pick, remove);
+    card.append(pick);
+    if (profiles.length > 1) card.append(remove);
     grid.appendChild(card);
   }
   if (profiles.length) root.appendChild(grid);

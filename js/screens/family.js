@@ -75,6 +75,7 @@ function localSummary(code) {
 
 export function render(root, ctx) {
   root.appendChild(el('h1', 'screen-title', t('family_title')));
+  root.appendChild(el('p', 'muted', t('family_intro')));
 
   const form = el('form');
   form.noValidate = true;
