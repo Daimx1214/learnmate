@@ -4,7 +4,7 @@ Plain HTML/CSS/vanilla JS PWA. No npm dependencies, no build step. All UI text i
 
 ## Files
 
-- `index.html` — shell: `<main id="app">`, `<nav id="bottom-nav" hidden>`, loads `js/app.js` (module) and registers `sw.js`.
+- `index.html` — shell: `<main id="app">`, `<nav id="top-nav" hidden>`, loads `js/app.js` (module) and registers `sw.js`.
 - `styles.css` — design tokens (CSS variables) and component classes. The only stylesheet.
 - `manifest.webmanifest`, `icon.svg` — PWA install metadata.
 - `server.js` — zero-dependency Node 18+ static server + family sync API. Run with `npm start` (PORT env, default 8080).
@@ -157,7 +157,7 @@ localStorage key `saathi.v1.progress.<profileId>`:
 
 ## Design tokens
 
-Colors and spacing are CSS variables in `styles.css` (`--paper`, `--blue`, `--green`, `--yellow`, `--ink`, `--muted`, `--border`, `--card`). Reuse the classes there: `.card`, `.btn`, `.btn-secondary`, `.btn-ghost`, `.btn-yellow`, `.chip`, `.progress-bar`, `.meter`, `.toggle`, `.grid-avatars`, `.screen-title`, `.muted`, `.toast`, `.notice`, `.bottom-nav`. No gradients.
+Colors and spacing are CSS variables in `styles.css` (`--paper`, `--blue`, `--green`, `--yellow`, `--ink`, `--muted`, `--border`, `--card`). Reuse the classes there: `.card`, `.btn`, `.btn-secondary`, `.btn-ghost`, `.btn-yellow`, `.chip`, `.progress-bar`, `.meter`, `.toggle`, `.grid-avatars`, `.screen-title`, `.muted`, `.toast`, `.notice`, `.top-nav`. No gradients.
 
 ## Rules
 

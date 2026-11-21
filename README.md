@@ -22,7 +22,7 @@ A Hindi-medium student in a small town often has no tutor, no personal device, a
 
 ## Design
 
-Calm school-notebook feel: warm paper background `#FBF7EF`, deep blue `#1F3A5F`, progress green `#2F7D5B`, one yellow accent `#E8A317`. Body text 18px+, touch targets 48px+, layout designed first for a 360px-wide phone, bottom navigation with Hindi labels.
+Calm school-notebook feel: warm paper background `#FBF7EF`, deep blue `#1F3A5F`, progress green `#2F7D5B`, one yellow accent `#E8A317`. Body text 18px+, touch targets 48px+, layout designed first for a 360px-wide phone, top navigation bar with Hindi labels, directly under the header.
 
 ## Run it
 
