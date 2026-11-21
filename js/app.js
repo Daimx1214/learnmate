@@ -151,7 +151,7 @@ function setBrandMode(on) {
   if (!brand) {
     brand = document.createElement('span');
     brand.className = 'brand-header';
-    brand.textContent = 'साथी';
+    brand.textContent = 'LearnMate';
     headerEl.prepend(brand);
   }
   brand.hidden = !on;
@@ -182,7 +182,7 @@ function buildFooter() {
   footerEl.className = 'app-footer';
 
   const l1 = document.createElement('p');
-  l1.textContent = 'साथी — कक्षा 8 विज्ञान · हिंदी में · मुफ़्त';
+  l1.textContent = 'LearnMate — कक्षा 8 विज्ञान · हिंदी में · मुफ़्त';
 
   const l2 = document.createElement('p');
   const about = document.createElement('a');
