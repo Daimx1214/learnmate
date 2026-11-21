@@ -47,8 +47,18 @@
 
 [hidden] { display: none !important; }
 
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
 body {
   margin: 0;
+  overflow-wrap: break-word;
   background: var(--paper);
   color: var(--ink);
   font-family: "Mukta", "Noto Sans Devanagari", "Mangal", "Nirmala UI", system-ui, sans-serif;
@@ -61,13 +71,23 @@ body {
   margin: 0 auto;
   padding: 16px 16px 24px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.loading-note {
+  color: var(--muted);
+  text-align: center;
+  padding: 48px 16px;
 }
 
 .app-header {
   position: sticky;
   top: 0;
   z-index: 20;
-  height: 56px;
+  height: calc(56px + var(--sat));
+  padding-top: var(--sat);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -320,7 +340,7 @@ h2,
 .top-nav,
 #top-nav {
   position: sticky;
-  top: 56px;
+  top: calc(56px + var(--sat));
   width: 100%;
   box-sizing: border-box;
   display: grid;
@@ -418,6 +438,7 @@ textarea {
 
 
 .app-footer {
+  margin-top: auto;
   border-top: 1px solid var(--border);
   margin-top: 24px;
   padding: 16px 0 8px;
