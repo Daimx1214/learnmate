@@ -529,10 +529,11 @@ td:last-child {
 }
 
 .toggle input[type="checkbox"] {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
   margin: 0;
+  accent-color: var(--blue);
 }
 
 .avatar-option {
@@ -1085,15 +1086,21 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   display: inline-flex;
   align-items: center;
   min-height: 40px;
-  padding: 6px 14px;
-  font-size: 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
-  background: #fff;
+  padding: 6px 8px;
+  font-size: 15px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
   color: var(--blue);
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.16s ease, background-color 0.2s ease;
+}
+
+.app-footer .footer-links a:not(:last-child)::after {
+  content: "·";
+  margin-left: 16px;
+  color: var(--muted);
+  font-weight: 400;
 }
 .app-footer .footer-links a:active {
   transform: scale(0.96);
