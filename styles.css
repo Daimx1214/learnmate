@@ -1249,3 +1249,23 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   font-size: 15px;
   text-decoration: none;
 }
+
+/* Owner: language option inside the nav row, after Progress, small gap */
+#top-nav {
+  display: flex;
+}
+#top-nav a {
+  flex: 1 1 0;
+}
+#top-nav .lang-toggle {
+  flex: none;
+  align-self: center;
+  margin-left: 6px;
+}
+
+/* Compact button (profiles family entry) */
+.btn-compact {
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 15px;
+}

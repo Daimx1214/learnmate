@@ -97,6 +97,16 @@ function buildNav() {
     link.append(icon, label);
     navEl.appendChild(link);
   }
+
+  const langBtn = document.createElement('button');
+  langBtn.type = 'button';
+  langBtn.className = 'lang-toggle';
+  langBtn.textContent = t('lang_switch_label');
+  langBtn.addEventListener('click', () => {
+    setLang(getLang() === 'hi' ? 'en' : 'hi');
+    window.location.reload();
+  });
+  navEl.appendChild(langBtn);
 }
 
 function updateNav(name) {
@@ -119,19 +129,6 @@ function buildHeader() {
   headerEl = document.createElement('header');
   headerEl.className = 'app-header';
 
-  const row = document.createElement('div');
-  row.className = 'app-header-row';
-  headerEl.appendChild(row);
-
-  const langBtn = document.createElement('button');
-  langBtn.type = 'button';
-  langBtn.className = 'lang-toggle';
-  langBtn.textContent = t('lang_switch_label');
-  langBtn.addEventListener('click', () => {
-    setLang(getLang() === 'hi' ? 'en' : 'hi');
-    window.location.reload();
-  });
-  row.appendChild(langBtn);
 }
 
 // The header holds only the nav and the language button (owner, 22 Nov:
