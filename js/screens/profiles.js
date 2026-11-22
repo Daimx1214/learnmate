@@ -26,35 +26,6 @@ function touchButton(className, text) {
   return btn;
 }
 
-// Shrinks a picked photo to a small JPEG data URL (max side 256px,
-// ~60 KB) so up to 4 profile photos fit in on-device storage.
-async function downscaleProfilePhoto(file) {
-  const url = URL.createObjectURL(file);
-  try {
-    const img = await new Promise((resolve, reject) => {
-      const i = new Image();
-      i.onload = () => resolve(i);
-      i.onerror = () => reject(new Error('decode'));
-      i.src = url;
-    });
-    const w = img.naturalWidth;
-    const h = img.naturalHeight;
-    if (!w || !h) throw new Error('decode');
-    const scale = Math.min(1, 256 / Math.max(w, h));
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.max(1, Math.round(w * scale));
-    canvas.height = Math.max(1, Math.round(h * scale));
-    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-    for (const q of [0.85, 0.75, 0.65, 0.55]) {
-      const dataUrl = canvas.toDataURL('image/jpeg', q);
-      if (dataUrl.startsWith('data:image/jpeg') && dataUrl.length <= 80000) return dataUrl;
-    }
-    throw new Error('too-large');
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
-
 export function render(root, ctx) {
   const profiles = getProfiles();
   const editing = editingProfileId ? profiles.find((p) => p.id === editingProfileId) || null : null;
@@ -69,14 +40,7 @@ export function render(root, ctx) {
     const card = el('div', 'card');
 
     const pick = touchButton('btn-secondary', '');
-    if (p.photo) {
-      const img = el('img', 'row-photo');
-      img.src = p.photo;
-      img.alt = '';
-      pick.appendChild(img);
-    } else {
-      pick.appendChild(el('span', 'row-photo-blank'));
-    }
+    pick.appendChild(el('span', 'row-photo-blank'));
     pick.appendChild(el('span', null, p.nickname));
     pick.style.display = 'inline-flex';
     pick.style.alignItems = 'center';
@@ -112,46 +76,6 @@ export function render(root, ctx) {
   if (profiles.length < MAX_PROFILES || editing) {
     const form = el('div', 'card');
 
-    // Optional own photo (owner request, 22 Nov). Stored only on this
-    // phone inside the profile; when set, it replaces the emoji avatar
-    // in the header and the profile list.
-    let selectedPhoto = editing ? (editing.photo || null) : null;
-    const photoRow = el('div', 'photo-row');
-    const preview = el('span', 'photo-preview', '📷');
-    const photoBtn = touchButton('btn-secondary', t('profiles_photo_add'));
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.hidden = true;
-    fileInput.setAttribute('aria-label', t('profiles_photo_add'));
-    photoBtn.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', async () => {
-      const file = fileInput.files && fileInput.files[0];
-      if (!file) return;
-      try {
-        selectedPhoto = await downscaleProfilePhoto(file);
-        preview.textContent = '';
-        const img = el('img', 'photo-preview-img');
-        img.src = selectedPhoto;
-        img.alt = '';
-        preview.appendChild(img);
-        photoBtn.textContent = t('profiles_photo_change');
-      } catch (err) {
-        ctx.toast(t('profiles_photo_failed'));
-      }
-      fileInput.value = '';
-    });
-    if (selectedPhoto) {
-      preview.textContent = '';
-      const current = el('img', 'photo-preview-img');
-      current.src = selectedPhoto;
-      current.alt = '';
-      preview.appendChild(current);
-      photoBtn.textContent = t('profiles_photo_change');
-    }
-    photoRow.append(preview, photoBtn, fileInput);
-    const photoNote = el('p', 'muted', t('profiles_photo_note'));
-
     const input = el('input', 'nickname-input');
     if (editing) input.value = editing.nickname;
     input.type = 'text';
@@ -167,14 +91,12 @@ export function render(root, ctx) {
         if (editing) {
           updateProfile(editing.id, {
             nickname: input.value,
-            photo: selectedPhoto,
           });
           editingProfileId = null;
           ctx.refresh();
         } else {
           const created = createProfile({
             nickname: input.value,
-            photo: selectedPhoto,
           });
           setActiveProfile(created.id);
           ctx.navigate('#/home');
@@ -184,7 +106,7 @@ export function render(root, ctx) {
       }
     });
 
-    form.append(photoRow, photoNote, input, start);
+    form.append(input, start);
     if (editing) {
       const cancel = touchButton('btn-ghost', t('profiles_cancel'));
       cancel.addEventListener('click', () => {

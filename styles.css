@@ -1218,3 +1218,9 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
 .ask-photo-preview[hidden] {
   display: none;
 }
+
+/* Owner: header row now holds only the language button, right aligned */
+.app-header-row {
+  justify-content: flex-end;
+  min-height: 40px;
+}

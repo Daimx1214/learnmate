@@ -114,25 +114,13 @@ function updateNav(name) {
 
 // One reusable header, built on first use and kept in the DOM across renders.
 let headerEl = null;
-let headerParts = null;
 
 function buildHeader() {
   headerEl = document.createElement('header');
   headerEl.className = 'app-header';
 
-  const profileLink = document.createElement('a');
-  profileLink.className = 'app-header-profile';
-  profileLink.href = '#/profiles';
-
-  const avatar = document.createElement('span');
-  avatar.className = 'app-header-avatar';
-  const name = document.createElement('span');
-  name.className = 'app-header-name';
-  profileLink.append(avatar, name);
-
   const row = document.createElement('div');
   row.className = 'app-header-row';
-  row.append(profileLink);
   headerEl.appendChild(row);
 
   const langBtn = document.createElement('button');
@@ -144,42 +132,12 @@ function buildHeader() {
     window.location.reload();
   });
   row.appendChild(langBtn);
-  headerParts = { avatar, name };
 }
 
-// Switches the header between the profile link and the bare brand name.
-function setBrandMode(on) {
-  headerEl.querySelector('.app-header-profile').hidden = on;
-  let brand = headerEl.querySelector('.brand-header');
-  if (!brand) {
-    brand = document.createElement('span');
-    brand.className = 'brand-header';
-    brand.textContent = 'LearnMate';
-    headerEl.querySelector('.app-header-row').prepend(brand);
-  }
-  brand.hidden = !on;
-}
-
-// Shows the header for an active profile; shows the brand name when there is none.
-function refreshHeader(profile) {
+// The header holds only the nav and the language button (owner, 22 Nov:
+// profile photo and name removed from the header entirely).
+function refreshHeader() {
   if (!headerEl) buildHeader();
-  if (!profile) {
-    setBrandMode(true);
-    return;
-  }
-  setBrandMode(false);
-  headerParts.avatar.textContent = '';
-  if (profile.photo) {
-    headerParts.avatar.classList.remove('is-empty');
-    const img = document.createElement('img');
-    img.className = 'header-photo';
-    img.src = profile.photo;
-    img.alt = '';
-    headerParts.avatar.appendChild(img);
-  } else {
-    headerParts.avatar.classList.add('is-empty');
-  }
-  headerParts.name.textContent = profile.nickname;
 }
 
 // One reusable footer, appended at the end of #app on every render.
@@ -284,7 +242,7 @@ async function route() {
     const mod = await import(`./screens/${name}.js`);
     if (token !== routeToken) return;
     appEl.innerHTML = '';
-    refreshHeader(profile);
+    refreshHeader();
     if (headerEl) appEl.prepend(headerEl);
     // The navigation lives at the top, directly under the header.
     if (headerEl) headerEl.appendChild(navEl);
