@@ -1,5 +1,4 @@
 import {
-  AVATARS,
   getProfiles,
   createProfile,
   updateProfile,
@@ -17,10 +16,6 @@ function el(tag, className, text) {
   if (className) node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
-}
-
-function avatarFor(id) {
-  return AVATARS.find((a) => a.id === id) || AVATARS[0];
 }
 
 function touchButton(className, text) {
@@ -64,7 +59,6 @@ export function render(root, ctx) {
   const profiles = getProfiles();
   const editing = editingProfileId ? profiles.find((p) => p.id === editingProfileId) || null : null;
   if (editingProfileId && !editing) editingProfileId = null;
-  let selectedAvatar = editing ? editing.avatar : AVATARS[0].id;
 
   root.appendChild(el('h1', 'screen-title', t('profiles_title')));
   root.appendChild(el('p', 'muted', t('profiles_intro')));
@@ -72,19 +66,21 @@ export function render(root, ctx) {
   // Existing profiles.
   const grid = el('div', 'grid-avatars');
   for (const p of profiles) {
-    const avatar = avatarFor(p.avatar);
     const card = el('div', 'card');
 
-    const pick = touchButton('btn-secondary', p.photo ? '' : `${avatar.emoji} ${p.nickname}`);
+    const pick = touchButton('btn-secondary', '');
     if (p.photo) {
       const img = el('img', 'row-photo');
       img.src = p.photo;
       img.alt = '';
-      pick.append(img, el('span', null, p.nickname));
-      pick.style.display = 'inline-flex';
-      pick.style.alignItems = 'center';
-      pick.style.gap = '10px';
+      pick.appendChild(img);
+    } else {
+      pick.appendChild(el('span', 'row-photo-blank'));
     }
+    pick.appendChild(el('span', null, p.nickname));
+    pick.style.display = 'inline-flex';
+    pick.style.alignItems = 'center';
+    pick.style.gap = '10px';
     pick.addEventListener('click', () => {
       setActiveProfile(p.id);
       ctx.navigate('#/home');
@@ -107,8 +103,7 @@ export function render(root, ctx) {
       ctx.refresh();
     });
 
-    card.append(pick, editBtn);
-    if (profiles.length > 1) card.append(remove);
+    card.append(pick, editBtn, remove);
     grid.appendChild(card);
   }
   if (profiles.length) root.appendChild(grid);
@@ -116,26 +111,6 @@ export function render(root, ctx) {
   // New-profile form, only while there is room.
   if (profiles.length < MAX_PROFILES || editing) {
     const form = el('div', 'card');
-
-    const avatarGrid = el('div', 'grid-avatars');
-    const avatarButtons = [];
-    const paintSelection = () => {
-      for (const { id, btn } of avatarButtons) {
-        const on = id === selectedAvatar;
-        btn.style.outline = on ? '3px solid var(--yellow)' : 'none';
-        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      }
-    };
-    for (const a of AVATARS) {
-      const btn = touchButton('avatar-option', `${a.emoji} ${t('avatar_' + a.id)}`);
-      btn.addEventListener('click', () => {
-        selectedAvatar = a.id;
-        paintSelection();
-      });
-      avatarButtons.push({ id: a.id, btn });
-      avatarGrid.appendChild(btn);
-    }
-    paintSelection();
 
     // Optional own photo (owner request, 22 Nov). Stored only on this
     // phone inside the profile; when set, it replaces the emoji avatar
@@ -192,7 +167,6 @@ export function render(root, ctx) {
         if (editing) {
           updateProfile(editing.id, {
             nickname: input.value,
-            avatar: selectedAvatar,
             photo: selectedPhoto,
           });
           editingProfileId = null;
@@ -200,7 +174,6 @@ export function render(root, ctx) {
         } else {
           const created = createProfile({
             nickname: input.value,
-            avatar: selectedAvatar,
             photo: selectedPhoto,
           });
           setActiveProfile(created.id);
@@ -211,7 +184,7 @@ export function render(root, ctx) {
       }
     });
 
-    form.append(avatarGrid, photoRow, photoNote, input, start);
+    form.append(photoRow, photoNote, input, start);
     if (editing) {
       const cancel = touchButton('btn-ghost', t('profiles_cancel'));
       cancel.addEventListener('click', () => {

@@ -1,6 +1,6 @@
 import { localizedPack, localizedChapters, availableSubjectIds } from '../data/chapter.js';
 import { getSubjectId, setSubjectId } from '../data/subject-store.js';
-import { getProgress } from '../store.js';
+import { getProgress, setActiveProfile } from '../store.js';
 import { computeStreak, weakConcepts } from '../mastery.js';
 import { t } from '../i18n.js';
 
@@ -107,4 +107,12 @@ export function render(root, ctx) {
     el('p', 'muted', t('home_base'))
   );
   root.appendChild(meta);
+
+  const logout = el('button', 'btn-ghost logout-btn', t('logout'));
+  logout.type = 'button';
+  logout.addEventListener('click', () => {
+    setActiveProfile(null);
+    ctx.navigate('#/profiles');
+  });
+  root.appendChild(logout);
 }

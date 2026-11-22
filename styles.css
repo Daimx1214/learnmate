@@ -1152,3 +1152,25 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   background: var(--card);
   color: var(--ink, inherit);
 }
+
+.app-header-avatar.is-empty {
+  background: #fff;
+  border: 1.5px solid var(--border);
+}
+
+.row-photo-blank {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+}
+
+.logout-btn {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 10px;
+}

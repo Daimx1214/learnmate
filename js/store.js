@@ -141,7 +141,7 @@ export function createProfile({ nickname, avatar, photo } = {}) {
   if (len < 1 || len > NICK_MAX) {
     throw new Error(getLang() === 'hi' ? 'नाम 1 से 20 अक्षरों का होना चाहिए' : 'The name must be 1 to 20 characters');
   }
-  if (!AVATARS.some((a) => a.id === avatar)) {
+  if (avatar !== undefined && avatar !== null && !AVATARS.some((a) => a.id === avatar)) {
     throw new Error(getLang() === 'hi' ? 'कृपया एक अवतार चुनें' : 'Please choose an avatar');
   }
   // Optional profile photo (owner request, 22 Nov): a small data URL that
@@ -159,7 +159,7 @@ export function createProfile({ nickname, avatar, photo } = {}) {
   const profile = {
     id: newId(),
     nickname: nick,
-    avatar,
+    avatar: avatar || AVATARS[0].id,
     photo: photo || null,
     familyCode: makeFamilyCode(taken),
     createdAt: new Date().toISOString(),

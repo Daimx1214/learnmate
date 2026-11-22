@@ -1,4 +1,4 @@
-import { AVATARS, getProfile, getActiveProfileId, addStudySeconds } from './store.js';
+import { getProfile, getActiveProfileId, addStudySeconds } from './store.js';
 import { syncAll, isOnline } from './sync.js';
 import { t } from './i18n.js';
 import { getLang, setLang } from './lang.js';
@@ -166,16 +166,16 @@ function refreshHeader(profile) {
     return;
   }
   setBrandMode(false);
-  const avatar = AVATARS.find((a) => a.id === profile.avatar) || AVATARS[0];
   headerParts.avatar.textContent = '';
   if (profile.photo) {
+    headerParts.avatar.classList.remove('is-empty');
     const img = document.createElement('img');
     img.className = 'header-photo';
     img.src = profile.photo;
     img.alt = '';
     headerParts.avatar.appendChild(img);
   } else {
-    headerParts.avatar.textContent = avatar.emoji;
+    headerParts.avatar.classList.add('is-empty');
   }
   headerParts.name.textContent = profile.nickname;
 }
