@@ -1181,3 +1181,30 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   padding: 8px 16px;
   font-weight: 600;
 }
+
+/* Owner: identity row (photo + name + language) moves below the nav, slimmer */
+#top-nav {
+  order: 1;
+  border-bottom: 1px solid var(--border);
+}
+.app-header-row {
+  order: 2;
+  min-height: 44px;
+}
+.app-header-profile {
+  min-height: 40px;
+  font-size: 16px;
+}
+.app-header-avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+
+/* Owner: home action buttons a bit smaller */
+.actions > .btn,
+.actions > button {
+  font-size: 15px;
+  padding: 9px 12px;
+  min-height: 44px;
+}
