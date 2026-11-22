@@ -128,31 +128,9 @@ body {
   font-weight: 700;
 }
 
-.app-header-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
 .app-header-data {
   font-size: 14px;
   color: var(--muted);
-}
-
-.status-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.status-dot.online {
-  background: var(--green);
-}
-
-.status-dot.offline {
-  background: #9A9A9A;
 }
 
 .card {
@@ -1128,13 +1106,6 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; }
-}
-
-.app-header-status-text {
-  font-size: 12px;
-  font-weight: 600;
-  color: #C0392B;
-  margin-left: 6px;
 }
 
 .stat-row .stat-value {

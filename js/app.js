@@ -128,16 +128,9 @@ function buildHeader() {
   name.className = 'app-header-name';
   profileLink.append(avatar, name);
 
-  const status = document.createElement('div');
-  status.className = 'app-header-status';
-  const dot = document.createElement('span');
-  const statusText = document.createElement('span');
-  statusText.className = 'app-header-status-text';
-  status.append(dot, statusText);
-
   const row = document.createElement('div');
   row.className = 'app-header-row';
-  row.append(profileLink, status);
+  row.append(profileLink);
   headerEl.appendChild(row);
 
   const langBtn = document.createElement('button');
@@ -149,19 +142,12 @@ function buildHeader() {
     window.location.reload();
   });
   row.appendChild(langBtn);
-  headerParts = { avatar, name, dot, statusText };
-}
-
-function updateStatusDot() {
-  if (!headerParts) return;
-  headerParts.dot.className = `status-dot ${navigator.onLine ? 'online' : 'offline'}`;
-  headerParts.statusText.textContent = navigator.onLine ? '' : t('status_offline');
+  headerParts = { avatar, name };
 }
 
 // Switches the header between the profile link and the bare brand name.
 function setBrandMode(on) {
   headerEl.querySelector('.app-header-profile').hidden = on;
-  headerEl.querySelector('.app-header-status').hidden = on;
   let brand = headerEl.querySelector('.brand-header');
   if (!brand) {
     brand = document.createElement('span');
@@ -192,7 +178,6 @@ function refreshHeader(profile) {
     headerParts.avatar.textContent = avatar.emoji;
   }
   headerParts.name.textContent = profile.nickname;
-  updateStatusDot();
 }
 
 // One reusable footer, appended at the end of #app on every render.
@@ -345,8 +330,6 @@ function init() {
   document.documentElement.lang = getLang() === 'hi' ? 'hi' : 'en';
   buildNav();
   window.addEventListener('hashchange', route);
-  window.addEventListener('online', updateStatusDot);
-  window.addEventListener('offline', updateStatusDot);
   window.addEventListener('online', () => {
     syncActive();
   });

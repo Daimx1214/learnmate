@@ -55,7 +55,6 @@ export const STRINGS = {
   weak_heading: { en: 'Weak topics', hi: 'कमज़ोर विषय' },
   strong_heading: { en: 'Strong topics', hi: 'मज़बूत विषय' },
   strong_none: { en: 'No topic is fully mastered yet. Keep practising!', hi: 'अभी कोई विषय पूरी तरह पक्का नहीं है। अभ्यास जारी रखो!' },
-  status_offline: { en: 'Offline', hi: 'ऑफ़लाइन' },
   footer_copy: { en: '© 2026 LearnMate · Free for every learner', hi: '© 2026 LearnMate · हर सीखने वाले के लिए मुफ़्त' },
   family_intro: { en: "Enter the learner's 6-letter family code to see a read-only weekly summary: study minutes, topics mastered and topics that need practice. The learner's questions are never shown, only topic names.", hi: 'सीखने वाले का 6 अक्षरों वाला परिवार कोड डालें, हफ़्ते का सार दिखेगा: पढ़ाई के मिनट, पक्के विषय और अभ्यास वाले विषय। सवाल कभी नहीं दिखते, सिर्फ़ विषयों के नाम दिखते हैं।' },
   family_heading: { en: 'Family', hi: 'परिवार' },
