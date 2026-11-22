@@ -54,8 +54,15 @@ function costTable() {
   return { table, total };
 }
 
+function backButton(ctx) {
+  const btn = el('button', 'btn-ghost back-btn', t('back'));
+  btn.type = 'button';
+  btn.addEventListener('click', () => ctx.navigate(ctx.backTo || '#/home'));
+  return btn;
+}
+
 export function render(root, ctx) {
-  void ctx;
+  root.appendChild(backButton(ctx));
   root.appendChild(el('h1', 'screen-title', t('about_title')));
 
   // 1. Free for students

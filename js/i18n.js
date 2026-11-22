@@ -66,6 +66,7 @@ export const STRINGS = {
   sync_saved_local: { en: 'Saved on this phone. Family can view it on this phone with the code.', hi: 'इस फ़ोन पर सहेजा गया — परिवार इसी फ़ोन पर कोड से देख सकता है' },
   profiles_intro: { en: 'Class 8, all seven subjects — no tutor needed, works on low internet.', hi: 'कक्षा 8, सातों विषय — बिना ट्यूटर के, कम इंटरनेट पर।' },
   ask_scope: { en: 'LearnMate answers from all chapters of {subject}.', hi: 'LearnMate {subject} के सभी अध्यायों से जवाब देता है।' },
+  back: { en: '← Back', hi: '← वापस' },
   logout: { en: 'Log out', hi: 'लॉग आउट' },
   profiles_edit: { en: 'Edit', hi: 'बदलें' },
   profiles_save: { en: 'Save changes', hi: 'बदलाव सहेजें' },

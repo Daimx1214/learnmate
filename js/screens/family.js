@@ -73,7 +73,15 @@ function localSummary(code) {
   };
 }
 
+function backButton(ctx) {
+  const btn = el('button', 'btn-ghost back-btn', t('back'));
+  btn.type = 'button';
+  btn.addEventListener('click', () => ctx.navigate(ctx.backTo || '#/home'));
+  return btn;
+}
+
 export function render(root, ctx) {
+  root.appendChild(backButton(ctx));
   root.appendChild(el('h1', 'screen-title', t('family_title')));
   root.appendChild(el('p', 'muted', t('family_intro')));
 

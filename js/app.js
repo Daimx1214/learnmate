@@ -33,6 +33,8 @@ const navEl = document.getElementById('top-nav');
 
 let currentName = '';
 let routeToken = 0;
+let renderedHash = '';
+let backHash = '#/home';
 
 function currentProfile() {
   const id = getActiveProfileId();
@@ -260,6 +262,10 @@ async function route() {
     return;
   }
 
+  const currentHash = location.hash || '#/profiles';
+  if (renderedHash && renderedHash !== currentHash) backHash = renderedHash;
+  renderedHash = currentHash;
+
   currentName = name;
   updateNav(name);
   appEl.innerHTML = '';
@@ -268,6 +274,7 @@ async function route() {
   const ctx = {
     navigate,
     params,
+    backTo: backHash,
     toast,
     profile,
     refresh: () => route(),
