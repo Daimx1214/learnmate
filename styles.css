@@ -1289,3 +1289,10 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   font-weight: 400;
   color: inherit;
 }
+
+/* Final QA: stat values (e.g. weakest topic) wrap instead of truncating */
+.stat-row .stat-value {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}

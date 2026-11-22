@@ -169,6 +169,7 @@ export const STRINGS = {
   sum_mastered: { en: 'Topics understood: {n}', hi: 'समझे गए विषय: {n}' },
   sum_help: { en: 'Needs help: {list}', hi: 'मदद चाहिए: {list}' },
   sum_help_none: { en: 'Needs help: none', hi: 'मदद चाहिए: कोई नहीं' },
+  sum_updated_local: { en: 'Last update: just now, from this phone', hi: 'आख़िरी अपडेट: अभी इसी फ़ोन से' },
   sum_updated: { en: 'Last updated: {date}', hi: 'आख़िरी अपडेट: {date}' },
 
   // ----- about -----

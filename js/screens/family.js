@@ -28,7 +28,7 @@ function summaryCard(data) {
     t('sum_minutes', { n: String(data.weekMinutes ?? 0) }),
     t('sum_mastered', { n: String(data.conceptsMastered ?? 0) }),
     help.length ? t('sum_help', { list: help.join(', ') }) : t('sum_help_none'),
-    hasDate ? t('sum_updated', { date: formatUpdated(data.updatedAt) }) : 'आख़िरी अपडेट: अभी इसी फ़ोन से',
+    hasDate ? t('sum_updated', { date: formatUpdated(data.updatedAt) }) : t('sum_updated_local'),
   ];
   for (const line of lines) {
     const p = el('p', null, line);
