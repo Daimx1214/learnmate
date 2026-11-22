@@ -1,7 +1,7 @@
 // sw.js — root service worker (scope: ./). Offline-first app shell cache.
 // /api/ requests are never cached. Other cross-origin and non-GET requests pass through.
 
-const CACHE = 'saathi-v38';
+const CACHE = 'saathi-v39';
 
 const SHELL = [
   './',
@@ -64,40 +64,31 @@ self.addEventListener('activate', (event) => {
       .keys()
       .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window' }))
+      .then((clients) =>
+        Promise.all(clients.map((c) => c.navigate(c.url).catch(() => {})))
+      )
   );
 });
 
-// Stale-while-revalidate: answer from cache if present, refresh in background.
-// Without a cached copy, go to the network and store the result.
-// For navigations, fall back to the cached index.html when both fail.
-function staleWhileRevalidate(event, request, isNavigation) {
+// Network-first for the app shell (owner fix, 22 Nov): a returning phone
+// always gets the newest shell when online, so an update shows on the
+// first reload instead of the second. The cache is the offline fallback.
+function networkFirst(event, request, isNavigation) {
   event.respondWith(
     (async () => {
+      const cache = await caches.open(CACHE);
       try {
-        const cache = await caches.open(CACHE);
+        const fresh = await fetch(request);
+        if (fresh && fresh.ok) cache.put(request, fresh.clone()).catch(() => {});
+        return fresh;
+      } catch (e) {
         const cached = await cache.match(request);
-
-        const network = fetch(request)
-          .then((res) => {
-            if (res && res.ok) cache.put(request, res.clone()).catch(() => {});
-            return res;
-          })
-          .catch(() => null);
-
-        if (cached) {
-          event.waitUntil(network);
-          return cached;
-        }
-
-        const fresh = await network;
-        if (fresh) return fresh;
-
+        if (cached) return cached;
         if (isNavigation) {
           const shell = await cache.match('./index.html');
           if (shell) return shell;
         }
-        return Response.error();
-      } catch (e) {
         return Response.error();
       }
     })()
@@ -117,7 +108,7 @@ self.addEventListener('fetch', (event) => {
 
     const isNavigation = request.mode === 'navigate';
     if (isNavigation || SHELL_URLS.has(url.href)) {
-      staleWhileRevalidate(event, request, isNavigation);
+      networkFirst(event, request, isNavigation);
     }
   } catch (e) {
     // never throw from the fetch handler
