@@ -152,6 +152,11 @@ export function render(root, ctx) {
         return;
       }
       if (!res.ok) {
+        const local = localSummary(code);
+        if (local) {
+          resultBox.replaceChildren(summaryCard(local));
+          return;
+        }
         resultBox.replaceChildren();
         ctx.toast(t('family_error'));
         return;
@@ -161,6 +166,13 @@ export function render(root, ctx) {
       try {
         data = await res.json();
       } catch {
+        // A static host can answer 200 with HTML instead of JSON: treat it
+        // as "no server" and use the on-device summary, like the 404 case.
+        const local = localSummary(code);
+        if (local) {
+          resultBox.replaceChildren(summaryCard(local));
+          return;
+        }
         resultBox.replaceChildren();
         ctx.toast(t('family_error'));
         return;
