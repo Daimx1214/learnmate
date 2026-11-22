@@ -101,7 +101,14 @@ function buildNav() {
   const langBtn = document.createElement('button');
   langBtn.type = 'button';
   langBtn.className = 'lang-toggle';
-  langBtn.textContent = t('lang_switch_label');
+  const langIcon = document.createElement('span');
+  langIcon.className = 'nav-icon';
+  langIcon.setAttribute('aria-hidden', 'true');
+  langIcon.textContent = '🌐';
+  const langLabel = document.createElement('span');
+  langLabel.className = 'nav-label';
+  langLabel.textContent = t('lang_switch_label');
+  langBtn.append(langIcon, langLabel);
   langBtn.addEventListener('click', () => {
     setLang(getLang() === 'hi' ? 'en' : 'hi');
     window.location.reload();

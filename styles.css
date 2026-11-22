@@ -1269,3 +1269,23 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   padding: 8px 14px;
   font-size: 15px;
 }
+
+/* Owner: language option styled as a full nav item (icon over label),
+   same size and rhythm as Home/Learn/Practice/Ask/Progress */
+#top-nav .lang-toggle {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin: 2px;
+  min-height: 52px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 400;
+  color: inherit;
+}
