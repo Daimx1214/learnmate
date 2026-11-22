@@ -40,7 +40,6 @@ export function render(root, ctx) {
     const card = el('div', 'card');
 
     const pick = touchButton('btn-secondary', '');
-    pick.appendChild(el('span', 'row-photo-blank'));
     pick.appendChild(el('span', null, p.nickname));
     pick.style.display = 'inline-flex';
     pick.style.alignItems = 'center';

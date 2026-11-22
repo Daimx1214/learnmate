@@ -1224,3 +1224,9 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   justify-content: flex-end;
   min-height: 40px;
 }
+
+/* Owner: nav labels a little bigger */
+#top-nav a,
+#top-nav button {
+  font-size: 17px;
+}
