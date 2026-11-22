@@ -1230,3 +1230,22 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
 #top-nav button {
   font-size: 17px;
 }
+
+/* Owner: nav gaps a little tighter */
+#top-nav a,
+#top-nav button {
+  gap: 2px;
+  margin: 2px;
+}
+
+/* Owner: language option as plain text on the right - no pill, not bold */
+.lang-toggle {
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  padding: 0 6px;
+  min-height: 40px;
+  font-weight: 400;
+  font-size: 15px;
+  text-decoration: none;
+}
