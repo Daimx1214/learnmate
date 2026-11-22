@@ -103,12 +103,17 @@ export function render(root, ctx) {
   photoInput.hidden = true;
   const photoBtn = button(t('ask_add_photo'), 'btn-secondary', () => photoInput.click());
   const photoNote = el('p', 'muted');
+  const photoPreview = el('img', 'ask-photo-preview');
+  photoPreview.alt = '';
+  photoPreview.hidden = true;
   let pendingPhoto = null;
 
   function resetPhoto() {
     pendingPhoto = null;
     photoInput.value = '';
     photoNote.textContent = '';
+    photoPreview.hidden = true;
+    photoPreview.removeAttribute('src');
   }
 
   async function onPhotoChosen(file) {
@@ -123,6 +128,8 @@ export function render(root, ctx) {
     try {
       pendingPhoto = await downscalePhoto(file);
       photoNote.textContent = t('ask_photo_added');
+      photoPreview.src = pendingPhoto;
+      photoPreview.hidden = false;
     } catch (e) {
       photoInput.value = '';
       photoNote.textContent =
@@ -137,7 +144,7 @@ export function render(root, ctx) {
   if (getSettings().dataSaver) actions.append(speakBtn, sendBtn);
   else actions.append(photoBtn, speakBtn, sendBtn);
 
-  card.append(textarea, listeningNote, speechNote, photoInput, photoNote, actions);
+  card.append(textarea, listeningNote, speechNote, photoInput, photoNote, photoPreview, actions);
   root.appendChild(card);
   root.appendChild(el('p', 'muted', t('ask_scope', { subject: localizedPack().title })));
 
@@ -145,10 +152,27 @@ export function render(root, ctx) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
   let isListening = false;
+  let listenTimer = null;
 
   function setListening(on) {
     isListening = on;
     listeningNote.hidden = !on;
+    speakBtn.textContent = on ? t('ask_listening_btn') : t('ask_speak');
+    if (listenTimer) {
+      clearTimeout(listenTimer);
+      listenTimer = null;
+    }
+    if (on && recognition) {
+      listenTimer = setTimeout(() => {
+        try {
+          recognition.stop();
+        } catch {
+          // already stopped
+        }
+        setListening(false);
+        speechNote.textContent = t('ask_voice_unheard');
+      }, 9000);
+    }
   }
 
   if (SR) {
@@ -158,11 +182,17 @@ export function render(root, ctx) {
     recognition.onresult = (event) => {
       const alt = event.results && event.results[0] && event.results[0][0];
       const transcript = alt && alt.transcript ? String(alt.transcript).trim() : '';
-      if (transcript) textarea.value = transcript.slice(0, TEXT_MAX);
+      if (transcript) {
+        textarea.value = transcript.slice(0, TEXT_MAX);
+        speechNote.textContent = '';
+      }
     };
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
       setListening(false);
-      ctx.toast(t('ask_voice_unheard'));
+      speechNote.textContent =
+        event && event.error === 'not-allowed'
+          ? t('ask_voice_blocked')
+          : t('ask_voice_unheard');
     };
     recognition.onend = () => setListening(false);
   } else {
@@ -182,6 +212,7 @@ export function render(root, ctx) {
       return;
     }
     try {
+      speechNote.textContent = '';
       recognition.start();
       setListening(true);
     } catch {

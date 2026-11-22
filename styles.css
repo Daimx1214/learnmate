@@ -1208,3 +1208,13 @@ body[data-route="progress"] .screen-title::after { background: var(--green); }
   padding: 9px 12px;
   min-height: 44px;
 }
+
+.ask-photo-preview {
+  max-width: 160px;
+  max-height: 120px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.ask-photo-preview[hidden] {
+  display: none;
+}

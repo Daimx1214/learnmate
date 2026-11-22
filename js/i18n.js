@@ -122,6 +122,8 @@ export const STRINGS = {
   // ----- ask -----
   ask_title: { en: 'Ask a question', hi: 'सवाल पूछें' },
   ask_placeholder: { en: 'Write your question...', hi: 'अपना सवाल लिखें...' },
+  ask_listening_btn: { en: 'Listening... tap to stop', hi: 'सुन रहे हैं... रोकने के लिए दबाएं' },
+  ask_voice_blocked: { en: 'Microphone is blocked. Allow microphone access, or type your question.', hi: 'माइक बंद है। माइक की अनुमति दें, या अपना सवाल लिखें।' },
   ask_listening: { en: 'Listening...', hi: 'सुन रहा हूँ...' },
   ask_speak: { en: 'Ask by voice', hi: 'बोलकर पूछें' },
   ask_send: { en: 'Send', hi: 'भेजें' },
